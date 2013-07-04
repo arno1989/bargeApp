@@ -1,0 +1,62 @@
+<head>
+  <title>entrepreneurShip</title>
+
+</head>
+
+<body>
+	<!-- BEGIN HEADER NAVIGATION -->
+	<header>
+		<div class="navbar navbar-fixed-top">
+  			<div class="navbar-inner">
+		      <a class="brand" href="#">entrePreneurShip</a>
+		      <ul class="nav">
+			      <li class="active"><a href="/">Start</a></li>
+			      <li><a href="/">Kaart</a></li>
+			      <li><a href="/">Brandstof</a></li>
+			      <li><a href="/">Manifest</a></li>
+			      <li><a href="/">Hydro/Meteo</a></li>
+		    	</ul>
+		    	{{loginButtons float="right"}}
+		  </div>
+		</div>
+	</header>
+	<!-- END HEADER NAVIGATION -->
+
+	{{#if currentUser}}
+		<!-- Valid login -->
+		<!-- SHOW USER PANEL -->
+		{{> mainWindow}}
+	{{else}}
+		<!-- Not loggid in! -->
+		<!-- Show login page -->
+		{{> mainWindow}}
+	{{/if}}
+</body>
+
+<template name="mainWindow">
+	<div name="fuel" width=100px class="well well-small">
+		<!-- TODO -->
+		<p><b>Brandstof gebruik:</b> .....</p>
+		<p><b>Manifest overzicht:</b> .....</p>
+	</div>
+
+	<div name="mapSummary" class="well well-small">
+		<!-- TODO -->
+		KAART
+	</div>
+
+	<div name="conditionSummary" class="well well-small">
+		<!-- TODO -->
+		Snelheid
+		Temperatuur
+		Windsnelheid
+	</div>
+
+	<div name="nextCall" class="well well-small">
+		<!-- TODO -->
+		Aanstaande call
+	</div>
+
+</template>
+
+
