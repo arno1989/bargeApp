@@ -1,0 +1,98 @@
+<head>
+  <title>entrepreneurShip</title>
+
+</head>
+
+<body>
+	<!-- BEGIN HEADER NAVIGATION -->
+	<header>
+		<div class="navbar navbar-static-top">
+  			<div class="navbar-inner">
+		      <a class="brand" href="#">entrePreneurShip</a>
+		      <ul class="nav">
+			      <li class="active"><a href="/">Start</a></li>
+			      <li><a href="/">Kaart</a></li>
+			      <li><a href="/">Brandstof</a></li>
+			      <li><a href="/">Manifest</a></li>
+			      <li><a href="/">Hydro/Meteo</a></li>
+		    	</ul>
+
+					<ul class="nav pull-right"> 
+						<li>{{loginButtons align="left"}}</li>
+					</ul> 
+
+		  </div>
+		</div>
+	</header>
+	<!-- END HEADER NAVIGATION -->
+
+	{{#if currentUser}}
+		<!-- Valid login -->
+		<!-- SHOW USER PANEL -->
+		{{> mainWindow}}
+	{{else}}
+		<!-- Not loggid in! -->
+		<!-- Show login page -->
+		{{> notLoggedIn}}
+	{{/if}}
+</body>
+
+<!-- TODO: STORE TEMPLATES IN THE RIGHT FOLDER -->
+
+<template name="mainWindow">
+	<div id="mainLeft">
+		<div name="fuel" class="well well-small">
+			<!-- TODO -->
+			<p><b>Brandstof gebruik:</b> .....</p>
+			<p><b>Manifest overzicht:</b> .....</p>
+		</div>
+	</div>
+
+	<div id="mainMiddle">
+		<div name="mapSummary" class="well well-small">
+			<!-- TODO -->
+			KAART
+			{{gebruiker}}
+		</div>
+	</div>
+
+	<div id="mainRight">
+		<div name="conditionSummary" class="well well-small">
+			<!-- TODO -->
+			Snelheid
+			Temperatuur
+			Windsnelheid
+		</div>
+
+		<div name="nextCall" class="well well-small">
+			<!-- TODO -->
+			<p>Aanstaande call<p>
+			<!-- MAKE DROPDOWN FUNCTION -->
+			{{> addCall}}
+		</div>
+	</div>
+
+	<div name="shippingMessages" id="shippingMsg" class="well well-large">
+		<p>Scheepsvaart bericht #01</p>
+		<p>Scheepsvaart bericht #02</p>
+	</div>
+
+</template>
+
+<template name="notLoggedIn">
+	<div name="askLog" class="well well-large">
+		<h3>Log alstublieft eerst in om verder te gaan</h3>
+	</div>
+</template>
+
+<template name="addCall">
+	Callnaam: <input type="text" class="callName">
+	<!-- Other type of input type for durarion?? -->
+	Duur: <input type="text" class="callDuration">
+	<button class="submit">Voeg toe</button>
+</template>
+
+
+
+
+

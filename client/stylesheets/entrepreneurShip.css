@@ -1,0 +1,35 @@
+/* CSS declarations go here */
+
+body {
+	min-width: 800px;
+}
+
+div#mainLeft {
+	min-width: 200px;
+	float: left; 
+	padding: 20px;
+	width: 30%; 
+}
+
+div#mainMiddle {
+	min-width: 200px;
+	float: left; 
+	padding: 20px;
+	width: 50%; 
+}
+
+div#mainRight {
+	min-width: 200px;
+	float: left; 
+	padding: 20px;
+	width: 20%; 
+}
+
+div#shippingMsg {
+	margin-right: 20px;
+	margin-left: 20px;
+	float: left;
+	width: 100%;	
+}
+
+
