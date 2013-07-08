@@ -2,7 +2,7 @@
 
 body {
 	min-width: 800px;
-	padding-top: 40px; /* To make stuff not hide behind navbar-fixed-top */ 
+	padding-top: 50px; /* To make stuff not hide behind navbar-fixed-top */ 
 }
 
 div#mainLeft {
@@ -33,4 +33,15 @@ div#shippingMsg {
 
 #map { 
 	height: 300px; 
+}
+
+#login {
+	padding-top: 10px;
+}
+
+.navbar .brand {
+    max-height: 40px;
+    overflow: visible;
+    padding-top: 5px;
+    padding-bottom: 0;
 }
