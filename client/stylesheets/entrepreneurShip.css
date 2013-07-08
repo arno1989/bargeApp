@@ -2,6 +2,7 @@
 
 body {
 	min-width: 800px;
+	padding-top: 40px; /* To make stuff not hide behind navbar-fixed-top */ 
 }
 
 div#mainLeft {
@@ -30,5 +31,3 @@ div#shippingMsg {
 	float: left;
 
 }
-
-

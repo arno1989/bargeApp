@@ -1,39 +1,48 @@
 <head>
-  <title>entrepreneurShip</title>
+	<title>eXomodal bargeApp</title>
 
 </head>
 
 <body>
 	<!-- BEGIN HEADER NAVIGATION -->
 	<header>
-		<div class="navbar navbar-static-top">
-  			<div class="navbar-inner">
-		      <a class="brand" href="#">entrePreneurShip</a>
-		      <ul class="nav">
-			      <li class="active"><a href="/">Start</a></li>
-			      <li><a href="/">Kaart</a></li>
-			      <li><a href="/">Brandstof</a></li>
-			      <li><a href="/">Manifest</a></li>
-			      <li><a href="/">Hydro/Meteo</a></li>
-		    	</ul>
-
-					<div class="nav pull-right"> 
-						{{loginButtons}}
-					</div> 
-
-		  </div>
-		</div>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="#">eXomodal</a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+							<li><a href="#">Kaart</a></li>
+							<li><a href="#">Brandstof</a></li>
+							<li><a href="#">Manifest</a></li>
+							<li><a href="#">Hydro/Meteo</a></li>
+						</ul>
+					</div><!-- /.nav-collapse -->
+					<div class="span2 pull-right">{{loginButtons}}</div>
+				</div><!-- /.container -->
+			</div><!-- /.navbar-inner -->
+		</div><!-- /.navbar -->
 	</header>
-	<!-- END HEADER NAVIGATION -->
+	<!-- 	END HEADER NAVIGATION  -->
 
-	{{#if currentUser}}
-		<!-- Valid login -->
-		<!-- SHOW USER PANEL -->
-		{{> mainWindow}}
-	{{else}}
-		<!-- Not loggid in! -->
-		<!-- Show login page -->
-		{{> notLoggedIn}}
-	{{/if}}
+	<div class="container">
+		<div class="hero-unit>">
+			{{#if currentUser}}
+			<!-- Valid login -->
+			<!-- SHOW USER PANEL -->
+			{{> mainWindow}}
+			{{else}}
+			<!-- Not loggid in! -->
+			<!-- Show login page -->
+			{{> notLoggedIn}}
+			{{/if}}
+		</div>
+	</div>
+
 </body>
-
