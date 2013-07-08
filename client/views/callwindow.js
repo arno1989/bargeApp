@@ -10,32 +10,23 @@ Template.addCall.events({
 
 Template.addCall.events({
 'click .submit': function() {
-    /*customCall.insert({
-      location: $('.location').val(),
-      date: $('.datepicker').val(),
-      time: $('.timepicker').val(),
-      type: $('.type').val(),
-      duration: $('.duration').val()
-    	}
-    )*/
-
-
 	var myDate = $('.datepicker').val();
 	var myTime = $('.timepicker').val();
 
-	myDate=myDate.split("/");
-	myTime=myTime.split(":");
+	var tStamp = new Date(myDate + " " + myTime);
+	console.log(tStamp.getTime() / Math.pow(2,3));
 
-	var newDate=myDate[1]+"/"+myDate[0]+"/"+myDate[2];
-	//var myDate = $('.datepicker').val();
-	//console.log(new Date(newDate).getTime());
-
-	var d = new Date();
-	var n = d.getTime();
-	console.log(d);
-	console.log(n);
+    customCall.insert({
+      location: $('.location').val(),
+      timestamp: tStamp.getTime(),
+      type: $('.type').val(),
+      duration: $('.duration').val()
+    	}
+    )
   }
 });
+
+
 
 Template.timePicker.rendered=function() {
   return $('#timepicker1').timepicker({
@@ -48,6 +39,5 @@ Template.timePicker.rendered=function() {
 
 Template.datePicker.rendered=function() {
   return $('.datepicker').datepicker();
-
 }
 
