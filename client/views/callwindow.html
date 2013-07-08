@@ -1,0 +1,39 @@
+<!-- This is the call summary window which is displayed on the mainwindow -->
+
+<template name="addCall">
+  <div class="btn-group">                 
+    <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+        <span>Call aanmaken</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu callForm">
+			{{> addCallForm}}
+    </ul>
+   </div>
+</template>
+
+<template name="addCallForm">	
+	<li>Locatie: <input type="text" class="input-small location"></li>
+	<li>Datum/tijd:{{> datePicker}} {{> timePicker}}</li>
+	<li>Type: <input type="text" class="input-small type"></li>
+	<li>Verwachte duur: {{> durationPicker}}</li>
+	<li><button class="submit">Voeg toe</button></li>
+</template>
+
+<template name="datePicker">
+	<input type="text" value="00-00-2000" data-date-format="dd/mm/yy" class="input-small datepicker">
+</template>
+
+<template name="timePicker">
+  <div class="input-append bootstrap-timepicker">
+    <input id="timepicker1" type="text" class="input-small timepicker">
+    <span class="add-on"><i class="icon-time"></i></span>
+  </div>
+</template>
+
+<template name="durationPicker">
+	<!-- Input type should only be numbers only Opera supports numbers-->
+	<input type="text" class="input-small duration">
+</template>
+
+

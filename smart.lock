@@ -5,7 +5,11 @@
       "accounts-linkedin": {},
       "router": {},
       "bootstrap-3": {},
-      "accounts-ui-bootstrap-dropdown": {}
+      "bootstrap-3-timepicker": {},
+      "bootstrap-datepicker": {
+        "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "accounts-linkedin": {
@@ -23,10 +27,15 @@
         "tag": "v0.2.5",
         "commit": "739b15b41b6dc4bed2cdbe44f5fb2978b6f4a5d2"
       },
-      "accounts-ui-bootstrap-dropdown": {
-        "git": "https://github.com/erobit/meteor-accounts-ui-bootstrap-dropdown.git",
-        "tag": "v0.1.5",
-        "commit": "e12b128f140caa2797720cbd5fae084de7810c6a"
+      "bootstrap-3-timepicker": {
+        "git": "https://github.com/ianserlin/meteor-bootstrap-timepicker.git",
+        "tag": "v0.2.1",
+        "commit": "2dea6a3651fa4621b3281fcaa914564df2026aee"
+      },
+      "bootstrap-datepicker": {
+        "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
+        "branch": "master",
+        "commit": "5b8b05dc778d47986de68ecf193083b26589c5b1"
       },
       "linkedin": {
         "git": "https://github.com/yefim/meteor-linkedin.git",

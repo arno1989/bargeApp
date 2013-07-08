@@ -4,3 +4,5 @@ router
 page-js-ie-support
 bootstrap-3
 accounts-ui-bootstrap-dropdown
+bootstrap-datepicker
+bootstrap-3-timepicker

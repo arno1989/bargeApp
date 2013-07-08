@@ -10,16 +10,7 @@ if (Meteor.isClient) {
     '/manifest'   : 'manifest',
     '/hydroMeteo' : 'hydroMeteo'
   });
-
-  Template.addCall.events({
-    'click .submit': function() {
-      customCall.insert(
-        {callname: $('.callName').val(),
-        callduration: $('.callDuration').val()}
-      )
-    }
-  });
-  
+ 
 
 }
 
