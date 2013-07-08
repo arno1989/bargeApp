@@ -27,7 +27,10 @@ div#mainRight {
 }
 
 div#shippingMsg {
-
 	float: left;
+	width: 100%;
+}
 
+#map { 
+	height: 300px; 
 }

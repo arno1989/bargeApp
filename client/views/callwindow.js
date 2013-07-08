@@ -1,6 +1,11 @@
 /**
  * Event to keep the dropdown menu displaying when using the form
  */
+Template.addCall.events({
+  'click .dropdown-toggle': function(e) {
+    $('.dropdown-toggle').dropdown();
+  }
+});
 
 Template.addCall.events({
 	'click .dropdown-menu': function (e) {
@@ -14,7 +19,7 @@ Template.addCall.events({
 	var myTime = $('.timepicker').val();
 
 	var tStamp = new Date(myDate + " " + myTime);
-	console.log(tStamp.getTime() / Math.pow(2,3));
+	console.log(tStamp.getTime());
 
     customCall.insert({
       location: $('.location').val(),
@@ -25,8 +30,6 @@ Template.addCall.events({
     )
   }
 });
-
-
 
 Template.timePicker.rendered=function() {
   return $('#timepicker1').timepicker({
