@@ -1,0 +1,24 @@
+<template name="navigationbar">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="#">eXomodal</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+						<li><a href="#">Kaart</a></li>
+						<li><a href="#">Brandstof</a></li>
+						<li><a href="#">Manifest</a></li>
+						<li><a href="#">Hydro/Meteo</a></li>
+					</ul>
+				</div>
+				<div id="login" class="span2 pull-right">{{loginButtons}}</div>
+			</div><!-- /.container -->
+		</div><!-- /.navbar-inner -->
+	</div><!-- /.navbar -->
+</template>

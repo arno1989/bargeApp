@@ -6,21 +6,18 @@ Template.mapSummary.rendered=function() {
 	map = L.map('map').setView([52.2, 6.5], 9);
   var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   var osmAttrib='Map data © OpenStreetMap contributors';
-  var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 12, attribution: osmAttrib});   
+  var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 14, attribution: osmAttrib});   
   // Ask the user to get their current location
   map.locate({setView : true});
+  // Add the tilelayer to the map
   map.addLayer(osm);
-
-  var myPos = map.getCenter();
-  var marker = L.marker([myPos.lat, myPos.lng]).addTo(map);
+  // Add event listeners
+  map.on('locationfound', myMarker);
 }
 
-map.on('click', function(e) {
-    alert(e.latlng); // e is an event object (MouseEvent in this case)
-});
+// Map functions
+function myMarker(e) {
+  // Add marker on my location
+  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+}
 
-Template.mapSummary.events({
-  'click .findMe': function(e) {
-    map.locate({setView : true});
-  }
-});
