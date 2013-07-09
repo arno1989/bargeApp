@@ -13,11 +13,16 @@
 </template>
 
 <template name="addCallForm">	
-	<li>Locatie: <input type="text" class="input-small location"></li>
-	<li>Datum/tijd:{{> datePicker}} {{> timePicker}}</li>
-	<li>Type: <input type="text" class="input-small type"></li>
-	<li>Verwachte duur: {{> durationPicker}}</li>
-	<li><button class="submit">Voeg toe</button></li>
+  <div name="callForm" style="padding: 5px; width:200px;">
+    <ul name="callFormList" class="unstyled">
+    	<li>Locatie: <input type="text" class="input-small location"></li>
+    	<li>Datum: {{> datePicker}}</li>
+      <li>Tijd: {{> timePicker}}</li>
+    	<li>Type: <input type="text" class="input-small type"></li>
+    	<li>Verwachte duur: {{> durationPicker}}</li>
+    	<li><button class="submit">Voeg toe</button></li>
+    </ul>
+  </div>
 </template>
 
 <template name="datePicker">
@@ -27,7 +32,6 @@
 <template name="timePicker">
   <div class="input-append bootstrap-timepicker">
     <input id="timepicker1" type="text" class="input-small timepicker">
-    <span class="add-on"><i class="icon-time"></i></span>
   </div>
 </template>
 
