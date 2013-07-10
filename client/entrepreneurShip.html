@@ -15,7 +15,8 @@
 			{{#if currentUser}}
 				<!-- Valid login -->
 				<!-- SHOW USER PANEL -->
-				{{> mainWindow}}
+				{{> usercheck}}
+				{{#isolate}} {{renderPage}} {{/isolate}}
 			{{else}}
 				<!-- Not loggid in! -->
 				<!-- Show login page -->

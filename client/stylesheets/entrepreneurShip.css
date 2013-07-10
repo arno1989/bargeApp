@@ -1,10 +1,24 @@
 /* CSS declarations go here */
 
+/* Navigationbar style */
+#login {
+	padding-top: 10px;
+}
+
+.navbar .brand {
+    max-height: 40px;
+    overflow: visible;
+    padding-top: 5px;
+    padding-bottom: 0;
+}
+
+/* body style */
 body {
 	min-width: 800px;
 	padding-top: 50px; /* To make stuff not hide behind navbar-fixed-top */ 
 }
 
+/* mainWindow template styles */
 div#mainLeft {
 	min-width: 200px;
 	float: left; 
@@ -35,13 +49,10 @@ div#shippingMsg {
 	height: 300px; 
 }
 
-#login {
-	padding-top: 10px;
+/* fullMap style */
+#fullmap{
+	width: 100%;
+	height: 500px;
 }
+/* Hydro/Meteo styles */
 
-.navbar .brand {
-    max-height: 40px;
-    overflow: visible;
-    padding-top: 5px;
-    padding-bottom: 0;
-}

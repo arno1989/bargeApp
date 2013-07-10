@@ -1,0 +1,1 @@
+bargeUsers = new Meteor.Collection("BargeUsers");

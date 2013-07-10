@@ -10,7 +10,8 @@
         "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
         "branch": "master"
       },
-      "leaflet": {}
+      "leaflet": {},
+      "collection-api": {}
     },
     "packages": {
       "accounts-linkedin": {
@@ -25,8 +26,8 @@
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.2.5",
-        "commit": "739b15b41b6dc4bed2cdbe44f5fb2978b6f4a5d2"
+        "tag": "v0.2.8",
+        "commit": "8026f0beaa0274849adfcf8c53d919216b5e06ba"
       },
       "bootstrap-3-timepicker": {
         "git": "https://github.com/ianserlin/meteor-bootstrap-timepicker.git",
@@ -42,6 +43,11 @@
         "git": "https://github.com/bevanhunt/meteor-leaflet.git",
         "tag": "v0.1.8",
         "commit": "8a3d0f53734e4fe3efc3e6e39aa3da0209e2ec8e"
+      },
+      "collection-api": {
+        "git": "https://github.com/crazytoad/meteor-collectionapi.git",
+        "tag": "v0.1.14",
+        "commit": "d42ba1681289cb093afa7c67500862241df15f9e"
       },
       "linkedin": {
         "git": "https://github.com/yefim/meteor-linkedin.git",
