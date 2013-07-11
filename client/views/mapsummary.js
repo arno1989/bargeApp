@@ -19,12 +19,29 @@ Template.mapSummary.rendered=function() {
   });*/
 
   // Add event listeners
-  map.on('locationfound', myMarker);
+  map.on('locationfound', myPosition);
 }
 
 // Map functions
-function myMarker(e) {
+function myPosition(e) {
   // Add marker on my location
   var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+  // Get user information
+  var user = bargeUsers.find({}, {limit: 1}).fetch();  
+  console.log('this mmsi: ' + user[0].mmsi);
+  var curTimestamp = new Date();
+  // Check if the user mmsi already exists in the currentPosition collection
+  var position = currentPosition.find({},{limit: 1});
+  console.log('found: ' + position.count());
+  // If user already exists, update the position. Else insert the position
+  console.log('position count: ' + position.count());
+  if(position.count() != 0) {
+    console.log('Updating position');
+    Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+  } else {
+    console.log('Inserting position');
+    currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+  }
+
 }
 

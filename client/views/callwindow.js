@@ -22,24 +22,32 @@ Template.addCall.events({
  */
 Template.addCallForm.events({
   'click .submit': function() {
-    var currentTime = new Date();
-    var myDate = $('.datepicker').val();
-    var myTime = $('.timepicker').val();
-    var tStamp = new Date(myDate + " " + myTime);
-    // Check if given time is in the future
-    if(currentTime.getTime() < tStamp.getTime()) {
-      console.log('Time is in the future');
-      // Time is in the future and is allowed to be inserted
-      customCall.insert({
-        location: $('.location').val(),
-        timestamp: tStamp.getTime(),
-        type: $('.type').val(),
-        duration: $('.duration').val()
-      })
-    }else{
-      console.log('Time is in the past!');
-    }
-  }
+    Meteor.call("userCheck", function (error, userInfo) {
+      if(error) {
+        console.log('addCallForm failed to retrieve userInfo!' + error);
+      } else {
+        var my_mmsi = userInfo.mmsi;
+        var currentTime = new Date();
+        var myDate = $('.datepicker').val();
+        var myTime = $('.timepicker').val();
+        var tStamp = new Date(myDate + " " + myTime);
+        // Check if given time is in the future
+        if(currentTime.getTime() < tStamp.getTime()) {
+          console.log('Time is in the future');
+          // Time is in the future and is allowed to be inserted
+          customCall.insert({
+          mmsi: my_mmsi,
+          location: $('.location').val(),
+          timestamp: tStamp.getTime(),
+          type: $('.type').val(),
+          duration: $('.duration').val()
+          });
+        }else{
+          console.log('Time is in the past!');
+        }
+      }      
+    });
+  }    
 });
 
 Template.timePicker.rendered=function() {
