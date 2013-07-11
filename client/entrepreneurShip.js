@@ -1,5 +1,4 @@
-if (Meteor.isClient) {
-
+Meteor.startup( function () {
   Meteor.call("userCheck", function (error, userInfo) {
     if(error) {
       console.log('Error getting user information! ' + error);
@@ -13,17 +12,9 @@ if (Meteor.isClient) {
       Meteor.subscribe("currentPosition", userInfo.mmsi);
     }
   });
+})
 
-  
-
-
-
-  // Get user mmsi
-  //var user = bargeUsers.find({},{limit: 1});
-  /*user.forEach(function (userid){
-    
-    Meteor.subscribe("currentPosition", userid.mmsi);
-  });*/
+if (Meteor.isClient) {
 
   /**
    * Add linking for the navigation bar.
