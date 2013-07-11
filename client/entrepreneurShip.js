@@ -10,6 +10,7 @@ Meteor.startup( function () {
       Meteor.subscribe("bargeUsers", Meteor.userId());
       Meteor.subscribe("customCall", userInfo.mmsi);
       Meteor.subscribe("currentPosition", userInfo.mmsi);
+      Meteor.subscribe("currentWeather", userInfo.mmsi);
     }
   });
 })

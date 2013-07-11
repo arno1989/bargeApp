@@ -17,7 +17,7 @@ Template.mapSummary.rendered=function() {
     var geojsonLayer = new L.GeoJSON(data);   //New GeoJSON layer
     map.addLayer(geojsonLayer);     //Add layer to map  
   });*/
-
+  //map.zoom(6);
   // Add event listeners
   map.on('locationfound', myPosition);
 }
@@ -28,7 +28,7 @@ function myPosition(e) {
   var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
   // Get user information
   var user = bargeUsers.find({}, {limit: 1}).fetch();  
-  console.log('this mmsi: ' + user[0].mmsi);
+  // Get current time
   var curTimestamp = new Date();
   // Check if the user mmsi already exists in the currentPosition collection
   var position = currentPosition.find({},{limit: 1});
@@ -37,7 +37,10 @@ function myPosition(e) {
   console.log('position count: ' + position.count());
   if(position.count() != 0) {
     console.log('Updating position');
+    // Let the server update my position
     Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+    // Let the server update my weather condition
+    Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
   } else {
     console.log('Inserting position');
     currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
