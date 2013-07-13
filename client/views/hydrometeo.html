@@ -1,5 +1,34 @@
 <template name="hydroMeteo">
-	<div name="" class="well well-small" style="width:100%; height:100%">
-		{{getWeatherData}}
-	</div> <!-- /. .. -->
+
+	<div name="hydroMainWindow" class="well well-small">
+		{{> tempWindow}}
+		{{> weatherChart}}
+		{{> weatherMap}}
+	</div> <!-- /.hydroMainWindow -->
+</template>
+
+<template name="tempWindow">
+	<div name="tempSum">
+		<legend><h5>Temperatuur</h5></legend>
+		{{#if getWeatherInfo}}
+			<img src="http://openweathermap.org/img/w/{{getWeatherInfo.iconID}}.png" width="100" hight="100"> {{getWeatherInfo.temperature}}&deg;C</p>
+		{{else}}
+			<p>Niet beschikbaar</p>
+		{{/if}}
+	</div> <!-- /. tempWindow -->
+</template>
+
+<template name="weatherChart">
+	<div name="Chart" class="wChart">
+		<legend><h5>Weer grafiek</h5></legend>
+		{{getijden}}
+		{{renderChart}}
+	</div> <!-- /.weatherChart -->
+</template>
+
+<template name="weatherMap">
+	<div name="weatherMapContainer">
+		<legend><h5>Weer kaart</h5></legend>
+		<div id="map"></map>
+	</div> <!-- /. weatherMap -->
 </template>

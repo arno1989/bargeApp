@@ -9,6 +9,8 @@
       "commit": "5b8b05dc778d47986de68ecf193083b26589c5b1"
     },
     "leaflet": {},
-    "collection-api": {}
+    "collection-api": {},
+    "d3js-package": {},
+    "xml2js": {}
   }
 }

@@ -1,6 +1,7 @@
 <head>
 	<title>eXomodal bargeApp</title>
-
+	<link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+    <!-- <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script> -->
 </head>
 
 <body>
@@ -11,18 +12,16 @@
 	<!-- 	END HEADER NAVIGATION  -->
 
 	<div class="container">
-		<div class="hero-unit>">
-			{{#if currentUser}}
-				<!-- Valid login -->
-				<!-- SHOW USER PANEL -->
-				{{> usercheck}}
-				{{#isolate}} {{renderPage}} {{/isolate}}
-			{{else}}
-				<!-- Not loggid in! -->
-				<!-- Show login page -->
-				{{> notLoggedIn}}
-			{{/if}}
-		</div>
+		{{#if currentUser}}
+			<!-- Valid login -->
+			<!-- SHOW USER PANEL -->
+			{{> usercheck}}
+			{{#isolate}} {{renderPage}} {{/isolate}}
+		{{else}}
+			<!-- Not loggid in! -->
+			<!-- Show login page -->
+			{{> notLoggedIn}}
+		{{/if}}
 	</div>
 
 </body>
