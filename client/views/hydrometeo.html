@@ -20,8 +20,10 @@
 
 <template name="weatherChart">
 	<div name="Chart" class="wChart">
-		<legend><h5>Weer grafiek</h5></legend>
-		{{getijden}}
+		<legend><h5>Getijden informatie</h5></legend>
+		<p><b>Locatie: </b>{{getijden.location}}</p>
+		<p><b>Datum: </b>{{getijden.date}}</p>
+		<p><b>Waterstanden: </b>{{getijden.tide}}<p>
 		{{renderChart}}
 	</div> <!-- /.weatherChart -->
 </template>

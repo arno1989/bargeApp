@@ -1,9 +1,12 @@
+USERMMSI = 0;
+
 Meteor.startup( function () {
   Meteor.call("userCheck", function (error, userInfo) {
     if(error) {
       console.log('Error getting user information! ' + error);
     } else {
       console.log('Hoi ' + userInfo.name + ', jij hebt mmsi nr: ' + userInfo.mmsi);
+      USERMMSI = userInfo.mmsi;
       /**
        * Subscribing to datababes
        */
@@ -11,6 +14,7 @@ Meteor.startup( function () {
       Meteor.subscribe("customCall", userInfo.mmsi);
       Meteor.subscribe("currentPosition", userInfo.mmsi);
       Meteor.subscribe("currentWeather", userInfo.mmsi);
+      Meteor.subscribe("tideInformation", userInfo.mmsi);
     }
   });
 })
@@ -28,4 +32,6 @@ if (Meteor.isClient) {
     '/manifest'   : 'manifest',
     '/hydroMeteo' : 'hydroMeteo'
   });
+
+  //Meteor.Router.extend({});
 }

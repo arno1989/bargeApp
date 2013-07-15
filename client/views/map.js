@@ -1,4 +1,13 @@
 Template.fullMap.rendered=function() {
+
+  function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+    }
+  }
+
+
 	// Create a map with standard location
 	map = L.map('map').setView([52.2, 6.5], 9);
   var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -8,12 +17,11 @@ Template.fullMap.rendered=function() {
   // Add the tilelayer to the map
   map.addLayer(osm);
 
-  var geoJsonLayer = new L.GeoJSON(states);
-  geoJsonLayer.setStyle({color: '#666'});
-
-  map.addLayer(geoJsonLayer);
-
-  //L.geoJson('json_file').addTo(map);
+  // Add geoJSON to layers
+  L.geoJson(myFeatures, {
+    onEachFeature: onEachFeature,
+    style: myStyle
+  }).addTo(map);
 
   // Add event listeners
   map.on('locationfound', myMarker);
@@ -22,5 +30,5 @@ Template.fullMap.rendered=function() {
 // Map functions
 function myMarker(e) {
   // Add marker on my location
-  //var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 }

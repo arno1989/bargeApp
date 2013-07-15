@@ -1,5 +1,4 @@
 <template name="navigationbar">
-	{{active}}
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -11,8 +10,13 @@
 				<a class="brand" href="{{mainWindowPath}}">eXomodal</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="{{active mainWindowPath}}"><a href="{{mainWindowPath}}"><i class="icon-home icon-white"></i> Home</a></li>
-						<li class="{{active fullMapPath}}"><a href="{{fullMapPath}}"><i class="icon-globe"></i> Kaart</a></li>
+						{{#if active mainWindowPath}}
+						<li class="active"><a href="{{mainWindowPath}}"><i class="icon-home"></i> Home</a></li>
+						{{else}}
+						<li class=""><a href="{{mainWindowPath}}"><i class="icon-home"></i> Home</a></li>
+						{{/if}}
+
+						<li class=""><a href="{{fullMapPath}}"><i class="icon-globe"></i> Kaart</a></li>
 						<li><a href="#"><i class="icon-fire"></i> Brandstof</a></li>
 						<li><a href="#"><i class="icon-tasks"></i> Manifest</a></li>
 						<li><a href="{{hydroMeteoPath}}"><i class="icon-picture"></i> Hydro/Meteo</a></li>

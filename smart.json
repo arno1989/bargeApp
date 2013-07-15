@@ -8,9 +8,9 @@
       "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
       "commit": "5b8b05dc778d47986de68ecf193083b26589c5b1"
     },
-    "leaflet": {},
     "collection-api": {},
     "d3js-package": {},
-    "xml2js": {}
+    "xml2js": {},
+    "leaflet": {}
   }
 }

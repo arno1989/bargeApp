@@ -1,14 +1,14 @@
 myStyle = {
-    "color": "#0000FF",
-    "opacity": 0.65
+    "color": "red",
+    "fill": true,
+    "fillOpacity": 0.65
 };
 
-states = [{
+myFeatures = [{
     "type": "Feature",
     "properties": {
         "name": "Poly test",
         "popupContent": "this is my test!",
-        "style": "test"
     },
     "geometry": {
         "type": "Polygon",
@@ -18,5 +18,15 @@ states = [{
             [5.9,  51.5], // bottom left
             [6.0, 51.5]
         ]]
+    }
+}, {
+    "type": "Feature",
+    "properties": {
+        "name": "MyPoint",
+        "popupContent": "this is my point!",
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [6.0, 52]
     }
 }];
