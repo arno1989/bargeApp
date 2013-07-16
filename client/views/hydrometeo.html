@@ -23,8 +23,9 @@
 		<legend><h5>Getijden informatie</h5></legend>
 		<p><b>Locatie: </b>{{getijden.location}}</p>
 		<p><b>Datum: </b>{{getijden.date}}</p>
-		<p><b>Waterstanden: </b>{{getijden.tide}}<p>
-		{{renderChart}}
+		<p><b>Waterstand t.o.v. NAP: </b><p>
+		<canvas id="myChart" width="800" height="200"></canvas>
+		<!-- {{renderChart}} -->
 	</div> <!-- /.weatherChart -->
 </template>
 

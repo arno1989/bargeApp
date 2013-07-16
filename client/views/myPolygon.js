@@ -4,7 +4,7 @@ myStyle = {
     "fillOpacity": 0.65
 };
 
-myFeatures = [{
+/*myFeatures = [{
     "type": "Feature",
     "properties": {
         "name": "Poly test",
@@ -29,4 +29,4 @@ myFeatures = [{
         "type": "Point",
         "coordinates": [6.0, 52]
     }
-}];
+}];*/

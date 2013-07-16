@@ -25,9 +25,10 @@ if(Meteor.isServer) {
 				tideInfo = tideInfo.replaceAll(' ','');
 				// split on line endings
 				tideInfo = tideInfo.split('\n');
-				// remove all times
+				// remove all times & convert Strings to Integers
 				for(var i=0;i<tideInfo.length;i++) {
 					tideInfo[i] = tideInfo[i].slice(5,tideInfo[i].length);
+					tideInfo[i] = parseInt(tideInfo[i],10);
 				}
 				// Check if we already exists in the tideInformation collection
 				var tideInfoCnt = tideInformation.find({mmsi: my_mmsi},{limit: 1});

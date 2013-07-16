@@ -45,6 +45,7 @@ div#shippingMsg {
 	width: 100%;
 }
 
+/* Leaflet map settings */
 #map { 
 	height: 300px; 
 }
@@ -67,6 +68,13 @@ div#tempSum {
 	width: 200px;
 }
 
-div#tempSum .legend {
-	height: 10px;
+/* Manifest styles */
+div#maniSum {
+	float: left;
+	width: 100%;
+}
+
+div#maniDetails {
+	float: left;
+	width: 100%;
 }

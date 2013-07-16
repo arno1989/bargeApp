@@ -11,6 +11,7 @@
     "collection-api": {},
     "d3js-package": {},
     "xml2js": {},
-    "leaflet": {}
+    "leaflet": {},
+    "chartjs": {}
   }
 }

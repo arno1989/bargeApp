@@ -1,4 +1,4 @@
-customCall = new Meteor.Collection('customcalls');
+customCall = new Meteor.Collection('CustomCalls');
 
 if(Meteor.isServer){
 	Meteor.publish('customCall', function (mmsi) {
