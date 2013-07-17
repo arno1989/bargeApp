@@ -1,10 +1,20 @@
 if(Meteor.isClient) {
-
+	// Planned call time format: Jul 11 2013 07:30:00 GMT-0000
 
 	Template.upcomingCall.getUpcomingCall=function() {
 		var currentTime = new Date;
+		var timeString = moment().format('MMM DD YYYY HH:mm:ss [GMT-0000]');
 		// Get the next call by getting the the first result after the current time
-		return customCall.findOne({timestamp: {$gt: currentTime.getTime()}}, {sort: {timestamp: 1}});
+		var custom = customCall.findOne({timestamp: {$gt: currentTime.getTime()}}, {sort: {timestamp: 1}});
+		/*var plannedCall = callCollection.findOne({trackNum: "0", start: $gt: timeString},{sort: {start: 1}});
+		console.log(plannedCall);
+		// Check which call is first
+		try {
+			var customTime = new Date(custom.timestamp);
+			//var plannedTime = new Date(plannedCall.start);
+		} catch(e) {
+
+		}*/
 	}
 
 	/**

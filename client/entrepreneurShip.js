@@ -14,6 +14,7 @@ Meteor.startup( function () {
       Meteor.subscribe("currentWeather", userInfo.mmsi);
       Meteor.subscribe("tideInformation", userInfo.mmsi);
       Meteor.subscribe("manifestInfo", userInfo.mmsi);
+      Meteor.subscribe("callCollection", userInfo.mmsi); 
     }
   });
 })

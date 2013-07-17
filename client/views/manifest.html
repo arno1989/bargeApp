@@ -1,14 +1,60 @@
 <template name="manifest">
 	<div name="maniSum" class="well well-small">
 		<legend>Manifest overzicht</legend>
-		<p>Manifest mmsi: {{getmmsi}}</p>
-		<p>Start:</p>
-		<p>Eind:</p>
-		<p>[##############>>#################]</p>
+		<ul class="unstyled">
+			<li>Manifest mmsi: {{getManiInfo.mmsi}}</li>
+			<li>Start: {{getStartEnd.manifestStart}}</li>
+			<li>Eind: {{getStartEnd.manifestEnd}}</li>
+		</ul>
 	</div>
 
 	<div name="maniDetails" class="well well-small">
 		<legend>Manifest details</legend>
-		<p>Dropdown views van locaties met info</p>
+		{{> actualManifest}}
+		{{> plannedManifest}}
 	</div>
+</template>
+
+<template name="actualManifest">
+	<h4>Actueel</h4>
+	{{#if getActualData}}
+		<table class="table">
+			<thead>
+				<tr><td>Locatie</td><td>Aankomst tijd</td><td>Vertrek tijd</td></tr>
+			</thead>
+			<tbody>
+			{{#each getActualData}}		
+				<tr style="color: {{this.color}}">
+					<td>{{this.title}}</td>
+					<td>{{this.start}}</td>
+					<td>{{this.end}}</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		{{else}}
+		<p>Geen manifest bekend</p>
+	{{/if}}
+</template>
+
+<template name="plannedManifest">
+	<h4>Geplend</h4>
+	{{#if getManifest}}
+		<table class="table">
+			<thead>
+				<tr><td>Locatie</td><td>Geplande aankomst tijd</td><td>Geplande vertrek tijd</td></tr>
+			</thead>
+			<tbody>
+			{{#each getManifest}}		
+				<tr style="color: {{this.color}}">
+					<td>{{this.title}}</td>
+					<td>{{this.start}}</td>
+					<td>{{this.end}}</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		{{else}}
+		<p>Geen manifest bekend</p>
+	{{/if}}
 </template>

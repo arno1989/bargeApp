@@ -14,7 +14,8 @@
       "d3js-package": {},
       "xml2js": {},
       "leaflet": {},
-      "chartjs": {}
+      "chartjs": {},
+      "momentjs": {}
     },
     "packages": {
       "accounts-linkedin": {
@@ -66,6 +67,11 @@
         "git": "https://github.com/donskifarrell/meteor-chartjs.git",
         "tag": "v0.0.3",
         "commit": "cd3339ccbc99eb8fe7664a918aef25423bdaca3b"
+      },
+      "momentjs": {
+        "git": "https://github.com/crapthings/meteor-momentjs.git",
+        "tag": "v2.1.0",
+        "commit": "f421f51c2cb40093374a83adb932937da2f991d3"
       },
       "linkedin": {
         "git": "https://github.com/yefim/meteor-linkedin.git",

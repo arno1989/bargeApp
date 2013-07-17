@@ -12,6 +12,7 @@
     "d3js-package": {},
     "xml2js": {},
     "leaflet": {},
-    "chartjs": {}
+    "chartjs": {},
+    "momentjs": {}
   }
 }

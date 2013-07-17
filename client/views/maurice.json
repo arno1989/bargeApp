@@ -91,4 +91,128 @@
 			"textColor":"#2c3e50", 
 			"trackNum":"0", 
 			"eventID":"244700271"
-		},{ "start":"Jul 13 2013 09:45:00 GMT-0000", "end":"Jul 13 2013 10:15:00 GMT-0000", "durationEvent":true, "caption":"Uniport", "title":"Uniport", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 13 2013 05:30:00 GMT-0000", "end":"Jul 13 2013 06:00:00 GMT-0000", "durationEvent":true, "caption":"APM", "title":"APM", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 13 2013 04:30:00 GMT-0000", "end":"Jul 13 2013 05:00:00 GMT-0000", "durationEvent":true, "caption":"RCT", "title":"RCT", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 23:00:00 GMT-0000", "end":"Jul 12 2013 23:30:00 GMT-0000", "durationEvent":true, "caption":"City", "title":"City", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 18:30:00 GMT-0000", "end":"Jul 12 2013 19:00:00 GMT-0000", "durationEvent":true, "caption":"Progeco", "title":"Progeco", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 18:00:00 GMT-0000", "end":"Jul 12 2013 18:30:00 GMT-0000", "durationEvent":true, "caption":"RST Z", "title":"RST Z", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 17:00:00 GMT-0000", "end":"Jul 12 2013 17:30:00 GMT-0000", "durationEvent":true, "caption":"City", "title":"City", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 19:45:00 GMT-0000", "end":"Jul 12 2013 20:15:00 GMT-0000", "durationEvent":true, "caption":"Uniport", "title":"Uniport", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 16:30:00 GMT-0000", "end":"Jul 12 2013 17:00:00 GMT-0000", "durationEvent":true, "caption":"CTT R", "title":"CTT R", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 11 2013 07:00:00 GMT-0000", "end":"Jul 11 2013 07:30:00 GMT-0000", "durationEvent":true, "caption":"CTT", "title":"CTT", "color":"#bdc3c7", "textColor":"#2c3e50", "trackNum":"0", "eventID":"244700271"},{ "start":"Jul 12 2013 21:37:26 GMT-0000", "end":"Jul 16 2013 14:13:45 GMT-0000", "durationEvent":true, "color":"#3498db", "trackNum":"1"},{ "start":"Jul 12 2013 16:48:24 GMT-0000", "end":"Jul 12 2013 21:32:26 GMT-0000", "durationEvent":true, "caption":"Uniport", "title":"Uniport", "color":"#2ecc71", "textColor":"#2c3e50", "trackNum":"1", "eventID":"244700271"},{ "start":"Jul 12 2013 15:48:24 GMT-0000", "end":"Jul 12 2013 16:43:24 GMT-0000", "durationEvent":true, "color":"#3498db", "trackNum":"1"}]}
+		},{ 
+			"start":"Jul 13 2013 09:45:00 GMT-0000", 
+			"end":"Jul 13 2013 10:15:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"Uniport", 
+			"title":"Uniport", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 13 2013 05:30:00 GMT-0000", 
+			"end":"Jul 13 2013 06:00:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"APM", 
+			"title":"APM", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 13 2013 04:30:00 GMT-0000", 
+			"end":"Jul 13 2013 05:00:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"RCT", 
+			"title":"RCT", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 23:00:00 GMT-0000", 
+			"end":"Jul 12 2013 23:30:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"City", 
+			"title":"City", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 18:30:00 GMT-0000", 
+			"end":"Jul 12 2013 19:00:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"Progeco", 
+			"title":"Progeco", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 18:00:00 GMT-0000", 
+			"end":"Jul 12 2013 18:30:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"RST Z", 
+			"title":"RST Z", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 17:00:00 GMT-0000", 
+			"end":"Jul 12 2013 17:30:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"City", 
+			"title":"City", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 19:45:00 GMT-0000", 
+			"end":"Jul 12 2013 20:15:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"Uniport", 
+			"title":"Uniport", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 16:30:00 GMT-0000", 
+			"end":"Jul 12 2013 17:00:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"CTT R", 
+			"title":"CTT R", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 11 2013 07:00:00 GMT-0000", 
+			"end":"Jul 11 2013 07:30:00 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"CTT", 
+			"title":"CTT", 
+			"color":"#bdc3c7", 
+			"textColor":"#2c3e50", 
+			"trackNum":"0", 						// Planned data
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 21:37:26 GMT-0000", // varen van a naar b
+			"end":"Jul 16 2013 14:13:45 GMT-0000", 
+			"durationEvent":true, 
+			"color":"#3498db", 
+			"trackNum":"1"							// Actual DATA
+		},{ 
+			"start":"Jul 12 2013 16:48:24 GMT-0000", 
+			"end":"Jul 12 2013 21:32:26 GMT-0000", 
+			"durationEvent":true, 
+			"caption":"Uniport", 
+			"title":"Uniport", 
+			"color":"#2ecc71", 
+			"textColor":"#2c3e50", 
+			"trackNum":"1", 
+			"eventID":"244700271"
+		},{ 
+			"start":"Jul 12 2013 15:48:24 GMT-0000", 
+			"end":"Jul 12 2013 16:43:24 GMT-0000", 
+			"durationEvent":true, 
+			"color":"#3498db", 
+			"trackNum":"1"
+		}
+	]
+}
