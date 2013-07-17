@@ -9,7 +9,7 @@ if(Meteor.isServer) {
 		fetchTideInfo: function(my_mmsi, my_location, my_date) {
 			console.log('fetchTideInfo CALLED!');
 			var tideDataUrl = "http://live.getij.nl/export.cfm?format=txt&from=" + my_date + "&to=" + my_date + "&uitvoer=1&interval=30&lunarphase=yes&location=ROTTDM&Timezone=MET_DST&refPlane=NAP&graphRefPlane=NAP&bottom=0&keel=0";
-			console.log('Getting tide INFO!');
+			console.log('Getting tide INFO! ' + tideDataUrl);
 			// replace date format
 			my_date = my_date.replaceAll('-', '/');
 			// calling sync http get

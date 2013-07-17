@@ -20,11 +20,3 @@ Template.plannedManifest.getManifest=function() {
 	}
 }
 
-Template.actualManifest.getActualData=function() {
-	try {
-		return callCollection.find({trackNum: "1"},{sort: {start: -1}}).fetch();
-	} catch(e) {
-
-	}
-}
-

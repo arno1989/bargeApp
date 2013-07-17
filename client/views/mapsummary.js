@@ -14,12 +14,6 @@ Template.mapSummary.rendered=function() {
   // Add the tilelayer to the map
   map.addLayer(osmLayer);
 
-  // Add weatherlayer
-  L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
-      attribution: 'Map data © OpenWeatherMap',
-      maxZoom: 14
-  }).addTo(map);
-
   // Add event listeners
   map.on('locationfound', myPosition);
 }
