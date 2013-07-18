@@ -131,10 +131,16 @@ Template.fullMap.rendered=function() {
 
   // Add event listeners
   map.on('locationfound', myMarker);
+  map.on('dblclick', addCall);
 }
 
 // Map functions
 function myMarker(e) {
   // Add marker on my location
   var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+}
+
+function addCall(e) {
+  console.log("Map clicked!");
+  
 }
