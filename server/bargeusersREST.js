@@ -13,7 +13,7 @@ if (Meteor.isServer) {
       certificateFile: 'certificate.pem' // SSL certificate key file (only used if SSL is enabled)
     });
 
-    // Add the collection bargeUsers to the API "/players" path
+    // Add the collection bargeUsers to the API path
     collectionApi.addCollection(bargeUsers, 'bargeusers', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
@@ -26,7 +26,7 @@ if (Meteor.isServer) {
       }
     });
 
-    // Add the collection onlineBargeUsers to the API "/players" path
+    // Add the collection onlineBargeUsers to the API path
     collectionApi.addCollection(onlineBargeUsers, 'online_barge_users', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
@@ -39,8 +39,21 @@ if (Meteor.isServer) {
       }
     });
 
-    // Add the collection callInformation to the API "/players" path
+    // Add the collection callInformation to the API path
     collectionApi.addCollection(manifestInfo, 'manifest', {
+      // All values listed below are default
+      authToken: undefined,                   // Require this string to be passed in on each request
+      methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting
+      before: {  // This methods, if defined, will be called before the POST/GET/PUT/DELETE actions are performed on the collection. If the function returns false the action will be canceled, if you return true the action will take place.
+        POST: undefined,  // function(obj) {return true/false;},
+        GET: undefined,  // function(collectionID, objs) {return true/false;},
+        PUT: undefined,  //function(collectionID, obj, newValues) {return true/false;},
+        DELETE: undefined,  //function(collectionID, obj) {return true/false;}
+      }
+    });
+
+        // Add the collection ChatCollection to the API path
+    collectionApi.addCollection(chatCollection, 'chatcollection', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting

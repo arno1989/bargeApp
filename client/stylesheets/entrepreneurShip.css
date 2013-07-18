@@ -40,6 +40,15 @@ div#mainRight {
 	width: 20%; 
 }
 
+/* Chatroom style */
+#chat {
+	border: 2px;
+	height: 50px;
+	padding-right: 8px;
+	padding-bottom: 8px;
+	overflow: auto;
+}
+
 div#shippingMsg {
 	float: left;
 	width: 100%;

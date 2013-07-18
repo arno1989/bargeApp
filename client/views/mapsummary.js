@@ -33,13 +33,17 @@ function myPosition(e) {
   console.log('position count: ' + position.count());
   if(position.count() != 0) {
     console.log('Updating position');
-    // Let the server update my position
-    Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
-    // Let the server update my weather condition
-    Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
+    try {
+      // Let the server update my position
+      Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+      // Let the server update my weather condition
+      Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
+    } catch(e) {}
   } else {
     console.log('Inserting position');
-    currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+    try {
+      currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+    } catch(e) {}
   }
 
 }
