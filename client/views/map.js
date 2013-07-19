@@ -142,5 +142,5 @@ function myMarker(e) {
 
 function addCall(e) {
   console.log("Map clicked!");
-  
+  $('#myModal').modal('show');
 }

@@ -15,22 +15,25 @@
 </template>
 
 <template name="plannedManifest">
-	<h4>Gepland</h4>
 	{{#if getManifest}}
-		<table class="table">
-			<thead>
-				<tr><td>Locatie</td><td>Geplande aankomst tijd</td></tr>
-			</thead>
-			<tbody>
-			{{#each getManifest}}		
-				<tr style="color: {{this.color}}">
-					<td>{{this.title}}</td>
-					<td>{{this.start}}</td>
-				</tr>
+		<table width="100%"><tr><td width="30%">Call</td><td width="70%">Aankomst</td></tr><table>
+		<div class="accordion" id="accordion2">
+			{{#each getManifest}}
+			 	<div class="accordion-group">
+    				<div class="accordion-heading">
+      					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{this._id}}">
+        					<table width="100%"><tr><td width="30%">{{this.title}}</td><td width="70%">{{convertTime this.start}}</td></tr><table>
+      					</a>
+    				</div>
+	    			<div id="{{this._id}}" class="accordion-body collapse">
+			      		<div class="accordion-inner">
+			        		call informatie...
+			      		</div>
+	    			</div>
+  				</div>
 			{{/each}}
-			</tbody>
-		</table>
-		{{else}}
+		</div> <!-- ./ accordion -->
+	{{else}}
 		<p>Geen manifest bekend</p>
 	{{/if}}
 </template>

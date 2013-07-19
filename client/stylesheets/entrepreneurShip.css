@@ -1,5 +1,11 @@
 /* CSS declarations go here */
 
+.modal, .modal.fade.in {
+    top: 10%; /* was 10% */
+    left: 50%;
+    overflow: inherit;
+}
+
 /* Navigationbar style */
 #login {
 	padding-top: 10px;
