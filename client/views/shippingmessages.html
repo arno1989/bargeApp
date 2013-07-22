@@ -1,9 +1,23 @@
 <template name="shippingMessages">
-	{{getMessages}}
+	<table width="100%">
+		<tbody>
+			<tr>
+				<td><h5>Scheepsvaart berichten</h5></td>
+				<td style="text-align: right"><button class="refresh" type="button"><i class="icon-refresh"></i> Vernieuw</button></td>
+			</tr>
+		</tbody>
+	</table>
+	
 	<div class="messBundle" style="height: 100px; overflow: auto;">
-
+		<table class="table table-striped" width="100%">
+		<tbody>
+		{{#each getMessages}}
+			<tr>
+				<td style="vertical-align: top">{{this.messageID}}</td>
+				<td>{{{this.shipmessage}}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+		</table>
 	</div>
-
-<!-- ANWB water werkzaamheden kaart -->
-<!-- <iframe src="http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?cookieload=false&amp;baselayer=SATLUFO&amp;projecttype=vaarwegen&amp;center=145339%2c449928&amp;mapscale=1536000&amp;legend=2&amp;startdate=2013-07-18&amp;enddate=2013-07-18" class="geo_iframe_kaartlaag" title="Geplande werkzaamheden vaarweg" scrolling="no" frameborder="0" width="670" height="400"></iframe> -->
 </template>

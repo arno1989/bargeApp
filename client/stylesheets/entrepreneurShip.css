@@ -1,10 +1,15 @@
 /* CSS declarations go here */
 
-.modal, .modal.fade.in {
+.modal, .modal.fade.in, .modal.body {
     top: 10%; /* was 10% */
     left: 50%;
+    max-height: 400px;
     overflow: inherit;
 }
+
+div.datepicker {
+    z-index: 2050 !important;
+ }
 
 /* Navigationbar style */
 #login {

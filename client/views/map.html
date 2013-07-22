@@ -9,15 +9,72 @@
 <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Modal header</h3>
+		<h3 id="myModalLabel">Voeg call toe</h3>
 	</div>
 	<div class="modal-body">
-		<p>One fine body…</p>
+		{{> modalForm}}
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		<button class="btn btn-primary">Save changes</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Sluit</button>
+		<button class="btn btn-primary save">Opslaan</button>
 	</div>
 </div> <!-- /. myModal -->
 
 </template>
+
+<template name="modalForm">
+	<form class="form-horizontal">
+		<!-- timePicker -->
+		<div class="control-group">
+			<label class="control-label" for="inputTime">Tijd</label>
+			<div class="controls">
+				<div class="input-append bootstrap-timepicker">
+			    	<input id="inputTime" type="text" class="input-small timepicker">
+			  	</div>
+			</div>
+		</div>
+		<!-- datePicker -->
+		<div class="control-group">
+			<label class="control-label" for="inputDate">Datum</label>
+			<div class="controls">
+				<input type="text" id="inputDate" data-date-format="dd/mm/yyyy" class="input-small datepicker">
+			</div>
+		</div>		
+		<!-- Location -->
+		<div class="control-group">
+			<label class="control-label" for="inputLocation">Lokatie</label>
+			<div class="controls">
+				<input type="text" id="inputLocation" placeholder="Lokatie">
+			</div>
+		</div>
+		<!-- Hidden Lat/Long inputs -->
+		<input type="hidden" id="latitude">
+		<input type="hidden" id="longitude">
+		<!-- Type -->
+		<div class="control-group">
+			<label class="control-label" for="inputType">Type</label>
+			<div class="controls">
+				<select id="inputType">
+					<option value="Bunkeren">Bunkeren</option>
+					<option value="Type #2">Type #2</option>
+					<option value="Type #3">Type #3</option>
+					<option value="Type #4">Type #4</option>
+				</select>
+			</div>
+		</div>
+		
+
+	</form>
+</template>
+
+<!--
+callowner: my_mmsi,
+            callreference: " ",
+            callstartdate: 0,
+            locationlabel: $('.location').val(),
+            callenddate: 0,
+            uniqueresourceid: my_mmsi,
+            calltype: " ",
+            load: 0,
+            unload: 0
+	-->

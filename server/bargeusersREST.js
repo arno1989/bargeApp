@@ -40,7 +40,7 @@ if (Meteor.isServer) {
     });
 
     // Add the collection callInformation to the API path
-    collectionApi.addCollection(manifestInfo, 'manifest', {
+    collectionApi.addCollection(callCollection, 'calls', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting

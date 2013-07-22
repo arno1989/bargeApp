@@ -30,9 +30,9 @@ if (Meteor.isClient) {
         Meteor.subscribe("currentPosition", userInfo.mmsi);
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
-        Meteor.subscribe("manifestInfo", userInfo.mmsi);
         Meteor.subscribe("callCollection", userInfo.mmsi);
         Meteor.subscribe("chatCollection"); 
+        Meteor.subscribe("shipMessages");
       }
     });
   }

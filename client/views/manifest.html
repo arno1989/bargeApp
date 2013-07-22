@@ -1,11 +1,15 @@
 <template name="manifest">
 	<div name="maniSum" class="well well-small">
 		<legend>Manifest overzicht</legend>
+		{{#if getManiInfo}}
 		<ul class="unstyled">
-			<li>Manifest mmsi: {{getManiInfo.mmsi}}</li>
-			<li>Start: {{getStartEnd.manifestStart}}</li>
-			<li>Eind: {{getStartEnd.manifestEnd}}</li>
+			<li>Manifest mmsi: {{getManiInfo.uniqueresourceid}}</li>
+			<li>Start: {{convertTime getStartEnd.manifestStart}}</li>
+			<li>Eind: {{convertTime getStartEnd.manifestEnd}}</li>
 		</ul>
+		{{else}}
+		<p>Geen manifest bekend</p>
+		{{/if}}
 	</div>
 
 	<div name="maniDetails" class="well well-small">
@@ -16,13 +20,29 @@
 
 <template name="plannedManifest">
 	{{#if getManifest}}
-		<table width="100%"><tr><td width="30%">Call</td><td width="70%">Aankomst</td></tr><table>
+		<table width="100%">
+			<tr>
+				<td width="20%">Call</td>
+				<td width="20%">Aankomst</td>
+				<td width="20%">Call eigenaar</td>
+				<td width="20%">Laden</td>
+				<td width="20%">Lossen</td>
+			</tr>
+		<table>
 		<div class="accordion" id="accordion2">
 			{{#each getManifest}}
 			 	<div class="accordion-group">
     				<div class="accordion-heading">
       					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{this._id}}">
-        					<table width="100%"><tr><td width="30%">{{this.title}}</td><td width="70%">{{convertTime this.start}}</td></tr><table>
+        					<table width="100%">
+        						<tr>
+        							<td width="20%">{{this.locationlabel}}</td>
+        							<td width="20%">{{convertTime this.callstartdate}}</td>
+        							<td width="20%">{{this.callowner}}</td>
+        							<td width="20%">{{this.load}}</td>
+        							<td width="20%">{{this.unload}}</td>
+        						</tr>
+    						<table>
       					</a>
     				</div>
 	    			<div id="{{this._id}}" class="accordion-body collapse">

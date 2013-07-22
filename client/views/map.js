@@ -93,7 +93,7 @@ Template.fullMap.rendered=function() {
 	// Create a map with standard location
 	map = L.map('map').setView([52.2, 6.5], 9);
   var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 14});   
+  var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 16});   
   // Ask the user to get their current location
   map.locate({setView : true});
   // Add the tilelayer to the map
@@ -141,6 +141,55 @@ function myMarker(e) {
 }
 
 function addCall(e) {
-  console.log("Map clicked!");
   $('#myModal').modal('show');
+  $('#latitude').val(e.latlng.lat);
+  $('#longitude').val(e.latlng.lng);
+  // Hide datepicker on changing the date
+  $('.datepicker').datepicker().on('changeDate', function(ev){
+    $('.datepicker').datepicker('hide');
+  });
+  // Set the date of today
+  $('.datepicker').val(moment().format("DD[-]MM[-]YYYY"));
+}
+
+Template.fullMap.events({
+  'click .save': function() {
+    var givenDate = $('.datepicker').val();
+    var givenTime = $('.timepicker').val();
+    var givenLocation = $('.inputLocation').val(); 
+    var givenType = $('.inputType').val();
+    var timestamp = (moment(givenTime + ' ' + givenDate, "HH:mm DD-MM-YYYY").unix() * 1000); 
+    var mmsi = bargeUsers.findOne().mmsi;
+    var reference = mmsi + ':' + timestamp;
+
+    customCall.insert({
+      callreference: reference,
+      callstartdate: timestamp,
+      locationlabel: givenLocation,
+      latitude: $('#latitude').val(),
+      longitude: $('#longitude').val(),
+      callenddate: 0,
+      uniqueresourceid: mmsi,
+      calltype: givenType
+    });
+    $('#myModal').modal('hide');
+  }
+});
+
+Template.modalForm.events({
+  // On click show datepicker
+  'click .datepicker': function() {
+    try {
+      $('.datepicker').datepicker('show');
+    } catch (e) {}
+  }
+});
+
+Template.modalForm.rendered=function() {
+  $('.timepicker').timepicker({
+                minuteStep: 1,
+                showSeconds: false,
+                showMeridian: false,
+                disableFocus: false
+            });
 }

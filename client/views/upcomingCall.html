@@ -1,16 +1,10 @@
 <template name="upcomingCall">
 	<legend><h5>Eerstvolgende call</h5></legend>
-	{{#if getUpcomingCall}}		
-		<ul name="callDetails" class="unstyled">
-			<li><i class="icon-screenshot"></i> Lokatie: {{getUpcomingCall.location}}</li>
-			<li><i class="icon-calendar"></i> Datum: {{stampToReadableDate getUpcomingCall.timestamp}}</li>
-			<li><i class="icon-time"></i> Tijd: {{stampToReadableTime getUpcomingCall.timestamp}}</li>
-			<li><i class="icon-tags"></i> Type: {{getUpcomingCall.type}}</li>
-			<li><i class="icon-time"></i> Duur: {{getUpcomingCall.duration}}</li>
-		</ul>
-	{{else}}
-		<p class="text-error">Geen call bekend</p>
-	{{/if}}
+		{{#if getUpcomingCall}}
+				{{getUpcomingCall.callstartdate}}
+		{{else}}
+			<p class="text-error">Geen call bekend</p>
+		{{/if}}
 
 </template>
 

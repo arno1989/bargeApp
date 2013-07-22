@@ -1,3 +1,61 @@
+{"callowner":"InSight ControlTower","callreference":"244660400:1374131232000","callstartdate":1374131232000,"locationlabel":"Hengelo-12m-43,700km","callenddate":1374132132000,"uniqueresourceid":244660400,"load":0,"unload":0}
+
+{"callowner":"InSight ControlTower","callreference":"244660400:1374048563000","callstartdate":1374048563000,"locationlabel":"Unknown","callenddate":1374049993704,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1374042812128","callstartdate":1374042812128,"locationlabel":"Amerongen","callenddate":1374043703610,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1374034184622","callstartdate":1374034184622,"locationlabel":"Hagestein","callenddate":1374034964400,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1374019720487","callstartdate":1374019720487,"locationlabel":"Unknown","callenddate":1374023931452,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1374005582000","callstartdate":1374005582000,"locationlabel":"Unknown","callenddate":1374006714735,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1373985853000","callstartdate":1373985853000,"locationlabel":"Unknown","callenddate":1373986747645,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1373983043752","callstartdate":1373983043752,"locationlabel":"CTT R","callenddate":1373984938343,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1373934739000","callstartdate":1373934739000,"locationlabel":"Unknown","callenddate":1373977553491,"uniqueresourceid":244660400,"load":0,"unload":0}
+{"callowner":"InSight ControlTower","callreference":"244660400:1373923008000","callstartdate":1373923008000,"locationlabel":"Unknown","callenddate":1373927880133,"uniqueresourceid":244660400,"load":0,"unload":0}
+
+
+
+
+
+/* ORGINEEL */
+{
+	"callowner":"InSight ControlTower",
+	"callreference":"244660400:1374131232000",
+	"callstartdate":"1374131232000",
+	"locationlabel":"Hengelo-12m-43,700km",
+	"callenddate":"1374132132000",
+	"uniqueresourceid":"244660400",
+	"load":"0",
+	"unload":"0"
+},
+{
+	"callowner":"InSight ControlTower",
+	"callreference":"244660400:1374048563000",
+	"callstartdate":"1374048563000",
+	"locationlabel":"Unknown",
+	"callenddate":"1374049993704",
+	"uniqueresourceid":"244660400",
+	"load":"0",
+	"unload":"0"
+},{"callowner":"InSight ControlTower","callreference":"244660400:1374042812128","callstartdate":"1374042812128","locationlabel":"Amerongen","callenddate":"1374043703610","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1374034184622","callstartdate":"1374034184622","locationlabel":"Hagestein","callenddate":"1374034964400","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1374019720487","callstartdate":"1374019720487","locationlabel":"Unknown","callenddate":"1374023931452","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1374005582000","callstartdate":"1374005582000","locationlabel":"Unknown","callenddate":"1374006714735","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1373985853000","callstartdate":"1373985853000","locationlabel":"Unknown","callenddate":"1373986747645","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1373983043752","callstartdate":"1373983043752","locationlabel":"CTT R","callenddate":"1373984938343","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1373934739000","callstartdate":"1373934739000","locationlabel":"Unknown","callenddate":"1373977553491","uniqueresourceid":"244660400","load":"0","unload":"0"},{"callowner":"InSight ControlTower","callreference":"244660400:1373923008000","callstartdate":"1373923008000","locationlabel":"Unknown","callenddate":"1373927880133","uniqueresourceid":"244660400","load":"0","unload":"0"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* OUDE MANIFEST INFORMATIE */
 {
 	"mmsi":"244700271",
 	"manifest":[

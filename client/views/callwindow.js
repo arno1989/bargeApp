@@ -20,6 +20,7 @@ Template.addCall.events({
  * This event is executed when the submit button is clicked.
  * The form values will be inserted into the database
  */
+ /*
 Template.addCallForm.events({
   'click .submit': function() {
     Meteor.call("userCheck", function (error, userInfo) {
@@ -34,6 +35,17 @@ Template.addCallForm.events({
         // Check if given time is in the future
         if(currentTime.getTime() < tStamp.getTime()) {
           console.log('Time is in the future');
+          customCall.insert({
+            callowner: my_mmsi,
+            callreference: " ",
+            callstartdate: 0,
+            locationlabel: $('.location').val(),
+            callenddate: 0,
+            uniqueresourceid: my_mmsi,
+            calltype: " ",
+            load: 0,
+            unload: 0
+          });
           // Time is in the future and is allowed to be inserted
           customCall.insert({
           mmsi: my_mmsi,
@@ -62,4 +74,4 @@ Template.timePicker.rendered=function() {
 Template.datePicker.rendered=function() {
   return $('.datepicker').datepicker();
 }
-
+*/
