@@ -18,6 +18,12 @@ Template.chatroom.passTime=function(timestamp) {
 	return hours + ':' + min;
 }
 
+
+// 'click .dropdown-toggle': function() {
+// 	$('.dropdown-toggle').dropdown();
+// }
+
+
 Template.chatroom.events({
 	'click .msg-send': function() {
 		var msgVal = $('.msg').val();
@@ -30,5 +36,11 @@ Template.chatroom.events({
 			owner: user.profile.name
 		});
 		$('.msg').val('');
+	}
+});
+
+Template.chatroom.events({
+	'click .dropdown-toggle': function() {
+		$('.dropdown-toggle').dropdown();
 	}
 });

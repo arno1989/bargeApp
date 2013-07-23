@@ -1,10 +1,15 @@
 <template name="upcomingCall">
 	<legend><h5>Eerstvolgende call</h5></legend>
 		{{#if getUpcomingCall}}
-				{{getUpcomingCall.callstartdate}}
+		{{#with getUpcomingCall}}
+			<ul class="unstyled">
+				<li><i class="icon-calendar"></i> {{stampToReadableDate callstartdate}}</li>
+				<li><i class="icon-time"></i> {{stampToReadableTime callstartdate}}</li>
+				<li><i class="icon-tag"></i> {{calltype}}</li>
+				<li><i class="icon-screenshot"></i> {{locationlabel}}</li>
+			</ul>
+		{{/with}}
 		{{else}}
 			<p class="text-error">Geen call bekend</p>
 		{{/if}}
-
 </template>
-

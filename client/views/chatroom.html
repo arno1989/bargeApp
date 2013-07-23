@@ -1,5 +1,21 @@
 <template name="chatroom">
-	<legend><h5>Chatroom</h5></legend>
+	<table width="100%">
+		<tr>
+			<td width="70%"><h5>Chatroom</h5></td>
+			<td width="30%">
+				<div class="btn-group">
+				  <a class="btn" href="#"><i class="icon-user"></i> User</a>
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+				  <ul class="dropdown-menu">
+				    <li><a href="#">Globaal</a></li>
+				    <li><a href="#">Arno</a></li>
+				    <li><a href="#">Danny</a></li>
+				  </ul>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
 	<div class="containter-fluid">
 		<div class="chat" style="height: 150px; overflow: auto;">
 			{{#each msgs}}
@@ -28,23 +44,4 @@
         </div>
         {{/constant}}
 	</div>
-<!-- 
-	<table border="1" padding="5px">
-		<tr>
-			<td style="vertical-align: top;">
-				<small>10:33</small>
-			</td>
-			<td>
-				<p>bladiebla<br>
-					basd<br>
-					sadsda<br>
-				</p>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" style="align-text: right">
-				<small><i class="icon-user"></i> <i class="muted">Arno Kerkmeijer</i></small>
-			</td>
-		</tr>
-	</table> -->
 </template>

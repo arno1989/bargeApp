@@ -1,19 +1,34 @@
+var cntr = 0;
+
+Template.upcomingCall.rendered=function() {
+	//Meteor.setInterval(Template.upcomingCall.getLetter, 5000);
+	//Meteor.autorun(Template.upcomingCall.getUpcomingCall);
+}
+
 Template.upcomingCall.getUpcomingCall=function() {
 	// Get the next call by getting the the first result after the current time
-	var custom = customCall.findOne({callstartdate: {$gt: moment().unix()}}, {sort: {callstartdate: 1}});
-	var planned = callCollection.findOne({callstartdate: {$gt: moment().unix()}}, {sort: {callstartdate: 1}});
-	return customCall.findOne();
-	//console.log('custom: ' + custom);
-	//console.log('planned: ' + planned);
-	// try {
-	// 	if(custom.callstartdate < planned.callstartdate) {
-	// 		//console.log('CUSTOM CALL INC!' + custom.callstartdate);
-	// 		return custom;
-	// 	} else {
-	// 		//console.log('PLANNED CALL INC!' + planned.callstartdate);
-	// 		return planned;
-	// 	}
-	// } catch(e) {}
+	var curTime = moment().unix()*1000;
+	var custom = customCall.findOne({callstartdate: {$gt: curTime}}, {sort: {callstartdate: 1}});
+	var planned = callCollection.findOne({callstartdate: {$gt: curTime}}, {sort: {callstartdate: 1}});
+
+	try {
+		// Check if a call is found & if both found check which one is the first to come
+		if(custom != null && planned != null) {
+			if(custom.callstartdate < planned.callstartdate) {
+				// Custom call is first to come
+				return custom;
+			} else {
+				// Planned call is first to come
+				return planned;
+			}
+		} else if(planned != null) {
+			// Only planned is found
+			return planned;
+		} else if(custom != null) {
+			// Only custom is found
+			return custom;
+		} // Else return nothing
+	}catch(e){}
 }
 
 /**

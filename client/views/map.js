@@ -15,47 +15,47 @@ Template.fullMap.rendered=function() {
         break;
         case 'Lock':
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/Lock.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'WaterM': 
           var myIcon = L.icon({iconUrl: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'Bouy':
           var myIcon = L.icon({iconUrl: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'Harbor': 
           var myIcon = L.icon({iconUrl: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'Bridge': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/Bridge.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'CarPoint': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaitPoint.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'Company': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/Company.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'WaterIntake': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaterPoint.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'PublicLoading': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaitPoint.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'PublicMooring': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaitPoint.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'TrashP': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaitPoint.png'});
-            L.marker(coords, {icon: myIcon}).addTo(map);
+          L.marker(coords, {icon: myIcon}).addTo(map);
         break;
         case 'WaitArea': 
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/WaitPoint.png'});
@@ -78,6 +78,14 @@ Template.fullMap.rendered=function() {
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/GasOilPoint.png'});
           L.marker(coords, {icon: myIcon}).addTo(map);
         break;
+        case 'WaitLockPointLeft':
+          var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/MoorePointLeft.png'});
+          L.marker(coords, {icon: myIcon}).addTo(map);
+        break;
+        case 'WaitLockPointRight':
+          var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/MoorePointRight.png'});
+          L.marker(coords, {icon: myIcon}).addTo(map);
+        break;
         case 'WaitLockDangerPointLeft':
           var myIcon = L.icon({iconUrl: 'http://109.237.211.144/images/InSight/owner/MoorePointLeft.png'});
           L.marker(coords, {icon: myIcon}).addTo(map);
@@ -93,11 +101,14 @@ Template.fullMap.rendered=function() {
 	// Create a map with standard location
 	map = L.map('map').setView([52.2, 6.5], 9);
   var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 16});   
+  var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 16});
+
   // Ask the user to get their current location
-  map.locate({setView : true});
+  map.locate({setView : true, watch: true, maximumAge: 2000, enableHighAccuracy: true});
   // Add the tilelayer to the map
   map.addLayer(osm);
+  // Add myPostionMarker to the map
+  myPostionMarker = new L.LayerGroup().addTo(map);
 
   // Add geoJSON to layers
   L.geoJson(myFeatures, {
@@ -130,14 +141,49 @@ Template.fullMap.rendered=function() {
   }).addTo(map);
 
   // Add event listeners
-  map.on('locationfound', myMarker);
+  map.on('locationfound', myPosition);
   map.on('dblclick', addCall);
+
 }
 
+/***************************************/
+/** Log the position every 60 seconds **/
+/***************************************/
+Meteor.setInterval(function() {
+  //Need to insert once a minute our location
+  console.log('Inserting position into DB');
+  var my_mmsi = bargeUsers.findOne().mmsi;
+  var lat = currentPosition.findOne().latitude;
+  var lng = currentPosition.findOne().longitude;
+  var date = currentPosition.findOne().timestamp;
+  //positionLog.insert({mmsi: my_mmsi, timestamp: date, latitude: lat, longitude: lng});
+}, 60000);
+
 // Map functions
-function myMarker(e) {
+function myPosition(e) {
   // Add marker on my location
-  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+  myPostionMarker.clearLayers();
+  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
+  // Get user information
+  var user = bargeUsers.find({}, {limit: 1}).fetch();  
+  // Get current time
+  var curTimestamp = new Date();
+  // Check if the user mmsi already exists in the currentPosition collection
+  var position = currentPosition.find({},{limit: 1});
+  // If user already exists, update the position. Else insert the position
+  if(position.count() != 0) {
+    try {
+      // Let the server update my position
+      Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+      // Let the server update my weather condition
+      Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
+    } catch(e) {}
+  } else {
+    try {
+      currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+    } catch(e) {}
+  }
+
 }
 
 function addCall(e) {
@@ -152,12 +198,13 @@ function addCall(e) {
   $('.datepicker').val(moment().format("DD[-]MM[-]YYYY"));
 }
 
+
 Template.fullMap.events({
   'click .save': function() {
     var givenDate = $('.datepicker').val();
     var givenTime = $('.timepicker').val();
-    var givenLocation = $('.inputLocation').val(); 
-    var givenType = $('.inputType').val();
+    var givenLocation = $('#inputLocation').val(); 
+    var givenType = $('#inputType').val();
     var timestamp = (moment(givenTime + ' ' + givenDate, "HH:mm DD-MM-YYYY").unix() * 1000); 
     var mmsi = bargeUsers.findOne().mmsi;
     var reference = mmsi + ':' + timestamp;

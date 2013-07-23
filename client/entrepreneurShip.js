@@ -28,6 +28,7 @@ if (Meteor.isClient) {
         Meteor.subscribe("bargeUsers", Meteor.userId());
         Meteor.subscribe("customCall", userInfo.mmsi);
         Meteor.subscribe("currentPosition", userInfo.mmsi);
+        Meteor.subscribe("positionLog", userInfo.mmsi);
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
         Meteor.subscribe("callCollection", userInfo.mmsi);
