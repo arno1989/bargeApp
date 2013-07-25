@@ -176,7 +176,7 @@ Template.fullMap.rendered=function() {
 Meteor.setInterval(function() {
   //Need to insert once a minute our location
   console.log('Inserting position into DB');
-  var my_mmsi = bargeUsers.findOne().mmsi;
+  var my_mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
   var lat = currentPosition.findOne().latitude;
   var lng = currentPosition.findOne().longitude;
   var date = currentPosition.findOne().timestamp;
@@ -196,7 +196,7 @@ function myPosition(e) {
   if(bargeSubHandler && bargeSubHandler.ready()) {
     if(currentposSubHandler && currentposSubHandler.ready()) {
       // Get user information
-      var user = bargeUsers.findOne(); 
+      var user = bargeUsers.findOne({accessID: Meteor.userId()}); 
       // Get current time
       var curTimestamp = new Date();
       // Check if the user mmsi already exists in the currentPosition collection
@@ -236,7 +236,7 @@ Template.fullMap.events({
     var givenLocation = $('#inputLocation').val(); 
     var givenType = $('#inputType').val();
     var timestamp = (moment(givenTime + ' ' + givenDate, "HH:mm DD-MM-YYYY").unix() * 1000); 
-    var mmsi = bargeUsers.findOne().mmsi;
+    var mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
     var reference = mmsi + ':' + timestamp;
 
     customCall.insert({

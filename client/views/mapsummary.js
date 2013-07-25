@@ -26,7 +26,7 @@ function myPosition(e) {
   myPostionMarker.clearLayers();
   var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
   // Get user information
-  var user = bargeUsers.find({}, {limit: 1}).fetch();  
+  var user = bargeUsers.findOne({accessID: Meteor.userId()}); 
   // Get current time
   var curTimestamp = new Date();
   // Check if the user mmsi already exists in the currentPosition collection
@@ -35,13 +35,13 @@ function myPosition(e) {
   if(position.count() != 0) {
     try {
       // Let the server update my position
-      Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+      Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
       // Let the server update my weather condition
-      Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
+      Meteor.call('fetchWeatherInfo', user.mmsi, e.latlng.lat, e.latlng.lng);
     } catch(e) {}
   } else {
     try {
-      currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+      currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
     } catch(e) {}
   }
 

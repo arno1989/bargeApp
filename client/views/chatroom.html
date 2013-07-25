@@ -1,37 +1,40 @@
 <template name="chatroom">
 	<table width="100%">
 		<tr>
-			<td width="70%"><h5>Chatroom</h5></td>
-			<td width="30%">
-				<div class="btn-group">
-				  <a class="btn" href="#"><i class="icon-user"></i> User</a>
-				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-				  <ul class="dropdown-menu">
-				    <li><a href="#">Globaal</a></li>
-				    <li><a href="#">Arno</a></li>
-				    <li><a href="#">Danny</a></li>
-				  </ul>
-				</div>
+			<td width="50%"><h5>Chatroom</h5></td>
+			<td width="50%">
+				<select class="chatWith">
+				<option value="Global">Iedereen</option>
+				<!-- add other users -->	
+				{{#each getUsers}}
+					<option value="{{accessID}}">{{name}}</option>
+				{{/each}}		
+				</select>
 			</td>
 		</tr>
 	</table>
 	
-	<div class="containter-fluid">
-		<div class="chat" style="height: 150px; overflow: auto;">
-			{{#each msgs}}
-			<table class="table" style="padding:2px;" width="100%">
-				<tr class="success">
-					<td style="vertical-align: top;">
-						<small>{{passTime date}}</small>
-					</td>
-					<td width="90%">
-						{{msg}}<br>
-						<small><i class="muted"> - {{name}}</i></small>
-					</td>
-				</tr>
-			</table>
-			{{/each}}
-		</div>
+	<div id="messContainer" class="containter-fluid">
+		{{> chatMessages}}
+	</div>
+</template>
+
+<template name="chatMessages">
+	<div class="chat" style="height: 150px; overflow: auto;">
+		{{#each msgs}}
+		<table class="table" style="padding:2px;" width="100%">
+			<tr class="success">
+				<td style="vertical-align: top;">
+					<small>{{passTime date}}</small>
+				</td>
+				<td width="90%">
+					{{msg}}<br>
+					<small><i class="muted"> - {{name}}</i></small>
+				</td>
+			</tr>
+		</table>
+		{{/each}}
+	</div>
 		{{#constant}}
 		<div>
 			<table>
@@ -41,7 +44,6 @@
                 Verzend
             </button></td></tr>
         </table>
-        </div>
-        {{/constant}}
-	</div>
+    </div>
+    {{/constant}}
 </template>

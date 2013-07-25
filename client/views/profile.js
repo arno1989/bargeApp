@@ -6,7 +6,7 @@ Template.profile.getInformation=function() {
 
 Template.profile.getMMSI=function() {
 	try {
-		return bargeUsers.findOne().mmsi;
+		return bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
 	} catch(e) {}
 }
 
