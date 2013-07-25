@@ -1,5 +1,7 @@
-Template.fullMap.rendered=function() {
+var myPositionMarker;
+var bargeMarkers;
 
+Template.fullMap.rendered=function() {
   function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.popupContent) {
@@ -104,11 +106,33 @@ Template.fullMap.rendered=function() {
   var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 16});
 
   // Ask the user to get their current location
-  map.locate({setView : true, watch: true, maximumAge: 2000, enableHighAccuracy: true});
+  map.locate({setView : false, watch: true, maximumAge: 2000, enableHighAccuracy: true});
   // Add the tilelayer to the map
   map.addLayer(osm);
   // Add myPostionMarker to the map
   myPostionMarker = new L.LayerGroup().addTo(map);
+  // Add bargeMarkers to the map
+  bargeMarkers = new L.LayerGroup().addTo(map);
+  // Declare the icon
+  var shipIcon = L.icon({
+    iconUrl: 'shipIcon.png',
+    iconAnchor:   [10, 10]
+  });
+
+  Deps.autorun(function(){
+    if(currentposSubHandler && currentposSubHandler.ready()) {
+      console.log('SUBBING READY!');
+      // Clear the last positions
+      bargeMarkers.clearLayers();
+      // Get all positions
+      var positionList = currentPosition.find().fetch();
+      positionList.forEach(function(currentPosition) {
+        // Place a maker for each ship location
+        var marker = L.marker([currentPosition.latitude, currentPosition.longitude],{icon: shipIcon}).addTo(bargeMarkers);
+      });
+    }
+  });
+
 
   // Add geoJSON to layers
   L.geoJson(myFeatures, {
@@ -162,28 +186,34 @@ Meteor.setInterval(function() {
 // Map functions
 function myPosition(e) {
   // Add marker on my location
+  var shipIcon = L.icon({
+    iconUrl: 'shipIcon.png',
+    iconAnchor:   [10, 10]
+  });
   myPostionMarker.clearLayers();
-  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
-  // Get user information
-  var user = bargeUsers.find({}, {limit: 1}).fetch();  
-  // Get current time
-  var curTimestamp = new Date();
-  // Check if the user mmsi already exists in the currentPosition collection
-  var position = currentPosition.find({},{limit: 1});
-  // If user already exists, update the position. Else insert the position
-  if(position.count() != 0) {
-    try {
-      // Let the server update my position
-      Meteor.call('updatePosition', user[0].mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
-      // Let the server update my weather condition
-      Meteor.call('fetchWeatherInfo', user[0].mmsi, e.latlng.lat, e.latlng.lng);
-    } catch(e) {}
-  } else {
-    try {
-      currentPosition.insert({mmsi: user[0].mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
-    } catch(e) {}
-  }
+  //var marker = L.marker([e.latlng.lat, e.latlng.lng],{icon: shipIcon}).addTo(myPostionMarker); 
 
+  if(bargeSubHandler && bargeSubHandler.ready()) {
+    if(currentposSubHandler && currentposSubHandler.ready()) {
+      // Get user information
+      var user = bargeUsers.findOne(); 
+      // Get current time
+      var curTimestamp = new Date();
+      // Check if the user mmsi already exists in the currentPosition collection
+      var position = currentPosition.findOne({mmsi: user.mmsi});
+      //If user already exists, update the position. Else insert the position
+      if(position) {
+        console.log('Updating Position!');
+        // Let the server update my position
+        Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+        // Let the server update my weather condition
+        Meteor.call('fetchWeatherInfo', user.mmsi, e.latlng.lat, e.latlng.lng);
+      } else {
+        console.log('We are not known yet in the currentPosition COL. Inserting!');
+        currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+      }
+    }
+  }
 }
 
 function addCall(e) {

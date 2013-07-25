@@ -1,0 +1,23 @@
+<template name="profile">
+	<div class="well well-small">
+		<legend>Uw profiel</legend>
+		<table class="table">
+			<tr>
+				<td>Naam: </td><td>{{getInformation.name}}</td>
+			</tr>
+			<tr>
+				<td>MMSI: </td>
+				<td>
+					{{#if getMMSI}}
+						{{getMMSI}}
+					{{else}}
+						<p>Niet bekend</p> 
+					{{/if}}
+				</td>
+			</tr>
+		</table>
+		<legend>Sleutel</legend>
+		<p>Hieronder vindt u uw gegenereerde sleutel:</p>
+		<h3>{{getToken}}</h3>
+	</div>
+</template>

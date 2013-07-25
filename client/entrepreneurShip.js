@@ -1,23 +1,23 @@
 
 Meteor.startup( function () {
+
   
-})
+});
 
-if (Meteor.isClient) {
-  /**
-   * Add linking for the navigation bar.
-   * These link to different Templates
-   */
-  Meteor.Router.add({
-    '/'           : 'mainWindow',
-    '/kaart'      : 'fullMap',
-    '/brandstof'  : 'brandstof',
-    '/manifest'   : 'manifest',
-    '/hydroMeteo' : 'hydroMeteo'
-  });
+/**
+ * Global subscribe handlers
+ */
 
-  getUserInfo = function() {
-    Meteor.call("userCheck", function (error, userInfo) {
+ bargeSubHandler = null;
+ currentposSubHandler = null;
+
+
+/**
+ * Subscribing to datababes
+ */
+Deps.autorun(function() {
+  // Check if the user logged in
+  Meteor.call("userCheck", function (error, userInfo) {
       if(error) {
         console.log('Error getting user information! ' + error);
       } else {
@@ -25,9 +25,9 @@ if (Meteor.isClient) {
         /**
          * Subscribing to datababes
          */
-        Meteor.subscribe("bargeUsers", Meteor.userId());
-        Meteor.subscribe("customCall", userInfo.mmsi);
-        Meteor.subscribe("currentPosition", userInfo.mmsi);
+        bargeSubHandler = Meteor.subscribe("bargeUsers", Meteor.userId());
+        currentposSubHandler = Meteor.subscribe("currentPosition", userInfo.mmsi);
+        Meteor.subscribe("customCall", userInfo.mmsi);        
         Meteor.subscribe("positionLog", userInfo.mmsi);
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
@@ -36,5 +36,22 @@ if (Meteor.isClient) {
         Meteor.subscribe("shipMessages");
       }
     });
-  }
+});
+
+
+/**
+ * Add linking for the navigation bar.
+ * These link to different Templates
+ */
+Meteor.Router.add({
+  '/'           : 'mainWindow',
+  '/kaart'      : 'fullMap',
+  '/brandstof'  : 'brandstof',
+  '/manifest'   : 'manifest',
+  '/hydroMeteo' : 'hydroMeteo',
+  '/profile'    : 'profile' 
+});
+
+getUserInfo = function() {
+  
 }

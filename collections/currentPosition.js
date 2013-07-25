@@ -2,7 +2,7 @@ currentPosition = new Meteor.Collection('CurrentPosition');
 
 if(Meteor.isServer){
 	Meteor.publish('currentPosition', function (userMMSI) {
-		return currentPosition.find({mmsi: userMMSI});
+		return currentPosition.find();
 	});
 
 	Meteor.methods({

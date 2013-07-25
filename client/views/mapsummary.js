@@ -1,6 +1,5 @@
 L.Icon.Default.imagePath = 'packages/leaflet/images';
 var map;
-var myPositionMarker;
 
 Template.mapSummary.rendered=function() {
 
@@ -15,7 +14,7 @@ Template.mapSummary.rendered=function() {
   // Add the tilelayer to the map
   map.addLayer(osmLayer);
   // Add myPostionMarker to the map
-  myPostionMarker = new L.LayerGroup().addTo(map);  
+  myPostionMarker = new L.LayerGroup().addTo(map); 
 
   // Add event listeners
   map.on('locationfound', myPosition);

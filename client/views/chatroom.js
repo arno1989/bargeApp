@@ -29,11 +29,13 @@ Template.chatroom.events({
 		var msgVal = $('.msg').val();
 		var timestamp = new Date().getTime();
 		var user = Meteor.users.findOne();
+		var rcvr = "test";
 		chatCollection.insert({
-			action: 'zegt',
 			msg: msgVal,
 			date: timestamp,
-			owner: user.profile.name
+			name: user.profile.name,
+			owner: Meteor.userId(),
+			receiver: rcvr
 		});
 		$('.msg').val('');
 	}

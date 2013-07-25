@@ -20,6 +20,9 @@
 						<li><a href="#"><i class="icon-fire"></i> Brandstof</a></li>
 						<li><a href="{{manifestPath}}"><i class="icon-tasks"></i> Manifest</a></li>
 						<li><a href="{{hydroMeteoPath}}"><i class="icon-picture"></i> Meteo</a></li>
+						{{#if currentUser}}
+						<li><a href="{{profilePath}}"><i class="icon-user"></i> Profiel</a></li>
+						{{/if}}
 					</ul>
 				</div>
 				<div id="login" class="span2 pull-right">{{loginButtons}}</div>
