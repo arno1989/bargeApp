@@ -1,36 +1,21 @@
 <template name="mainWindow">
 	<div id="mainLeft">
-		<div name="fuel" class="well well-small">
-			<!-- TODO -->
-			<p><b>Brandstof gebruik:</b> .....</p>
-			<p><b>Manifest overzicht:</b> .....</p>
-		</div><!-- /.well well-small -->
-
-		<div name="chat" class="well well-small">
-			{{> chatroom}}
-		</div> <!-- /. chat -->
+		<div name="nextCall" class="well well-small">
+			{{> upcomingCall}}
+		</div><!-- /.nextCall -->
 
 	</div><!-- /.mainLeft -->
 
 	<div id="mainMiddle">
 		<div name="mapSum" class="well well-small">
-			<!-- TODO -->
 				{{> mapSummary}}
 		</div> <!-- /.mapSum -->
 	</div><!-- /.mainMiddle -->
 
 	<div id="mainRight">
 		<div name="conditionSummary" class="well well-small">
-			<!-- TODO -->
 			{{> conditionSummary}}
 		</div><!-- /.conditionSummary -->
-
-		<div name="nextCall" class="well well-small">
-			<!-- TODO -->
-			{{> upcomingCall}}
-			
-			{{> addCall}}
-		</div><!-- /.nextCall -->
 	</div><!-- /.mainRight -->
 
 	<div name="shippingMessages" id="shippingMsg" class="well well-small">

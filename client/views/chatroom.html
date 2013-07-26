@@ -1,31 +1,53 @@
 <template name="chatroom">
-	<table width="100%">
-		<tr>
-			<td width="50%"><h5>Chatroom</h5></td>
-			<td width="50%">
-				<select class="chatWith">
-				<option value="Global">Iedereen</option>
-				<!-- add other users -->	
-				{{#each getUsers}}
-					<option value="{{accessID}}">{{name}}</option>
-				{{/each}}		
-				</select>
-			</td>
-		</tr>
-	</table>
+	<div class="well well-large">
+		<legend>Chatroom</legend>
+		<table width="100%" cellpadding="10">
+			<tr>
+				<td width="50%">
+					<select class="chatWith">
+					<option value="Global">Iedereen</option>
+					<!-- add other users -->	
+					{{#each getUsers}}
+						<option value="{{accessID}}">{{name}}</option>
+					{{/each}}		
+					</select>
+				</td>
+				<td width="50%"></td>
+			</tr>
+		</table>
 	
-	<div id="messContainer" class="containter-fluid">
-		{{> chatMessages}}
-	</div>
+		<div id="messContainer" height="100%" class="containter-fluid">
+			{{> chatMessages}}
+		</div>
+
+		{{#constant}}
+		<div class="msgCommands">
+			<table cellpadding="10">
+				<tr>
+					<td width="90%">
+	        			<textarea rows="2" type="text" class="msg" ></textarea>
+	    			</td>
+	        		<td width="10%">
+	        			<button class="msg-send btn btn-large"><i class="icon-pencil"></i> Verzend</button>
+	        		</td>
+	        	</tr>
+	        </table>
+	    </div> <!-- /. msgCommands -->
+	    {{/constant}}
+
+	</div> <!-- /. well well-large -->
 </template>
 
 <template name="chatMessages">
-	<div class="chat" style="height: 150px; overflow: auto;">
+	<div class="chat" style="height: 300px; overflow: auto;">
 		{{#each msgs}}
-		<table class="table" style="padding:2px;" width="100%">
-			<tr class="success">
+		<table class="table" style="padding: 2px" width="100%">
+			<tr class="info">
 				<td style="vertical-align: top;">
-					<small>{{passTime date}}</small>
+					<small>{{passTime date}}</small><br>
+					{{#if getDelButton owner}}
+						<a href=""><i id="{{_id}}" class="icon-trash"></i></a>
+					{{/if}}
 				</td>
 				<td width="90%">
 					{{msg}}<br>
@@ -35,15 +57,8 @@
 		</table>
 		{{/each}}
 	</div>
-		{{#constant}}
-		<div>
-			<table>
-				<tr><td width="80%">
-            <textarea rows="2" type="text" class="msg" ></textarea></td>
-            <td span="2"><button class="msg-send btn btn-small">
-                Verzend
-            </button></td></tr>
-        </table>
-    </div>
-    {{/constant}}
+</template>
+
+<template name="conversations">
+
 </template>

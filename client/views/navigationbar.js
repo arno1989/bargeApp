@@ -1,23 +1,53 @@
-Template.navigationbar.events({
-	'click .icon-home': function(e) {
-		console.log('CLICK! HOME');
-		Meteor.render(Template.navigationbar);
-	},
-	'click .icon-globe': function(e) {
-		console.log('CLICK! KAART');
-		Meteor.render(Template.navigationbar);
-	}
-});
-
-
-
 Template.navigationbar.active=function(path) {
-	var isActive = false;
+	var isActive = "";
 	if(path == window.location.pathname) {
-		isActive = true;
+		isActive = "active";
 	}
-	//console.log('window loc: ' + window.location.pathname);
-	//console.log('path: ' + path);
-	//console.log('active:' + isActive);
 	return isActive;
 }
+
+Template.navigationbar.iconColor=function(path) {
+	var color = "";
+	if(path == window.location.pathname) {
+		color = "icon-white"
+	}
+	return color;
+}
+
+Template.navigationbar.events({
+	'click .home': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});		
+	},
+	'click .map': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	},
+	'click .fuel': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	},
+	'click .manifest': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	},
+	'click .meteo': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	},
+	'click .chat': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	},
+	'click .profile': function(e) {
+		Meteor.defer(function() { // Wait till rendered 
+     		$('#naviContainer').html(Meteor.render(Template.navigationbar));
+   		});
+	}
+});

@@ -9,7 +9,19 @@ Template.chatMessages.msgs=function() {
 	if(rcvr == null) {
 		rcvr = "Global"
 	}
-	return chatCollection.find({owner: Meteor.userId(), receiver: rcvr},{sort: {date: -1}});
+	if(rcvr == "Global") {
+		return chatCollection.find({receiver: rcvr},{sort: {date: -1}});
+	}else{
+		return chatCollection.find(
+				{ $or: [
+						{$and: [{owner: Meteor.userId()}, {receiver: rcvr}]},
+						{$and: [{owner: rcvr}, {receiver: Meteor.userId()}]}
+						]
+				});
+	}
+
+	//return chatCollection.find({$or: [{owner: Meteor.userId()}, {receiver: Meteor.userId()}] });
+	//return chatCollection.find({owner: Meteor.userId(), receiver: rcvr},{sort: {date: -1}});
 }
 
 Template.chatMessages.passTime=function(timestamp) {
@@ -28,13 +40,56 @@ Template.chatMessages.passTime=function(timestamp) {
 	return hours + ':' + min;
 }
 
+Template.chatMessages.getDelButton=function(owner) {
+	if(owner == Meteor.userId()) {
+		// It's our message
+		return true;
+	} else {
+		return false;
+	}
+}
 
-Template.chatMessages.events({
+
+Template.chatroom.events({
 	'click .msg-send': function() {
-		var msgVal = $('.msg').val();
-		var timestamp = new Date().getTime();
-		var user = Meteor.users.findOne();
+		sendMsg();
+	},
+	'click .icon-trash': function() {
+		chatCollection.remove({_id: this._id});
+	},
+	'keypress textarea': function(event) {
+		if(event.keyCode == 13 && event.shiftKey) {
+	       var content = $('.msg').val();
+	       var caret = getCaret(this);
+	       this.value = content.substring(0,caret)+
+	                     "\n"+content.substring(caret,content.length);
+	       event.stopPropagation();
+		} else if(event.charCode == 13) {
+        	// prevent new line
+        	event.preventDefault();
+        	// Send msg
+        	sendMsg();
+        }
+    },
+	'change .chatWith': function() {
 		var rcvr = $('.chatWith').val();
+		if(rcvr == null) {
+			rcvr = "Global"
+		}
+		$('#messContainer').html(Meteor.render(Template.chatMessages));
+	}
+});
+
+/**
+ * This function inserts the message into the DB
+ **/
+function sendMsg() {
+	var msgVal = $('.msg').val();
+	var timestamp = new Date().getTime();
+	var user = Meteor.users.findOne();
+	var rcvr = $('.chatWith').val();
+	if(msgVal.length > 0) {
+		// Insert if message is not empty
 		chatCollection.insert({
 			msg: msgVal,
 			date: timestamp,
@@ -42,19 +97,35 @@ Template.chatMessages.events({
 			owner: Meteor.userId(),
 			receiver: rcvr
 		});
-		$('.msg').val('');
 	}
-});
+	$('.msg').val('');
+}
 
-Template.chatroom.events({
-	'change .chatWith': function() {
-		var rcvr = $('.chatWith').val();
-		if(rcvr == null) {
-			rcvr = "Global"
-		}
-		//console.log(rcvr);
-		//MSGS = chatCollection.find({owner: Meteor.userId(), receiver: rcvr},{sort: {date: -1}});
-		//Template.chatMessages.msgs();
-		//$('#messContainer').html(Meteor.render(Template.chatMessages));
-	}
-});
+/**
+ * This function detects and inserts a new line on the textarea
+ **/
+function getCaret(el) {
+  if (el.selectionStart) {
+     return el.selectionStart;
+  } else if (document.selection) {
+     el.focus();
+
+   var r = document.selection.createRange();
+   if (r == null) {
+    return 0;
+   }
+
+    var re = el.createTextRange(),
+    rc = re.duplicate();
+    re.moveToBookmark(r.getBookmark());
+    rc.setEndPoint('EndToStart', re);
+
+    return rc.text.length;
+  }  
+  return 0;
+}
+
+Template.conversations.getActiveConv=function() {
+	//chatCollection.find({});
+}
+

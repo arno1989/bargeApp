@@ -10,7 +10,7 @@ Meteor.startup( function () {
 
  bargeSubHandler = null;
  currentposSubHandler = null;
- chatSubHandler = null;
+
 
 /**
  * Subscribing to datababes
@@ -32,7 +32,7 @@ Deps.autorun(function() {
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
         Meteor.subscribe("callCollection", userInfo.mmsi);
-        chatSubHandler = Meteor.subscribe("chatCollection"); 
+        Meteor.subscribe("chatCollection"); 
         Meteor.subscribe("shipMessages");
       }
     });
@@ -46,12 +46,9 @@ Deps.autorun(function() {
 Meteor.Router.add({
   '/'           : 'mainWindow',
   '/kaart'      : 'fullMap',
-  '/brandstof'  : 'brandstof',
+  '/brandstof'  : 'fuel',
   '/manifest'   : 'manifest',
   '/hydroMeteo' : 'hydroMeteo',
+  '/chat'       : 'chatroom',
   '/profile'    : 'profile' 
 });
-
-getUserInfo = function() {
-  
-}

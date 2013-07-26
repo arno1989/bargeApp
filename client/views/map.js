@@ -121,14 +121,14 @@ Template.fullMap.rendered=function() {
 
   Deps.autorun(function(){
     if(currentposSubHandler && currentposSubHandler.ready()) {
-      console.log('SUBBING READY!');
       // Clear the last positions
       bargeMarkers.clearLayers();
       // Get all positions
       var positionList = currentPosition.find().fetch();
       positionList.forEach(function(currentPosition) {
         // Place a maker for each ship location
-        var marker = L.marker([currentPosition.latitude, currentPosition.longitude],{icon: shipIcon}).addTo(bargeMarkers);
+        var marker = L.marker([currentPosition.latitude, currentPosition.longitude],{icon: shipIcon, title: currentPosition.mmsi}).addTo(bargeMarkers);
+        marker.bindPopup('Dit is barge: ' + currentPosition.mmsi.toString());
       });
     }
   });

@@ -10,18 +10,47 @@
 				<a class="brand" href="{{mainWindowPath}}">eXomodal</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						{{#if active mainWindowPath}}
-						<li class="active"><a href="{{mainWindowPath}}"><i class="icon-home"></i> Home</a></li>
-						{{else}}
-						<li class=""><a href="{{mainWindowPath}}"><i class="icon-home"></i> Home</a></li>
-						{{/if}}
+						<li class="home {{active mainWindowPath}}">
+							<a href="{{mainWindowPath}}">
+								<i class="icon-home {{iconColor mainWindowPath}}"></i> Home
+							</a></li>
 
-						<li class=""><a href="{{fullMapPath}}"><i class="icon-globe"></i> Kaart</a></li>
-						<li><a href="#"><i class="icon-fire"></i> Brandstof</a></li>
-						<li><a href="{{manifestPath}}"><i class="icon-tasks"></i> Manifest</a></li>
-						<li><a href="{{hydroMeteoPath}}"><i class="icon-picture"></i> Meteo</a></li>
-						{{#if currentUser}}
-						<li><a href="{{profilePath}}"><i class="icon-user"></i> Profiel</a></li>
+						<li class="map {{active fullMapPath}}">
+							<a href="{{fullMapPath}}">
+								<i class="icon-globe {{iconColor fullMapPath}}"></i> Kaart
+							</a>
+						</li>
+
+						<li class="fuel {{active fuelPath}}">
+							<a href="{{fuelPath}}">
+								<i class="icon-fire {{iconColor fuelPath}}"></i> Brandstof
+							</a>
+						</li>
+
+						<li class="manifest {{active manifestPath}}">
+							<a href="{{manifestPath}}">
+								<i class="icon-tasks {{iconColor manifestPath}}"></i> Manifest
+							</a>
+						</li>
+
+						<li class="meteo {{active hydroMeteoPath}}">
+							<a href="{{hydroMeteoPath}}">
+								<i class="icon-picture {{iconColor hydroMeteoPath}}"></i> Meteo
+							</a>
+						</li>
+
+						<li class="chat {{active chatroomPath}}">
+							<a href="{{chatroomPath}}">
+								<i class="icon-comment {{iconColor chatroomPath}}"></i> Chat
+							</a>
+						</li>
+
+						{{#if currentUser}} <!-- show this when user is logged in -->
+						<li class="profile {{active profilePath}}">
+							<a href="{{profilePath}}">
+								<i class="icon-user {{iconColor profilePath}}"></i> Profiel
+							</a>
+						</li>
 						{{/if}}
 					</ul>
 				</div>
