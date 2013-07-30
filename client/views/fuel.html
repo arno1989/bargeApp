@@ -1,5 +1,109 @@
 <template name="fuel">
+	{{> fuelInput}}
+	{{> fuelHistory}}
+</template>
+
+<template name="fuelInput">
 	<div class="well well-large">
-		<legend>Brandstof verbruik overzicht</legend>
+		<legend>Brandstof verbruik Invoeren</legend>
+		<table id="fuelFormTable" class="table">
+			<thead>
+				<tr>
+					<td>Terminal</td>
+					<td>Datum</td>
+					<td>Aankomst</td>
+					<td>Aanvang</td>
+					<td>Vertrek</td>
+					<td>20"</td>
+					<td>40"</td>
+					<td>45"</td>
+					<td>Teu's</td>
+					<td>Omstuw</td>
+					<td>Gasoliestanden</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" id="termName1" placeholder="Terminal"></td>
+					<td><input type="text" id="arriveDate1" placeholder="25-7"></td>
+					<td><input type="text" id="arriveTime1" placeholder="13:00"></td>
+					<td><input type="text" id="startTime1" placeholder="13:15"></td>
+					<td><input type="text" id="departTime1" placeholder="16:00"></td>
+					<td><input type="number" id="20Feet1" placeholder="5"></td>
+					<td><input type="number" id="40Feet1" placeholder="20"></td>
+					<td><input type="number" id="45Feet1" placeholder="2"></td>
+					<td><input type="number" id="teu1" placeholder="49"></td>
+					<td><input type="number" id="omstuw1" placeholder="3"></td>
+					<td><input type="number" id="gasoil1" placeholder="0"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%">
+			<tr>
+				<td><button class="addRow btn btn-small"><i class="icon-plus-sign"></i> Nieuwe regel</button></td>
+				<td style="text-align: right"><button class="addFuelList btn"><i class="icon-ok-circle"></i> Opslaan</button></td>
+			</tr>
+		</table>
+	</div> <!-- /. well well-large -->
+</template>
+
+<template name="fuelHistory">
+	<div class="well well-large">
+		<legend>Brandstof historie</legend>
+		<div class="accordion" id="fuelAccordion">
+			{{#each getFuelHistory}}
+			 	<div class="accordion-group">
+    				<div class="accordion-heading">
+      					<a class="accordion-toggle" data-toggle="collapse" data-parent="#fuelAccordion" href="#{{this._id}}">
+        					<table width="100%">
+        						<tr>
+        							<td width="33%"><b>Invoerdatum:</b> {{convertTime date}}</td>
+        							<td width="33%"><b>Van:</b> {{data.0.terminal}}</td>    
+        							<td width="33%"><b>Naar:</b> {{data.1.terminal}}</td>
+        						</tr>
+    						</table>
+      					</a>
+    				</div> <!-- /. accordion-heading -->
+	    			<div id="{{this._id}}" class="accordion-body collapse">
+			      		<div class="accordion-inner">
+			      			<table id="fuelFormTable" class="table table-striped">
+								<thead>
+									<tr>
+										<td><b>Terminal</b></td>
+										<td><b>Datum</b></td>
+										<td><b>Aankomst</b></td>
+										<td><b>Aanvang</b></td>
+										<td><b>Vertrek</b></td>
+										<td><b>20"</b></td>
+										<td><b>40"</b></td>
+										<td><b>45"</b></td>
+										<td><b>Teu's</b></td>
+										<td><b>Omstuw</b></td>
+										<td><b>Gasoliestanden</b></td>
+									</tr>
+								</thead>
+								<tbody>
+									{{#each data}}
+									<tr>
+										<td>{{this.terminal}}</td>
+										<td>{{this.ariveDate}}</td>
+										<td>{{this.ariveTime}}</td>
+										<td>{{this.startTime}}</td>
+										<td>{{this.departTime}}</td>
+										<td>{{this.20Feet}}</td>
+										<td>{{this.40Feet}}</td>
+										<td>{{this.45Feet}}</td>
+										<td>{{this.teu}}</td>
+										<td>{{this.omstuw}}</td>
+										<td>{{this.gasoil}}</td>
+									</tr>
+									{{/each}}
+								</tbody>
+							</table>
+			      		</div>  <!-- /. accordion-inner -->
+					</div> <!-- /. accordion-body -->
+				</div> <!-- /. accordion-group -->
+			{{/each}}
+		</div> <!-- ./ accordion -->
 	</div> <!-- /. well well-large -->
 </template>
