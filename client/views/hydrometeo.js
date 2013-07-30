@@ -44,7 +44,7 @@ Template.weatherChart.getijden=function() {
 	// Get tide information of location Rotterdam
 	//console.log();
 	Meteor.call('fetchTideInfo', 123456789 , "Rotterdam", moment().format('DD[-]MM[-]YYYY'), function(err, result){});
-  return tideInformation.findOne();
+  	return tideInformation.findOne();
 }
 
 Template.tempWindow.getWeatherInfo=function() {
@@ -54,7 +54,7 @@ Template.tempWindow.getWeatherInfo=function() {
 Template.weatherChart.rendered=function() {
 	var tideData = tideInformation.findOne();
 	// Get the context of the canvas element we want to select
-    var ctx = document.getElementById("myChart").getContext("2d");
+    var ctx = document.getElementById("tideChart").getContext("2d");
     try {
 	    // Create the data object to pass to the chart
 	    var data = {
@@ -72,7 +72,7 @@ Template.weatherChart.rendered=function() {
 	        };
 	    // Chart options
 	    var options = {
-	    	bezierCurve : false
+	    	bezierCurve : false,
 	    }
 
 	    // Create the chart

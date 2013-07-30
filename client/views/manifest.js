@@ -33,7 +33,7 @@ Template.manifest.convertTime=function(dateStr) {
 	if(month.length == 1) {
 		month = '0' + month;
 	}
-	return (hours + ':' + min + ' ' + day + '-' + month + '-' + year)
+	return (day + '-' + month + '-' + year + '  ' + hours + ':' + min)
 }
 
 Template.plannedManifest.getManifest=function() {
@@ -65,6 +65,6 @@ Template.plannedManifest.convertTime=function(dateStr) {
 	if(month.length == 1) {
 		month = '0' + month;
 	}
-	return (hours + ':' + min + ' ' + day + '-' + month + '-' + year)
+	return (day + '-' + month + '-' + year + '  ' + hours + ':' + min)
 }
 

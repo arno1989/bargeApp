@@ -22,13 +22,14 @@
 	{{#if getManifest}}
 		<table width="100%">
 			<tr>
-				<td width="20%">Call</td>
-				<td width="20%">Aankomst</td>
-				<td width="20%">Call eigenaar</td>
-				<td width="20%">Laden</td>
-				<td width="20%">Lossen</td>
+				<td width="20%"><b>Datum</b></td>
+				<td width="20%"><b>Call</b></td>
+				<td width="20%"><b>Lossen</b></td>
+				<td width="20%"><b>Laden</b></td>
+				<td width="20%"><b>Call eigenaar</b></td>
 			</tr>
 		<table>
+
 		<div class="accordion" id="accordion2">
 			{{#each getManifest}}
 			 	<div class="accordion-group">
@@ -36,11 +37,11 @@
       					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{this._id}}">
         					<table width="100%">
         						<tr>
-        							<td width="20%">{{this.locationlabel}}</td>
         							<td width="20%">{{convertTime this.callstartdate}}</td>
-        							<td width="20%">{{this.callowner}}</td>
-        							<td width="20%">{{this.load}}</td>
+        							<td width="20%">{{this.locationlabel}}</td>    
         							<td width="20%">{{this.unload}}</td>
+        							<td width="20%">{{this.load}}</td>
+        							<td width="20%">{{this.callowner}}</td>
         						</tr>
     						<table>
       					</a>

@@ -32,6 +32,8 @@ Deps.autorun(function() {
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
         Meteor.subscribe("callCollection", userInfo.mmsi);
+        Meteor.subscribe("fuelCollection", userInfo.mmsi);
+        Meteor.subscribe("conversationsCol", Meteor.userId());
         Meteor.subscribe("chatCollection"); 
         Meteor.subscribe("shipMessages");
       }

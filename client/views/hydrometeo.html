@@ -1,6 +1,6 @@
 <template name="hydroMeteo">
 
-	<div name="hydroMainWindow" class="well well-small">
+	<div name="hydroMainWindow" id="meteoContainer" width="100%" class="well well-small">
 		{{> tempWindow}}
 		{{> weatherChart}}
 		{{> weatherMap}}
@@ -19,12 +19,12 @@
 </template>
 
 <template name="weatherChart">
-	<div name="Chart" class="wChart">
+	<div name="Chart" width="100%" class="wChart">
 		<legend><h5>Getijden informatie</h5></legend>
 		<p><b>Locatie: </b>{{getijden.location}}</p>
 		<p><b>Datum: </b>{{getijden.date}}</p>
 		<p><b>Waterstand t.o.v. NAP: </b><p>
-		<canvas id="myChart" width="800" height="200"></canvas>
+		<canvas id="tideChart" width="700" height="200"></canvas>
 		<!-- {{renderChart}} -->
 	</div> <!-- /.weatherChart -->
 </template>
