@@ -66,8 +66,19 @@
 
 <template name="chatMessages">
 	<div class="chat" style="height: 300px; overflow: auto;">
+		<table class="table" width="100%">
+			<tr class="success">
+				<td style="text-align: center"><small><b>{{today}}</b></small></td>
+			</tr>
+		</table>
 		{{#each msgs}}
-		{{getDateBar date}}
+		{{#if dateBarCheck date}}
+			<table class="table" width="100%">
+				<tr class="success">
+					<td style="text-align: center"><small><b>{{getDateBar date}}</b></small></td>
+				</tr>
+			</table>
+		{{/if}}
 		<table class="table" style="padding: 2px" width="100%">
 			<tr class="info">
 				<td style="vertical-align: top;">

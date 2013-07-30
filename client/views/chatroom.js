@@ -168,13 +168,30 @@ Template.chatMessages.passTime=function(timestamp) {
 	return hours + ':' + min;
 }
 
+Template.chatMessages.today=function() {
+	return moment().format('DD MMM YYYY');
+}
+
 /** 
  * This function check if the message is on a new day
  **/
-Template.chatMessages.getDateBar=function(timestamp) {
+Template.chatMessages.dateBarCheck=function(timestamp) {
+	var day = msgTime.getDate();
+	
 	msgTime = new Date(timestamp);
-	console.log('msgTime = 0 and now' + msgTime)
+	currentTime = new Date();
 
+	if(currentTime > msgTime) {
+		if(day > msgTime.getDate()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+Template.chatMessages.getDateBar=function(timestamp) {
+	return moment(timestamp).format('DD MMM YYYY');
 }
 
 Template.chatMessages.getDelButton=function(owner) {
@@ -193,7 +210,6 @@ function sendMsg() {
 	var msgVal = $('.msg').val();
 	var timestamp = new Date().getTime();
 	var user = Meteor.users.findOne();
-	var rcvr = $('.chatWith').val();
 	if(msgVal.length > 0) {
 		// Insert if message is not empty
 		chatCollection.insert({
@@ -201,12 +217,12 @@ function sendMsg() {
 			date: timestamp,
 			name: user.profile.name,
 			owner: Meteor.userId(),
-			receiver: rcvr
+			receiver: chatRecv
 		});
-
+		// Check if this conversation already exists
 		var exist = conversationsCol.find(
-				{ $or: [{$and: [{owner: Meteor.userId()}, {receiver: rcvr}]},
-						{$and: [{owner: rcvr}, {receiver: Meteor.userId()}]}
+				{ $or: [{$and: [{owner: Meteor.userId()}, {receiver: chatRecv}]},
+						{$and: [{owner: chatRecv}, {receiver: Meteor.userId()}]}
 						]
 				}).count();
 
@@ -217,14 +233,14 @@ function sendMsg() {
 				date: timestamp,
 				name: user.profile.name,
 				owner: Meteor.userId(),
-				receiver: rcvr
+				receiver: chatRecv
 			});
 		} else {
 			// There is already a conversation, update latest message
 			var found = conversationsCol.findOne(
 				{ $or: [
-						{$and: [{owner: Meteor.userId()}, {receiver: rcvr}]},
-						{$and: [{owner: rcvr}, {receiver: Meteor.userId()}]}
+						{$and: [{owner: Meteor.userId()}, {receiver: chatRecv}]},
+						{$and: [{owner: chatRecv}, {receiver: Meteor.userId()}]}
 						]
 				}
 			);
@@ -233,12 +249,13 @@ function sendMsg() {
 				date: timestamp,
 				name: user.profile.name,
 				owner: Meteor.userId(),
-				receiver: rcvr				
+				receiver: chatRecv				
 			}});
 		}
 	}
 	// Reset the textarea
 	$('.msg').val('');
+	//$('#messContainer').html(Meteor.render(Template.chatMessages));
 }
 
 /**
