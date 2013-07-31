@@ -4,7 +4,7 @@ var map;
 Template.mapSummary.rendered=function() {
 
   var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  var osmLayer = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 14});
+  var osmLayer = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 16});
 
   // Create a map with standard location
   map = L.map('map').setView([52.2, 6.5], 9);
@@ -35,13 +35,13 @@ function myPosition(e) {
   if(position.count() != 0) {
     try {
       // Let the server update my position
-      Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, curTimestamp.getTime());
+      Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, e.heading, e.speed, curTimestamp.getTime());
       // Let the server update my weather condition
       Meteor.call('fetchWeatherInfo', user.mmsi, e.latlng.lat, e.latlng.lng);
     } catch(e) {}
   } else {
     try {
-      currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, timestamp: curTimestamp.getTime()});
+      currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, heading: e.heading, speed: e.speed, timestamp: curTimestamp.getTime()});
     } catch(e) {}
   }
 

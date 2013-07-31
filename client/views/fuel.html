@@ -1,4 +1,8 @@
 <template name="fuel">
+	<div class="alert alert-danger">
+	  	<button type="button" class="close">&times;</button>
+	  	<strong><div id="alertTitle"></div></strong><div id="alertMsg"></div>
+	</div>
 	{{> fuelInput}}
 	{{> fuelHistory}}
 </template>
@@ -25,15 +29,15 @@
 			<tbody>
 				<tr>
 					<td><input type="text" id="termName1" placeholder="Terminal"></td>
-					<td><input type="text" id="arriveDate1" placeholder="25-7"></td>
-					<td><input type="text" id="arriveTime1" placeholder="13:00"></td>
-					<td><input type="text" id="startTime1" placeholder="13:15"></td>
-					<td><input type="text" id="departTime1" placeholder="16:00"></td>
-					<td><input type="number" id="20Feet1" placeholder="5"></td>
-					<td><input type="number" id="40Feet1" placeholder="20"></td>
-					<td><input type="number" id="45Feet1" placeholder="2"></td>
-					<td><input type="number" id="teu1" placeholder="49"></td>
-					<td><input type="number" id="omstuw1" placeholder="3"></td>
+					<td><input type="text" id="arriveDate1" placeholder="00-00"></td>
+					<td><input type="text" id="arriveTime1" placeholder="00:00"></td>
+					<td><input type="text" id="startTime1" placeholder="00:00"></td>
+					<td><input type="text" id="departTime1" placeholder="00:00"></td>
+					<td><input type="number" id="20Feet1" placeholder="0"></td>
+					<td><input type="number" id="40Feet1" placeholder="0"></td>
+					<td><input type="number" id="45Feet1" placeholder="0"></td>
+					<td><input type="number" id="teu1" placeholder="00"></td>
+					<td><input type="number" id="omstuw1" placeholder="0"></td>
 					<td><input type="number" id="gasoil1" placeholder="0"></td>
 				</tr>
 			</tbody>
@@ -59,7 +63,7 @@
         						<tr>
         							<td width="33%"><b>Invoerdatum:</b> {{convertTime date}}</td>
         							<td width="33%"><b>Van:</b> {{data.0.terminal}}</td>    
-        							<td width="33%"><b>Naar:</b> {{data.1.terminal}}</td>
+        							<td width="33%"><b>Naar:</b> {{getLastTerm data}}</td>
         						</tr>
     						</table>
       					</a>

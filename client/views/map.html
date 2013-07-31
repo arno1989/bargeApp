@@ -1,9 +1,12 @@
 <template name="fullMap">
 	<div name="fullmap" class="well well-small">
 		{{#constant}}
-			<div id="map"></div>
+			<div id="map" style="height: 400px;"></div>
 		{{/constant}}
 	</div> <!-- /.fullmap -->
+	<div id="traveled" class="well well-small" style="text-align: center">
+		<button class="btn btn-small traveled" id=""><i class="icon-road"></i> Laat afgelegde route zien</button>
+	</div> <!-- /. traveled -->
 
 	<!-- Modal -->
 	<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
