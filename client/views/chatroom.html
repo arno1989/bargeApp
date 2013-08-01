@@ -31,6 +31,7 @@
 		</div>
 		<div class="modal-body">
 			<div class="list-group">
+				<!-- zit geen database collectie achter -->
 				{{#each getUsers}}
 					<a href="" id="{{_id}}" class="list-group-item startNewConv"><b>{{name}}</b></a>
 				{{/each}}
@@ -66,11 +67,7 @@
 
 <template name="chatMessages">
 	<div class="chat" style="height: 300px; overflow: auto;">
-		<table class="table" width="100%">
-			<tr class="success">
-				<td style="text-align: center"><small><b>{{today}}</b></small></td>
-			</tr>
-		</table>
+
 		{{#each msgs}}
 		{{#if dateBarCheck date}}
 			<table class="table" width="100%">

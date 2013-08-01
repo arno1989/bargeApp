@@ -1,3 +1,20 @@
+Template.navigationbar.rendered=function() {
+	if (navigator.geolocation)
+	{
+		var pos = navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+		console.log("Geolocation is not supported by this browser.");
+	}
+}
+
+function showPosition(position)
+{
+	// This could be used for geolocation on the full application
+	// Log the position with a timer
+	//console.log("Latitude: " + position.coords.latitude); 
+	//console.log("Longitude: " + position.coords.longitude);	
+}
+
 Template.navigationbar.active=function(path) {
 	var isActive = "";
 	if(path == window.location.pathname) {

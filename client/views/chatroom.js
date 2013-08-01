@@ -1,10 +1,31 @@
+
+// function getLocation()
+// {
+// 	if (navigator.geolocation)
+// 	{
+// 		navigator.geolocation.getCurrentPosition(showPosition);
+// 	}
+// 	else{console.log("Geolocation is not supported by this browser.");}
+// }
+
+// function showPosition(position)
+// {
+// 	//console.log("Latitude: " + position.coords.latitude); 
+// 	//console.log("Longitude: " + position.coords.longitude);	
+// }
+
+
 /**
  * Global variables only usable for chatroom.js
  **/
 var showConv = false;
 var chatOwner = Meteor.userId();
 var chatRecv = "Global";
-var msgTime = new Date();
+var msgTime = new Date(0);
+
+Template.chatroom.rendered=function() {
+	//getLocation();
+}
 
 /** 
  * Return whether the conversation should be visable
@@ -116,6 +137,8 @@ Template.conversation.events({
 			owner: latestMsg.owner,
 			receiver: latestMsg.receiver				
 		}});
+		//msgTime = new Date(0);
+		//$('#messContainer').html(Meteor.render(Template.chatMessages));
 	},
 	'keypress textarea': function(event) {
 		// When shift + enter key is pressed add new line
@@ -154,18 +177,7 @@ Template.chatMessages.msgs=function() {
 
 Template.chatMessages.passTime=function(timestamp) {
 	// Convert timestamp to readable time: 18:30
-	var time = new Date(timestamp);
-	var hours = time.getHours(); // get hours
-	var min = time.getMinutes(); // get minutes
-	hours = hours.toString();	 // convert to string
-	if(hours.length == 1) {
-		hours = '0' + hours;	 // prepend '0' if length = 1
-	}
-	min = min.toString();
-	if(min.length == 1) {
-		min = '0' + min;
-	}
-	return hours + ':' + min;
+	return moment(timestamp).format('H:mm DD MM YYYY');
 }
 
 Template.chatMessages.today=function() {
@@ -177,17 +189,40 @@ Template.chatMessages.today=function() {
  **/
 Template.chatMessages.dateBarCheck=function(timestamp) {
 	var day = msgTime.getDate();
-	
+	var month = msgTime.getMonth()+1;
+	var year = msgTime.getFullYear();
+	//console.log('day: ' + day);
+	//console.log(msgTime.getDate());
 	msgTime = new Date(timestamp);
 	currentTime = new Date();
 
-	if(currentTime > msgTime) {
-		if(day > msgTime.getDate()) {
-			return true;
-		} else {
-			return false;
-		}
+	console.log('msgTime: ' + msgTime.getDate() + ' - ' + 'day: ' + day);
+	console.log('msgTime: ' + (msgTime.getMonth()+1) + ' - ' + 'month: ' +  month);
+
+	if(msgTime.getFullYear() < year || msgTime.getFullYear() > year) {
+		return true;
+	} else if(msgTime.getMonth()+1 < month || msgTime.getMonth()+1 > month) {
+		return true;
+	} else if(msgTime.getDate() < day || msgTime.getDate() > day) {
+		return true;
+	} else {
+		return false;
 	}
+
+	//if(msgTime > currentTime) {
+		// console.log('msgTime: ' + msgTime.getDate() + ' > ' + 'day: ' + day);
+		// console.log('msgTime: ' + (msgTime.getMonth()+1) + ' > ' + 'month: ' +  month);
+		// if(msgTime.getDate() > day) {
+		// 	console.log('true');
+		// 	return true;
+		// } else if(msgTime.getMonth()+1 > month) {
+		// 	console.log('true');
+		// 	return true;
+		// } else {
+		// 	console.log('false');
+		// 	return false;
+		// }
+	//}
 }
 
 Template.chatMessages.getDateBar=function(timestamp) {
@@ -255,7 +290,8 @@ function sendMsg() {
 	}
 	// Reset the textarea
 	$('.msg').val('');
-	//$('#messContainer').html(Meteor.render(Template.chatMessages));
+	msgTime = new Date(0);
+	$('#messContainer').html(Meteor.render(Template.chatMessages));
 }
 
 /**

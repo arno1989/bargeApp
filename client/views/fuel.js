@@ -12,6 +12,9 @@ Template.fuelInput.events({
 	'click .addRow': function() {
 		addRow();
 	},
+    'click .remRow':function() {
+        remRow();
+    },
 	'click .addFuelList': function() {
 		inputCheck();
 	}
@@ -111,6 +114,14 @@ function addRow() {
     element11.id = id;
     element11.placeholder="0";
     cell11.appendChild(element11);
+}
+
+function remRow() {
+    var table = document.getElementById("fuelFormTable");
+    var rowCount = table.rows.length;
+    if(rowCount > 2) {
+        table.deleteRow(rowCount-1);
+    }
 }
 
 function inputCheck() {

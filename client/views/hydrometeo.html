@@ -1,17 +1,37 @@
 <template name="hydroMeteo">
 
 	<div name="hydroMainWindow" id="meteoContainer" width="100%" class="well well-small">
-		{{> tempWindow}}
-		{{> weatherChart}}
+		<div name="container" width="100" style="float: left">
+			<legend>Temperatuur</legend>
+			{{> tempWindow}}
+		</div>
+		<div name="container" width="700" style="float: right">
+			<legend>Getijden</legend>
+			{{> weatherChart}}
+		</div>
 		{{> weatherMap}}
 	</div> <!-- /.hydroMainWindow -->
 </template>
 
 <template name="tempWindow">
 	<div name="tempSum">
-		<legend><h5>Temperatuur</h5></legend>
 		{{#if getWeatherInfo}}
-			<img src="http://openweathermap.org/img/w/{{getWeatherInfo.iconID}}.png" width="100" hight="100"> {{getWeatherInfo.temperature}}&deg;C</p>
+			<table cellpadding="5">
+				<tr>
+					<td colspan="2">
+						{{getWeatherInfo.location}}<br>
+						<img src="http://openweathermap.org/img/w/{{getWeatherInfo.iconID}}.png" width="75" hight="75"> {{getWeatherInfo.temperature}}&deg;C
+					</td>
+				</tr>
+				<tr>
+					<td><b>Luchtvochtigheid:</b></td>
+					<td>{{getWeatherInfo.humidity}}%</td>
+				</tr>
+				<tr>
+					<td><b>Windsnelheid:</b></td>
+					<td>{{getWeatherInfo.windspeed}} Km/h</td>
+				</tr>
+			</table>
 		{{else}}
 			<p>Niet beschikbaar</p>
 		{{/if}}
@@ -19,19 +39,17 @@
 </template>
 
 <template name="weatherChart">
-	<div name="Chart" width="100%" class="wChart">
-		<legend><h5>Getijden informatie</h5></legend>
-		<p><b>Locatie: </b>{{getijden.location}}</p>
-		<p><b>Datum: </b>{{getijden.date}}</p>
-		<p><b>Waterstand t.o.v. NAP: </b><p>
+	<div name="Chart" width="700" class="wChart">
+		<p><b>Locatie: </b>{{getijden.location}}
+		<b>Datum: </b>{{getijden.date}}
+		<b>Waterstand t.o.v. NAP: </b><p>
 		<canvas id="tideChart" width="700" height="200"></canvas>
-		<!-- {{renderChart}} -->
 	</div> <!-- /.weatherChart -->
 </template>
 
 <template name="weatherMap">
 	<div name="weatherMapContainer">
-		<legend><h5>Weer kaart</h5></legend>
+		<legend>Weer kaart</legend>
 		<div id="map"></map>
 	</div> <!-- /. weatherMap -->
 </template>

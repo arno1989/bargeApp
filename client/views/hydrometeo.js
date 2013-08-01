@@ -3,19 +3,27 @@ Template.weatherMap.rendered=function() {
 	var osmAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
 	var osmLayer = new L.TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttribution});
 
-	var cloudLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png', {
+	var cloudLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
+		opacity: 0.9,
 	  	maxZoom: 18
 	});//.addTo(map);
 
-	var rainLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png', {
+	var rainLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png', {
+		opacity: 0.7,
 	  	maxZoom: 18
 	});
 
 	var windLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png', {
+		opacity: 0.5,
 	  	maxZoom: 18
 	});
 
 	var pressureLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png', {
+	  	maxZoom: 18
+	});
+
+	var colorPressureLayer = L.tileLayer('http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png', {
+		opacity: 0.5,
 	  	maxZoom: 18
 	});
 
@@ -31,9 +39,10 @@ Template.weatherMap.rendered=function() {
 	};
 
 	var overlayMaps = {
+		"Druk (gekleurd)": colorPressureLayer,
 	    "Wolken": cloudLayer,
-	    "Regen": rainLayer,
-	    "Wind": windLayer,
+	    "Neerslag": rainLayer,
+	    "Wind": windLayer,	    
 	    "Druk, zee niveau": pressureLayer
 	};
 

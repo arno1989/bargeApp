@@ -182,7 +182,15 @@ Template.fullMap.rendered=function() {
   // Add event listeners
   map.on('locationfound', myPosition);
   map.on('dblclick', addCall);
+  /* this doesn't work yet
+  var line = L.polyline([[50, 6],[51, 6],[52, 6]],{color: 'red'}).addTo(map);
+  var animatedMarker = L.animatedMarker(line.getLatLngs(), {
+    distance: 300,  // meters
+    interval: 2000, // milliseconds
+  });
 
+  map.addLayer(animatedMarker);
+  */
 }
 
 /***************************************/
@@ -302,6 +310,7 @@ function routeMarker() {
     } else {
       console.log('no cursor found');
       Meteor.clearInterval(TimerID);
+      prevTS = 0;
       routeMarkerLayer.clearLayers();
       map.removeLayer(routeLayer);
     }

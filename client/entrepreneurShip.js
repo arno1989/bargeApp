@@ -1,4 +1,3 @@
-
 Meteor.startup( function () {
 
   
@@ -10,6 +9,9 @@ Meteor.startup( function () {
 
  bargeSubHandler = null;
  currentposSubHandler = null;
+ callSubHandler = null;
+ cmCallSubHandler = null;
+ 
 
 
 /**
@@ -27,11 +29,11 @@ Deps.autorun(function() {
          */
         bargeSubHandler = Meteor.subscribe("bargeUsers", Meteor.userId());
         currentposSubHandler = Meteor.subscribe("currentPosition", userInfo.mmsi);
-        Meteor.subscribe("customCall", userInfo.mmsi);        
+        cmCallSubHandler = Meteor.subscribe("customCall", userInfo.mmsi);        
         Meteor.subscribe("positionLog", userInfo.mmsi);
         Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
-        Meteor.subscribe("callCollection", userInfo.mmsi);
+        callSubHandler = Meteor.subscribe("callCollection", userInfo.mmsi);
         Meteor.subscribe("fuelCollection", userInfo.mmsi);
         Meteor.subscribe("conversationsCol", Meteor.userId());
         Meteor.subscribe("chatCollection"); 
