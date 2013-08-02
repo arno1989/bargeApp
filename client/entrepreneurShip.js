@@ -7,10 +7,11 @@ Meteor.startup( function () {
  * Global subscribe handlers
  */
 
- bargeSubHandler = null;
- currentposSubHandler = null;
- callSubHandler = null;
- cmCallSubHandler = null;
+bargeSubHandler = null;
+currentposSubHandler = null;
+callSubHandler = null;
+cmCallSubHandler = null;
+featSubHandler = null;
  
 
 
@@ -38,6 +39,7 @@ Deps.autorun(function() {
         Meteor.subscribe("conversationsCol", Meteor.userId());
         Meteor.subscribe("chatCollection"); 
         Meteor.subscribe("shipMessages");
+        featSubHandler = Meteor.subscribe('featureCollection');
       }
     });
 });

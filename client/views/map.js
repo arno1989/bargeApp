@@ -5,7 +5,7 @@ var TimerID;
 var routeLayer;
 var routeMarkerLayer;
 var prevTS = 0;
-
+var animatedMarker;
 
 Template.fullMap.rendered=function() {
 
@@ -147,58 +147,80 @@ Template.fullMap.rendered=function() {
       });
     }
   });
-
-
-  // Add geoJSON to layers
-  L.geoJson(myFeatures, {
-    onEachFeature: onEachFeature,
-    style: function(feature) {
-      //console.log('coords: ' + feature.geometry.coordinates.length);
-      switch(feature.properties.style) {
-        case 'Terminal': return {color: '#f88735', fillOpacity: 0.65};
-        case 'Lock': return {color: '#27a93b', fillOpacity: 0.65};
-        case 'WaterM': return {color: '#ff7f31', fillOpacity: 0.65};
-        case 'Bouy': return {color: '#ff7f31', fillOpacity: 0.65};
-        case 'Harbor': return {color: '#ff7f31', fillOpacity: 0.65};
-        case 'MoorePointLeft': return {color: '#fff000', fillOpacity: 0.65};
-        case 'Bridge': return {color: '#ffff00', fillOpacity: 0.65};
-        case 'Carpoint': return {color: '#fff000', fillOpacity: 0.65};
-        case 'Company': return {color: '#3636e0', fillOpacity: 0.65};
-        case 'WaterIntake': return {color: '#fff000', fillOpacity: 0.65};
-        case 'GasOilPoint': return {color: '#fff000', fillOpacity: 0.65};
-        case 'PublicLoading': return {color: '#ffff00', fillOpacity: 0.65};
-        case 'PublicMooring': return {color: '#ffff00', fillOpacity: 0.65};
-        case 'TrashP': return {color: '#fff000', fillOpacity: 0.65};
-        case 'MoorePointRight': return {color: '#fff000', fillOpacity: 0.65};
-        case 'WaitLLt': return {color: '#fff000', fillOpacity: 0.65};
-        case 'WaitLRt': return {color: '#fff000', fillOpacity: 0.65};
-        case 'WaitLockDangerPointLeft': return {color: '#fff000', fillOpacity: 0.65};
-        case 'WaitLockDangerPointRight': return {color: '#fff000', fillOpacity: 0.65};
-        case 'WaitArea': return {color: '#fff000', fillOpacity: 0.65};
+  if(featSubHandler && featSubHandler.ready) {
+    console.log('RENDERED! + READY!');
+    var featureDB = featureCollection.find().fetch();
+    // Add geoJSON to layers
+    L.geoJson(featureDB, {
+      onEachFeature: onEachFeature,
+      style: function(feature) {
+        //console.log('coords: ' + feature.geometry.coordinates.length);
+        switch(feature.properties.style) {
+          case 'Terminal': return {color: '#f88735', fillOpacity: 0.65};
+          case 'Lock': return {color: '#27a93b', fillOpacity: 0.65};
+          case 'WaterM': return {color: '#ff7f31', fillOpacity: 0.65};
+          case 'Bouy': return {color: '#ff7f31', fillOpacity: 0.65};
+          case 'Harbor': return {color: '#ff7f31', fillOpacity: 0.65};
+          case 'MoorePointLeft': return {color: '#fff000', fillOpacity: 0.65};
+          case 'Bridge': return {color: '#ffff00', fillOpacity: 0.65};
+          case 'Carpoint': return {color: '#fff000', fillOpacity: 0.65};
+          case 'Company': return {color: '#3636e0', fillOpacity: 0.65};
+          case 'WaterIntake': return {color: '#fff000', fillOpacity: 0.65};
+          case 'GasOilPoint': return {color: '#fff000', fillOpacity: 0.65};
+          case 'PublicLoading': return {color: '#ffff00', fillOpacity: 0.65};
+          case 'PublicMooring': return {color: '#ffff00', fillOpacity: 0.65};
+          case 'TrashP': return {color: '#fff000', fillOpacity: 0.65};
+          case 'MoorePointRight': return {color: '#fff000', fillOpacity: 0.65};
+          case 'WaitLLt': return {color: '#fff000', fillOpacity: 0.65};
+          case 'WaitLRt': return {color: '#fff000', fillOpacity: 0.65};
+          case 'WaitLockDangerPointLeft': return {color: '#fff000', fillOpacity: 0.65};
+          case 'WaitLockDangerPointRight': return {color: '#fff000', fillOpacity: 0.65};
+          case 'WaitArea': return {color: '#fff000', fillOpacity: 0.65};
+        }
       }
-    }
-  }).addTo(featureLayer);
+    }).addTo(featureLayer);
+  }
 
   // Add event listeners
   map.on('locationfound', myPosition);
   map.on('dblclick', addCall);
-  /* this doesn't work yet
-  var line = L.polyline([[50, 6],[51, 6],[52, 6]],{color: 'red'}).addTo(map);
-  var animatedMarker = L.animatedMarker(line.getLatLngs(), {
+
+  /*********** DEMO ANIMATED ROUTE **************/
+  /*var demoLine = new L.polyline([[52.09334850, 6.15765770],[52.09343620, 6.15693860],[52.09389590, 6.15686210],[52.09377570,6.15578620],[52.09439050,6.155626100000001],[52.09410480,6.1520850],[52.10759330,6.16153020],[52.10845020,6.16745840],[52.14077560,6.184667999999999],[52.14358930,6.18943790],[52.14347440,6.19040450],[52.13864620,6.1922270],[52.138820,6.19451540],[52.13938690,6.19482410],[52.13969470000001,6.196525299999999],[52.13985430,6.19543380]],{color: 'red'}).addTo(map);
+
+  animatedMarker = L.animatedMarker(demoLine.getLatLngs(), {
+    autoStart: false,
     distance: 300,  // meters
-    interval: 2000, // milliseconds
+    interval: 1000, // milliseconds
   });
 
   map.addLayer(animatedMarker);
-  */
+  /*************************************/
+
+  // featureDB.find( { loc : { $near :
+  //                          { $geometry :
+  //                              { type : "Point" ,
+  //                                coordinates: [ 40 , 5 ] } },
+  //                            $maxDistance : 100
+  //               } } )
+
+  // db.collection.find( { array: { $elemMatch: { value1: 1, value2: { $gt: 1 } } } } );
+  //var n = featureCollection.find({'properties.name': "Waalhaven"}).count();
+  //var n = featureCollection.find({'geometry.coordinates': {$near: [6.783791500000007, 52.246461499999995]}}).count();
+  
+  //var n = featureCollection.find({geometry: {coordinates: [5.905915922607441,51.977513629857036]} }).count();
+  //var n = featureCollection.find({geometry: {coordinates: {$near: {$geometry: {type: "Point", coordinates: [[6.783791500000007, 52.246461499999995]]} } } } }).count();
+  //console.log(n);
+  Meteor.call('getNearestFeature');
 }
 
 /***************************************/
 /** Log the position every 60 seconds **/
 /***************************************/
 Meteor.setInterval(function() {
-  //Need to insert once a minute our location
-  //console.log('Inserting position into DB');
+  // Use this or HTML5 GeoLocation
+  // Need to insert once a minute our location
+  // console.log('Inserting position into DB');
   var my_mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
   var lat = currentPosition.findOne().latitude;
   var lng = currentPosition.findOne().longitude;
@@ -276,6 +298,7 @@ Template.fullMap.events({
     $('#myModal').modal('hide');
   },
   'click .traveled': function() {
+    //animatedMarker.start();
     drawRoute();
   }
 });

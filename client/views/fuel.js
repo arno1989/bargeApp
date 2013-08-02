@@ -294,3 +294,43 @@ Template.fuelHistory.getLastTerm=function(data) {
 Template.fuelHistory.convertTime=function(timestamp) {
 	return moment(timestamp).format("DD MMM YYYY");
 }
+
+Template.fuelHistory.total20=function(data) {
+    var total = 0;
+    for(var i=0; i<data.length; i++) {
+        total += data[i]['20Feet'];
+    }
+    return total;
+}
+
+Template.fuelHistory.total40=function(data) {
+    var total = 0;
+    for(var i=0; i<data.length; i++) {
+        total += data[i]['40Feet'];
+    }
+    return total;
+}
+
+Template.fuelHistory.total45=function(data) {
+   var total = 0;
+    for(var i=0; i<data.length; i++) {
+        total += data[i]['45Feet'];
+    }
+    return total; 
+}
+
+Template.fuelHistory.totalTeu=function(data) {
+    var total = 0;
+    for(var i=0; i<data.length; i++) {
+        total += data[i]['teu'];
+    }
+    return total;    
+}
+
+Template.fuelHistory.totalOmstuw=function(data) {
+    var total = 0;
+    for(var i=0; i<data.length; i++) {
+        total += data[i]['omstuw'];
+    }
+    return total;    
+}
