@@ -4,7 +4,7 @@ if(Meteor.isServer) {
 			//var respJson;
 			var weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?lat=" + latitude
 			+ "&lon=" + longitude + "&lang=nl&units=metric";
-			console.log('My URL: ' + weatherDataUrl);
+			console.log('My weatherURL: ' + weatherDataUrl);
 
 			// Make async http call
 			Meteor.http.get(weatherDataUrl, function(error, result) {

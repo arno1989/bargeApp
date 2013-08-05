@@ -16,6 +16,7 @@ function showPosition(position)
 }
 
 Template.navigationbar.active=function(path) {
+	// Return active for the current page
 	var isActive = "";
 	if(path == window.location.pathname) {
 		isActive = "active";
@@ -24,6 +25,7 @@ Template.navigationbar.active=function(path) {
 }
 
 Template.navigationbar.iconColor=function(path) {
+	// Return the icon-color white for the active page
 	var color = "";
 	if(path == window.location.pathname) {
 		color = "icon-white"
@@ -31,6 +33,7 @@ Template.navigationbar.iconColor=function(path) {
 	return color;
 }
 
+// Re-render the navigation bar to show the active tab
 Template.navigationbar.events({
 	'click .home': function(e) {
 		Meteor.defer(function() { // Wait till rendered 

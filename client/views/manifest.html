@@ -36,7 +36,11 @@
     				<div class="accordion-heading">
       					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{this._id}}">
         					<table width="100%">
-        						<tr>
+        						{{#if checkActive this.callenddate}}
+        						<tr style="background-color: white">
+    							{{else}}
+        						<tr style="">
+    							{{/if}}
         							<td width="20%">{{convertTime this.callstartdate}}</td>
         							<td width="20%">{{this.locationlabel}}</td>    
         							<td width="20%">{{this.unload}}</td>

@@ -1,8 +1,20 @@
 <template name="conditionSummary">
 	{{#if getWeatherData}} <!-- Update the next data when we have fetched the needed data -->
-		<p>{{getWeatherData.location}}<br> 
-			<img src="http://openweathermap.org/img/w/{{getWeatherData.iconID}}.png"> {{getWeatherData.temperature}}&deg;C</br>
-		Windsnelheid: {{getWeatherData.windspeed}} Km/h</p>
+	<table class="table">
+	<thead>
+		<tr>
+			<td><h4>{{getWeatherData.location}}</h4></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="vertical-align: middle"><img src="http://openweathermap.org/img/w/{{getWeatherData.iconID}}.png"> {{getWeatherData.temperature}}&deg;C</td>
+		</tr>
+		<tr>
+			<td>Windsnelheid: {{getWeatherData.windspeed}} Km/h</td>
+		</tr>
+	</tbody>
+	</table>
 	{{else}}
 		<p>Temperatuur niet beschikbaar
 		Windsnelheid niet beschikbaar</p>

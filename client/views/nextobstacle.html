@@ -1,3 +1,21 @@
 <template name="nextObstacle">
-	<p>Test</p>
+	{{#if getNearest}}
+	<table class="table">
+		<thead>
+			<tr>
+				<td><h4>{{getType getNearest.obstacleType}} {{getNearest.obstacleName}}</h4></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Afstand: {{getNearest.distance}} Km</td>
+			</tr>
+			<tr>
+				<td>Informatie...</td>
+			</tr>
+		</tbody>
+	</table>
+	{{else}}
+		<p>Niet bekend</p>
+	{{/if}}	
 </template>

@@ -12,8 +12,9 @@ currentposSubHandler = null;
 callSubHandler = null;
 cmCallSubHandler = null;
 featSubHandler = null;
- 
-
+weatherSubHandler = null;
+obstSubHandler = null; 
+convSubHandler = null;
 
 /**
  * Subscribing to datababes
@@ -26,17 +27,18 @@ Deps.autorun(function() {
       } else {
         console.log('Hoi ' + userInfo.name + ', jij hebt mmsi nr: ' + userInfo.mmsi);
         /**
-         * Subscribing to datababes
+         * Subscribing to collections
          */
         bargeSubHandler = Meteor.subscribe("bargeUsers", Meteor.userId());
         currentposSubHandler = Meteor.subscribe("currentPosition", userInfo.mmsi);
-        cmCallSubHandler = Meteor.subscribe("customCall", userInfo.mmsi);        
+        cmCallSubHandler = Meteor.subscribe("customCall", userInfo.mmsi);    
+        obstSubHandler = Meteor.subscribe("obstacleCollection", userInfo.mmsi);    
         Meteor.subscribe("positionLog", userInfo.mmsi);
-        Meteor.subscribe("currentWeather", userInfo.mmsi);
+        weatherSubHandler = Meteor.subscribe("currentWeather", userInfo.mmsi);
         Meteor.subscribe("tideInformation", userInfo.mmsi);
         callSubHandler = Meteor.subscribe("callCollection", userInfo.mmsi);
         Meteor.subscribe("fuelCollection", userInfo.mmsi);
-        Meteor.subscribe("conversationsCol", Meteor.userId());
+        convSubHandler = Meteor.subscribe("conversationsCol", Meteor.userId());
         Meteor.subscribe("chatCollection"); 
         Meteor.subscribe("shipMessages");
         featSubHandler = Meteor.subscribe('featureCollection');

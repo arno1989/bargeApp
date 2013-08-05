@@ -134,6 +134,7 @@ Template.fullMap.rendered=function() {
     iconAnchor:   [10, 10]
   });
 
+  // Autorun to detect updates for all user positions
   Deps.autorun(function(){
     if(currentposSubHandler && currentposSubHandler.ready()) {
       // Clear the last positions
@@ -147,11 +148,11 @@ Template.fullMap.rendered=function() {
       });
     }
   });
+
   if(featSubHandler && featSubHandler.ready) {
-    console.log('RENDERED! + READY!');
     var featureDB = featureCollection.find().fetch();
-    // Add geoJSON to layers
-    L.geoJson(featureDB, {
+    // Add geoJSON to layers from the feature collection
+    L.geoJson(myFeatures, { // ! Change myFeatures to featureDB to use the database
       onEachFeature: onEachFeature,
       style: function(feature) {
         //console.log('coords: ' + feature.geometry.coordinates.length);
@@ -195,22 +196,8 @@ Template.fullMap.rendered=function() {
   });
 
   map.addLayer(animatedMarker);
-  /*************************************/
+  /*********************************************/
 
-  // featureDB.find( { loc : { $near :
-  //                          { $geometry :
-  //                              { type : "Point" ,
-  //                                coordinates: [ 40 , 5 ] } },
-  //                            $maxDistance : 100
-  //               } } )
-
-  // db.collection.find( { array: { $elemMatch: { value1: 1, value2: { $gt: 1 } } } } );
-  //var n = featureCollection.find({'properties.name': "Waalhaven"}).count();
-  //var n = featureCollection.find({'geometry.coordinates': {$near: [6.783791500000007, 52.246461499999995]}}).count();
-  
-  //var n = featureCollection.find({geometry: {coordinates: [5.905915922607441,51.977513629857036]} }).count();
-  //var n = featureCollection.find({geometry: {coordinates: {$near: {$geometry: {type: "Point", coordinates: [[6.783791500000007, 52.246461499999995]]} } } } }).count();
-  //console.log(n);
   Meteor.call('getNearestFeature');
 }
 
@@ -218,16 +205,20 @@ Template.fullMap.rendered=function() {
 /** Log the position every 60 seconds **/
 /***************************************/
 Meteor.setInterval(function() {
-  // Use this or HTML5 GeoLocation
-  // Need to insert once a minute our location
-  // console.log('Inserting position into DB');
-  var my_mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
-  var lat = currentPosition.findOne().latitude;
-  var lng = currentPosition.findOne().longitude;
-  var date = currentPosition.findOne().timestamp;
-  //console.log('lat: ' + lat + ' lng: ' + lng + ' date: ' + date);
-  //positionLog.insert({mmsi: my_mmsi, timestamp: date, latitude: lat, longitude: lng});
-}, 5000);//60000);
+  if(bargeSubHandler && bargeSubHandler.ready()) {
+    if(currentposSubHandler && currentposSubHandler.ready()) {
+      // Use this or HTML5 GeoLocation
+      // Need to insert once a minute our location
+      // console.log('Inserting position into DB');
+      var my_mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
+      var lat = currentPosition.findOne().latitude;
+      var lng = currentPosition.findOne().longitude;
+      var date = currentPosition.findOne().timestamp;
+      //console.log('lat: ' + lat + ' lng: ' + lng + ' date: ' + date);
+      //positionLog.insert({mmsi: my_mmsi, timestamp: date, latitude: lat, longitude: lng});
+    }
+  }
+}, 60000);
 
 // Map functions
 function myPosition(e) {
@@ -237,7 +228,6 @@ function myPosition(e) {
     iconAnchor:   [10, 10]
   });
   myPostionMarker.clearLayers();
-  //var marker = L.marker([e.latlng.lat, e.latlng.lng],{icon: shipIcon}).addTo(myPostionMarker); 
 
   if(bargeSubHandler && bargeSubHandler.ready()) {
     if(currentposSubHandler && currentposSubHandler.ready()) {
@@ -262,8 +252,10 @@ function myPosition(e) {
   }
 }
 
+// db-Click the map to show the add call input form
 function addCall(e) {
   $('#myModal').modal('show');
+  // Set the hidden input types witht the lat/lng values
   $('#latitude').val(e.latlng.lat);
   $('#longitude').val(e.latlng.lng);
   // Hide datepicker on changing the date
@@ -276,15 +268,19 @@ function addCall(e) {
 
 
 Template.fullMap.events({
+  // When clicked on the save button
   'click .save': function() {
+    // Get the form values
     var givenDate = $('.datepicker').val();
     var givenTime = $('.timepicker').val();
     var givenLocation = $('#inputLocation').val(); 
     var givenType = $('#inputType').val();
-    var timestamp = (moment(givenTime + ' ' + givenDate, "HH:mm DD-MM-YYYY").unix() * 1000); 
+    var timestamp = (moment(givenTime + ' ' + givenDate, "HH:mm DD-MM-YYYY").unix() * 1000);
+    // Get the user MMSI
     var mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
+    // Create the unique callreference
     var reference = mmsi + ':' + timestamp;
-
+    // Insert the data
     customCall.insert({
       callreference: reference,
       callstartdate: timestamp,
@@ -295,42 +291,49 @@ Template.fullMap.events({
       uniqueresourceid: mmsi,
       calltype: givenType
     });
+    // Hide the modal
     $('#myModal').modal('hide');
   },
   'click .traveled': function() {
-    //animatedMarker.start();
+    //animatedMarker.start(); //<-- DEMO
     drawRoute();
   }
 });
 
 function drawRoute() {
-//var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+  // If the drawRoute button is clicked
   if(!map.hasLayer(routeLayer)) {
     var route = new Array();
+    // Get all logged coordinates
     var totalPoints = positionLog.find().count();
     var cursor = positionLog.find().fetch();
     for(var i=0; i<totalPoints; i++) {
       route[i] = new L.LatLng(cursor[i].latitude, cursor[i].longitude);
     }
+    // Draw a polyline along the route
     var polyline = L.polyline(route, {color: 'red',weight: 3}).addTo(routeLayer);
     routeLayer.addTo(map);
-    TimerID = Meteor.setInterval(routeMarker, 1000);
-
+    // Move a marker over the coordinates
+    TimerID = Meteor.setInterval(routeMarker, 500);
   } else {
+    // If the route is already shown, remove it
     map.removeLayer(routeLayer);
   }
 }
 
 function routeMarker() {
   if(map.hasLayer(routeLayer)) {
+    // Find the next position by using the timestamp 'prevTS'
     var count = positionLog.find({timestamp: {$gt: prevTS}},{sort: {timestamp: 1}}).count();
     var cursor = positionLog.findOne({timestamp: {$gt: prevTS}},{sort: {timestamp: 1}});
-
+    // If there is a position log
     if(count) {
-      prevTS = cursor.timestamp;
-      routeMarkerLayer.clearLayers();
+      prevTS = cursor.timestamp; // Sets the timestamp of this position.
+      routeMarkerLayer.clearLayers(); //Reset layer mask
+      // Add the marker to the layer
       var marker = L.marker([cursor.latitude, cursor.longitude]).addTo(routeMarkerLayer);
     } else {
+      // No position found, reset timer,prevTS and layers.
       console.log('no cursor found');
       Meteor.clearInterval(TimerID);
       prevTS = 0;
@@ -350,6 +353,7 @@ Template.modalForm.events({
 });
 
 Template.modalForm.rendered=function() {
+  // Init timepicker
   $('.timepicker').timepicker({
                 minuteStep: 1,
                 showSeconds: false,

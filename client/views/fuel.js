@@ -1,32 +1,38 @@
 Template.fuel.rendered=function() {
+    // Hide the alert message when this page is loaded
     $('.alert').hide();
 }
 
 Template.fuel.events({
+    // Hide the alert message when 'close' is clicked
     'click .close': function() {
         $('.alert').hide();
     }
 });
 
 Template.fuelInput.events({
+    // Add a row to the table
 	'click .addRow': function() {
 		addRow();
 	},
+    // Remove last row from table
     'click .remRow':function() {
         remRow();
     },
+    // First check the input values, then insert
 	'click .addFuelList': function() {
 		inputCheck();
 	}
 }); 
 
 function addRow() {
+    // Get the table information
 	var table = document.getElementById("fuelFormTable");
 	var id = "";
- 
+    // Append a row to the table
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
-
+    // Insert elements inside all new cells
     var cell1 = row.insertCell(0);
     var element1 = document.createElement("input");
     id = "termName" + rowCount;
@@ -117,23 +123,28 @@ function addRow() {
 }
 
 function remRow() {
+    // Get the table information
     var table = document.getElementById("fuelFormTable");
     var rowCount = table.rows.length;
+    // Delete the last row except the first one
     if(rowCount > 2) {
         table.deleteRow(rowCount-1);
     }
 }
 
 function inputCheck() {
+    // Init the pass var on true. This is set to false when false input is given
     var pass = true;
+    // Set the wanted input format for time and date
     var timeCheck = new RegExp("^[0-9]{2}:[0-9]{2}$","i");
     var dateCheck = new RegExp("^[0-9]{2}-[0-9]{2}$","i");
+    // Sets the alert class to color red and add error message
     $('.alert').attr("class","alert alert-danger");
     $('#alertTitle').text("Foutieve invoer!");
-
+    // Get the table information
     var table = document.getElementById("fuelFormTable");
     var rowCount = table.rows.length;
-
+    // Go through every row/cell and check it's input value
     for(var i=1; i<rowCount; i++) {
         console.log('checking input!');
         var term = "termName" + i;
@@ -217,6 +228,7 @@ function inputCheck() {
         }
     }
     if(pass) {
+        // all input values are correct, save data
         saveFuelForm();
     } else {
         // Invalid input
@@ -272,10 +284,12 @@ function saveFuelForm() {
     	var jsonobject = JSON.parse(fuelData);
         // Insert the data into the collection
         console.log('Inserting fuel data into collection!');
+        // Change the alert class to color green and add success text
         $('.alert').attr("class","alert alert-success");
         $('#alertTitle').text("Invoer geslaagd!");
         $('#alertMsg').text("Brandstof formulier is opgeslagen.");
         $('.alert').show();
+        // Insert the data into the collection
     	fuelCollection.insert(jsonobject);
     }
 }
@@ -284,18 +298,22 @@ function saveFuelForm() {
  * FuelHistory Template Helpers
  **/
 Template.fuelHistory.getFuelHistory=function() {
+    // Return all data from the fuelCollection
 	return fuelCollection.find({},{sort: {date: -1}});
 }
 
 Template.fuelHistory.getLastTerm=function(data) {
+    // Return the last terminal name from the data array
     return data[data.length-1].terminal;
 }
 
 Template.fuelHistory.convertTime=function(timestamp) {
+    // Convert timestamp to readable date
 	return moment(timestamp).format("DD MMM YYYY");
 }
 
 Template.fuelHistory.total20=function(data) {
+    // Return the sum of all 20 Feets
     var total = 0;
     for(var i=0; i<data.length; i++) {
         total += data[i]['20Feet'];
@@ -304,6 +322,7 @@ Template.fuelHistory.total20=function(data) {
 }
 
 Template.fuelHistory.total40=function(data) {
+    // Return the sum of all 40 Feets
     var total = 0;
     for(var i=0; i<data.length; i++) {
         total += data[i]['40Feet'];
@@ -312,6 +331,7 @@ Template.fuelHistory.total40=function(data) {
 }
 
 Template.fuelHistory.total45=function(data) {
+    // Return the sum of all 45 Feets
    var total = 0;
     for(var i=0; i<data.length; i++) {
         total += data[i]['45Feet'];
@@ -320,6 +340,7 @@ Template.fuelHistory.total45=function(data) {
 }
 
 Template.fuelHistory.totalTeu=function(data) {
+    // Return the sum of all teu's
     var total = 0;
     for(var i=0; i<data.length; i++) {
         total += data[i]['teu'];
@@ -328,6 +349,7 @@ Template.fuelHistory.totalTeu=function(data) {
 }
 
 Template.fuelHistory.totalOmstuw=function(data) {
+    // Return the sum of all Omstuw's
     var total = 0;
     for(var i=0; i<data.length; i++) {
         total += data[i]['omstuw'];

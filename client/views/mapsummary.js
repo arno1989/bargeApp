@@ -1,3 +1,4 @@
+// Define leaflet imagepath
 L.Icon.Default.imagePath = 'packages/leaflet/images';
 var map;
 
@@ -22,27 +23,30 @@ Template.mapSummary.rendered=function() {
 
 // Map functions
 function myPosition(e) {
-  // Add marker on my location
-  myPostionMarker.clearLayers();
-  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
-  // Get user information
-  var user = bargeUsers.findOne({accessID: Meteor.userId()}); 
-  // Get current time
-  var curTimestamp = new Date();
-  // Check if the user mmsi already exists in the currentPosition collection
-  var position = currentPosition.find({},{limit: 1});
-  // If user already exists, update the position. Else insert the position
-  if(position.count() != 0) {
-    try {
-      // Let the server update my position
-      Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, e.heading, e.speed, curTimestamp.getTime());
-      // Let the server update my weather condition
-      Meteor.call('fetchWeatherInfo', user.mmsi, e.latlng.lat, e.latlng.lng);
-    } catch(e) {}
-  } else {
-    try {
-      currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, heading: e.heading, speed: e.speed, timestamp: curTimestamp.getTime()});
-    } catch(e) {}
-  }
+  if(bargeSubHandler && bargeSubHandler.ready) {
+    if(currentposSubHandler && currentposSubHandler.ready) {
+      if(weatherSubHandler && weatherSubHandler.ready) {
+        // Add marker on my location
+        myPostionMarker.clearLayers();
+        var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
+        // Get user information
+        var user = bargeUsers.findOne({accessID: Meteor.userId()}); 
+        // Get current time
+        var curTimestamp = new Date();
+        // Check if the user mmsi already exists in the currentPosition collection
+        var position = currentPosition.find({},{limit: 1});
+        // If user already exists, update the position. Else insert the position
+        if(position.count() != 0) {
+          // Let the server update my position
+          Meteor.call('updatePosition', user.mmsi, e.latlng.lat, e.latlng.lng, e.heading, e.speed, curTimestamp.getTime());
+          // Let the server update my weather condition
+          Meteor.call('fetchWeatherInfo', user.mmsi, e.latlng.lat, e.latlng.lng);
+        } else {
+          currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, heading: e.heading, speed: e.speed, timestamp: curTimestamp.getTime()});
 
+        }
+        getNearestObstacle();
+      }
+    }
+  }
 }

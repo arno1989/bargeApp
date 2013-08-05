@@ -14,9 +14,10 @@ if(Meteor.isServer) {
 				var jsonString = JSON.stringify(result);
 				// Convert JSON string into JSON objects
 				var jsonObj = JSON.parse(jsonString, function (key, value) {
-
 					value = value.toString();
+					// Find the message index number
 					var indexMessID = value.indexOf("Bericht nr.");
+					// Find the actual message ( This is a HTML styled message )
 					var indexMess = value.indexOf("<u style");
 
 					if(indexMessID == 0) {
@@ -30,7 +31,7 @@ if(Meteor.isServer) {
 
 					if(messID.length > 0 && message.length > 0) {
 						// Both messageID and message have been found
-						if(shipMessages.find().count() < 21) {
+						if(shipMessages.find().count() < 20) {
 							// There are less then 20 messages in the DB, insert message
 							shipMessages.insert({
 								messageID: messID,

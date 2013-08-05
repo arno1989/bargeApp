@@ -1,20 +1,3 @@
-
-// function getLocation()
-// {
-// 	if (navigator.geolocation)
-// 	{
-// 		navigator.geolocation.getCurrentPosition(showPosition);
-// 	}
-// 	else{console.log("Geolocation is not supported by this browser.");}
-// }
-
-// function showPosition(position)
-// {
-// 	//console.log("Latitude: " + position.coords.latitude); 
-// 	//console.log("Longitude: " + position.coords.longitude);	
-// }
-
-
 /**
  * Global variables only usable for chatroom.js
  **/
@@ -22,10 +5,6 @@ var showConv = false;
 var chatOwner = Meteor.userId();
 var chatRecv = "Global";
 var msgTime = new Date(0);
-
-Template.chatroom.rendered=function() {
-	//getLocation();
-}
 
 /** 
  * Return whether the conversation should be visable
@@ -38,7 +17,14 @@ Template.chatroom.show=function() {
  * Return any started conversations
  **/
 Template.conversations.getActiveConv=function() {
-	return conversationsCol.find({},{sort: {date: -1}});
+	if(convSubHandler && convSubHandler.ready) {
+		if(conversationsCol.find({receiver: "Global"}).count() == 0) {
+			// Global channel not initialized
+			//console.log('init global channel!');
+			//conversationsCol.insert({msg: "", date: 0, name: "", owner: Meteor.userId(), receiver: "Global"});
+		}
+		return conversationsCol.find({},{sort: {date: -1}});
+	}
 }
 
 /**
@@ -63,6 +49,7 @@ Template.conversations.getConvName=function() {
  **/
 Template.conversations.getUsers=function() {
 	if(bargeSubHandler && bargeSubHandler.ready()) {
+		// Dont return my own ID
 		return bargeUsers.find({accessID: { $not: Meteor.userId()}});
 	}
 }
@@ -137,8 +124,6 @@ Template.conversation.events({
 			owner: latestMsg.owner,
 			receiver: latestMsg.receiver				
 		}});
-		//msgTime = new Date(0);
-		//$('#messContainer').html(Meteor.render(Template.chatMessages));
 	},
 	'keypress textarea': function(event) {
 		// When shift + enter key is pressed add new line
@@ -181,6 +166,7 @@ Template.chatMessages.passTime=function(timestamp) {
 }
 
 Template.chatMessages.today=function() {
+	// Return the date of today
 	return moment().format('DD MMM YYYY');
 }
 
@@ -191,8 +177,6 @@ Template.chatMessages.dateBarCheck=function(timestamp) {
 	var day = msgTime.getDate();
 	var month = msgTime.getMonth()+1;
 	var year = msgTime.getFullYear();
-	//console.log('day: ' + day);
-	//console.log(msgTime.getDate());
 	msgTime = new Date(timestamp);
 	currentTime = new Date();
 
@@ -208,21 +192,6 @@ Template.chatMessages.dateBarCheck=function(timestamp) {
 	} else {
 		return false;
 	}
-
-	//if(msgTime > currentTime) {
-		// console.log('msgTime: ' + msgTime.getDate() + ' > ' + 'day: ' + day);
-		// console.log('msgTime: ' + (msgTime.getMonth()+1) + ' > ' + 'month: ' +  month);
-		// if(msgTime.getDate() > day) {
-		// 	console.log('true');
-		// 	return true;
-		// } else if(msgTime.getMonth()+1 > month) {
-		// 	console.log('true');
-		// 	return true;
-		// } else {
-		// 	console.log('false');
-		// 	return false;
-		// }
-	//}
 }
 
 Template.chatMessages.getDateBar=function(timestamp) {
@@ -231,7 +200,7 @@ Template.chatMessages.getDateBar=function(timestamp) {
 
 Template.chatMessages.getDelButton=function(owner) {
 	if(owner == Meteor.userId()) {
-		// It's our message
+		// It's our message, give it a delete option
 		return true;
 	} else {
 		return false;
@@ -255,6 +224,7 @@ function sendMsg() {
 			receiver: chatRecv
 		});
 		// Check if this conversation already exists
+		console.log('Receiver is: ' + chatRecv);
 		var exist = conversationsCol.find(
 				{ $or: [{$and: [{owner: Meteor.userId()}, {receiver: chatRecv}]},
 						{$and: [{owner: chatRecv}, {receiver: Meteor.userId()}]}
