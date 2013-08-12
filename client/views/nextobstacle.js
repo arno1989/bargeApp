@@ -16,13 +16,16 @@ Template.nextObstacle.getType=function(type) {
 }
 
 getNearestObstacle = function() {
+Deps.autorun(function() {
 	if(currentposSubHandler && currentposSubHandler.ready) {
 		if(featSubHandler && featSubHandler.ready) {
 			if(bargeSubHandler && bargeSubHandler.ready) {
 				if(obstSubHandler && obstSubHandler.ready) {
+					// Get the user MMSI
+					var myMMSI = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
 					// Get my latest position
-					var myLat = currentPosition.findOne().latitude;
-					var myLng = currentPosition.findOne().longitude;
+					var myLat = currentPosition.findOne({mmsi: myMMSI}).latitude;
+					var myLng = currentPosition.findOne({mmsi: myMMSI}).longitude;
 					// Find bridges and locks
 					var cursor = featureCollection.find({$or: [{'properties.style': "Lock"},{'properties.style': "Bridge"}]});
 					var first = featureCollection.findOne({$or: [{'properties.style': "Lock"},{'properties.style': "Bridge"}]});
@@ -48,8 +51,7 @@ getNearestObstacle = function() {
 						});
 						// Round the distance to a 2 decimal number
 						nearest = nearest.toFixed(2);
-						// Get the user MMSI
-						var myMMSI = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
+						
 						// If we already exist in the collection ask the server to update the information
 						if(obstacleCollection.find({mmsi: myMMSI}).count()) {
 							Meteor.call('updateObstacle', myMMSI, obstName, obstType, nearest);
@@ -62,6 +64,7 @@ getNearestObstacle = function() {
 			} // end if bargeSubHandler
 		} // end if featSubHandler
 	} // end if currentposSubHandler
+});
 } // end function
 
 /**

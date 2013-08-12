@@ -16,11 +16,21 @@ div.datepicker {
 	padding-top: 10px;
 }
 
+.navbar-inner {
+	padding-left: 10px;
+	margin: 0;
+}
+
 .navbar .brand {
     max-height: 40px;
     overflow: visible;
     padding-top: 5px;
     padding-bottom: 0;
+}
+
+.navbar-fixed-top {
+	padding-left: 0;
+	padding-right: 0;
 }
 
 /* body style */
@@ -31,21 +41,21 @@ body {
 
 /* mainWindow template styles */
 div#mainLeft {
-	min-width: 200px;
+	min-width: 150px;
 	float: left; 
 	padding: 20px;
 	width: 25%; 
 }
 
 div#mainMiddle {
-	min-width: 200px;
+	min-width: 150px;
 	float: left; 
 	padding: 20px;
 	width: 50%; 
 }
 
 div#mainRight {
-	min-width: 200px;
+	min-width: 150px;
 	float: left; 
 	padding: 20px;
 	width: 25%; 

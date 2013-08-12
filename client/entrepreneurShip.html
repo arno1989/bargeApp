@@ -1,6 +1,7 @@
 <head>
 	<title>eXomodal bargeApp</title>
-	 <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
 </head>
 
 <body>
@@ -11,18 +12,21 @@
 		</div>
 	</header>
 	<!-- 	END HEADER NAVIGATION  -->
+	{{> mainContainer}}
 
+</body>
+	
+<template name="mainContainer">
 	<div class="container">
 		{{#if currentUser}}
 			<!-- Valid login -->
 			<!-- SHOW USER PANEL -->
 			{{getUserInfo}}
-			{{#isolate}} {{renderPage}} {{/isolate}}
+			{{renderPage}}
 		{{else}}
 			<!-- Not loggid in! -->
 			<!-- Show login page -->
 			{{> notLoggedIn}}
 		{{/if}}
 	</div>
-
-</body>
+</template>
