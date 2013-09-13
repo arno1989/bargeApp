@@ -26,15 +26,11 @@ Template.plannedManifest.getManifest=function() {
 	}
 }
 
-Template.plannedManifest.checkActive=function(timestamp) {
-	var currentTime = new Date();
-
-	if(currentTime < timestamp && first <= timestamp) {
-		first = timestamp;
-		console.log('TRUE');
+Template.plannedManifest.checkActive=function(startTime, endTime) {
+	var currentTime = new Date().getTime();
+	if(currentTime < endTime) {
 		return true;
 	} else {
-		console.log('FALSE');
 		return false;
 	}
 }

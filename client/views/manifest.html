@@ -36,7 +36,7 @@
     				<div class="accordion-heading">
       					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{this._id}}">
         					<table width="100%">
-        						{{#if checkActive this.callenddate}}
+        						{{#if checkActive this.callstartdate this.callenddate}}
         						<tr style="background-color: white">
     							{{else}}
         						<tr style="">
@@ -50,11 +50,11 @@
     						</table>
       					</a>
     				</div>
-	    			<div id="{{this._id}}" class="accordion-body collapse">
+	    			<!-- <div id="{{this._id}}" class="accordion-body collapse">
 			      		<div class="accordion-inner">
 			        		call informatie...
 			      		</div>
-	    			</div>
+	    			</div> -->
   				</div>
 			{{/each}}
 		</div> <!-- ./ accordion -->

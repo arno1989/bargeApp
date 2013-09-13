@@ -59,6 +59,8 @@ Deps.autorun(function() {
 							// Else insert the data into the collection
 							obstacleCollection.insert({mmsi: myMMSI, obstacleName: obstName, obstacleType: obstType, distance: nearest});
 						}
+						// Re-render template to show the next obstacle
+						$('#nextObstacle').html(Meteor.render(Template.nextObstacle));
 					} // end if cursor.count()
 				} // end if obstSubHandler
 			} // end if bargeSubHandler

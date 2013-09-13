@@ -114,7 +114,7 @@ Template.fullMap.rendered=function() {
   var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 16});
 
   // Ask the user to get their current location
-  map.locate({setView : false, watch: true, maximumAge: 2000, enableHighAccuracy: true});
+  map.locate({setView : false, maximumAge: 2000, enableHighAccuracy: true});
   // Add the tilelayer to the map
   map.addLayer(osm);
   // Add feature layer
@@ -197,33 +197,12 @@ Template.fullMap.rendered=function() {
 
   map.addLayer(animatedMarker);
   /*********************************************/
-
-  Meteor.call('getNearestFeature');
 }
-
-/***************************************/
-/** Log the position every 60 seconds **/
-/***************************************/
-Meteor.setInterval(function() {
-  if(bargeSubHandler && bargeSubHandler.ready()) {
-    if(currentposSubHandler && currentposSubHandler.ready()) {
-      // Use this or HTML5 GeoLocation
-      // Need to insert once a minute our location
-      // console.log('Inserting position into DB');
-      var my_mmsi = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
-      var lat = currentPosition.findOne().latitude;
-      var lng = currentPosition.findOne().longitude;
-      var date = currentPosition.findOne().timestamp;
-      //console.log('lat: ' + lat + ' lng: ' + lng + ' date: ' + date);
-      //positionLog.insert({mmsi: my_mmsi, timestamp: date, latitude: lat, longitude: lng});
-    }
-  }
-}, 60000);
 
 // Map functions
 function myPosition(e) {
   // Add marker on my location
-  var shipIcon = L.icon({
+/*  var shipIcon = L.icon({
     iconUrl: 'shipIcon.png',
     iconAnchor:   [10, 10]
   });
@@ -249,7 +228,7 @@ function myPosition(e) {
         currentPosition.insert({mmsi: user.mmsi, latitude: e.latlng.lat, longitude: e.latlng.lng, heading: e.heading, speed: e.speed, timestamp: curTimestamp.getTime()});
       }
     }
-  }
+  }*/
 }
 
 // db-Click the map to show the add call input form

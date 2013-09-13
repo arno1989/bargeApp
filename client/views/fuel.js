@@ -36,6 +36,7 @@ function addRow() {
     var cell1 = row.insertCell(0);
     var element1 = document.createElement("input");
     id = "termName" + rowCount;
+    element1.className = "form-control input-sm";
     element1.type = "text";
     element1.id = id;
     element1.placeholder="Terminal";
@@ -44,6 +45,7 @@ function addRow() {
     var cell2 = row.insertCell(1);
     var element2 = document.createElement("input");
     id = "arriveDate" + rowCount;
+    element2.className = "form-control input-sm";
     element2.type = "text";
     element2.id = id;
     element2.placeholder="00-00";
@@ -52,6 +54,7 @@ function addRow() {
     var cell3 = row.insertCell(2);
     var element3 = document.createElement("input");
     id = "arriveTime" + rowCount;
+    element3.className = "form-control input-sm";
     element3.type = "text";
     element3.id = id;
     element3.placeholder="00:00";
@@ -60,6 +63,7 @@ function addRow() {
     var cell4 = row.insertCell(3);
     var element4 = document.createElement("input");
     id = "startTime" + rowCount;
+    element4.className = "form-control input-sm";
     element4.type = "text";
     element4.id = id;
     element4.placeholder="00:00";
@@ -68,6 +72,7 @@ function addRow() {
     var cell5 = row.insertCell(4);
     var element5 = document.createElement("input");
     id = "departTime" + rowCount;
+    element5.className = "form-control input-sm";
     element5.type = "text";
     element5.id = id;
     element5.placeholder="00:00";
@@ -76,6 +81,7 @@ function addRow() {
     var cell6 = row.insertCell(5);
     var element6 = document.createElement("input");
     id = "20Feet" + rowCount;
+    element6.className = "form-control input-sm";
     element6.type = "number";
     element6.id = id;
     element6.placeholder="0";
@@ -84,6 +90,7 @@ function addRow() {
     var cell7 = row.insertCell(6);
     var element7 = document.createElement("input");
     id = "40Feet" + rowCount;
+    element7.className = "form-control input-sm";
     element7.type = "number";
     element7.id = id;
     element7.placeholder="0";
@@ -92,6 +99,7 @@ function addRow() {
     var cell8 = row.insertCell(7);
     var element8 = document.createElement("input");
     id = "45Feet" + rowCount;
+    element8.className = "form-control input-sm";
     element8.type = "number";
     element8.id = id;
     element8.placeholder="0";
@@ -100,6 +108,7 @@ function addRow() {
     var cell9 = row.insertCell(8);
     var element9 = document.createElement("input");
     id = "teu" + rowCount;
+    element9.className = "form-control input-sm";
     element9.type = "number";
     element9.id = id;
     element9.placeholder="0";
@@ -108,6 +117,7 @@ function addRow() {
     var cell10 = row.insertCell(9);
     var element10 = document.createElement("input");
     id = "omstuw" + rowCount;
+    element10.className = "form-control input-sm";
     element10.type = "number";
     element10.id = id;
     element10.placeholder="0";
@@ -116,6 +126,7 @@ function addRow() {
     var cell11 = row.insertCell(10);
     var element11 = document.createElement("input");
     id = "gasoil" + rowCount;
+    element11.className = "form-control input-sm";
     element11.type = "number";
     element11.id = id;
     element11.placeholder="0";

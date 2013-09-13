@@ -11,7 +11,7 @@ Template.mapSummary.rendered=function() {
   map = L.map('map').setView([52.2, 6.5], 9);
 
   // Ask the user to get their current location and keep following them
-  map.locate({setView : true, watch: true});
+  map.locate({setView : true});
   // Add the tilelayer to the map
   map.addLayer(osmLayer);
   // Add myPostionMarker to the map
@@ -23,12 +23,12 @@ Template.mapSummary.rendered=function() {
 
 // Map functions
 function myPosition(e) {
-  if(bargeSubHandler && bargeSubHandler.ready) {
+  // Add marker on my location
+  myPostionMarker.clearLayers();
+  var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
+  /*if(bargeSubHandler && bargeSubHandler.ready) {
     if(currentposSubHandler && currentposSubHandler.ready) {
       if(weatherSubHandler && weatherSubHandler.ready) {
-        // Add marker on my location
-        myPostionMarker.clearLayers();
-        var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(myPostionMarker); 
         // Get user information
         var user = bargeUsers.findOne({accessID: Meteor.userId()}); 
         // Get current time
@@ -48,5 +48,5 @@ function myPosition(e) {
         getNearestObstacle();
       }
     }
-  }
+  }*/
 }

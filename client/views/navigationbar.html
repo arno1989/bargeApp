@@ -1,61 +1,67 @@
 <template name="navigationbar">
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" href="{{mainWindowPath}}"><img src="exomodal.png"></a>
+	  </div> <!-- /.navbar-header -->
+
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse navbar-ex1-collapse">
+	    <ul class="nav navbar-nav">
+			<li class="home {{active mainWindowPath}}">
+				<a href="{{mainWindowPath}}">
+					<i class="icon-home {{iconColor mainWindowPath}}"></i> Home
 				</a>
-				<a class="brand" href="{{mainWindowPath}}">eXomodal</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li class="home {{active mainWindowPath}}">
-							<a href="{{mainWindowPath}}">
-								<i class="icon-home {{iconColor mainWindowPath}}"></i> Home
-							</a></li>
+			</li>
 
-						<li class="map {{active fullMapPath}}">
-							<a href="{{fullMapPath}}">
-								<i class="icon-globe {{iconColor fullMapPath}}"></i> Kaart
-							</a>
-						</li>
+			<li class="map {{active fullMapPath}}">
+				<a href="{{fullMapPath}}">
+					<i class="icon-globe {{iconColor fullMapPath}}"></i> Kaart
+				</a>
+			</li>
 
-						<li class="fuel {{active fuelPath}}">
-							<a href="{{fuelPath}}">
-								<i class="icon-fire {{iconColor fuelPath}}"></i> Brandstof
-							</a>
-						</li>
+			<li class="fuel {{active fuelPath}}">
+				<a href="{{fuelPath}}">
+					<i class="icon-fire {{iconColor fuelPath}}"></i> Brandstof
+				</a>
+			</li>
 
-						<li class="manifest {{active manifestPath}}">
-							<a href="{{manifestPath}}">
-								<i class="icon-tasks {{iconColor manifestPath}}"></i> Manifest
-							</a>
-						</li>
+			<li class="manifest {{active manifestPath}}">
+				<a href="{{manifestPath}}">
+					<i class="icon-tasks {{iconColor manifestPath}}"></i> Manifest
+				</a>
+			</li>
 
-						<li class="meteo {{active hydroMeteoPath}}">
-							<a href="{{hydroMeteoPath}}">
-								<i class="icon-picture {{iconColor hydroMeteoPath}}"></i> Meteo
-							</a>
-						</li>
+			<li class="meteo {{active hydroMeteoPath}}">
+				<a href="{{hydroMeteoPath}}">
+					<i class="icon-picture {{iconColor hydroMeteoPath}}"></i> Meteo
+				</a>
+			</li>
 
-						<li class="chat {{active chatroomPath}}">
-							<a href="{{chatroomPath}}">
-								<i class="icon-comment {{iconColor chatroomPath}}"></i> Chat
-							</a>
-						</li>
+			<li class="chat {{active chatroomPath}}">
+				<a href="{{chatroomPath}}">
+					<i class="icon-comment {{iconColor chatroomPath}}"></i> Chat
+				</a>
+			</li>
 
-						{{#if currentUser}} <!-- show this when user is logged in -->
-						<li class="profile {{active profilePath}}">
-							<a href="{{profilePath}}">
-								<i class="icon-user {{iconColor profilePath}}"></i> Profiel
-							</a>
-						</li>
-						{{/if}}
-					</ul>
-				</div>
-				<div id="login" class="span2 pull-right">{{loginButtons}}</div>
-			</div><!-- /.container -->
-		</div><!-- /.navbar-inner -->
-	</div><!-- /.navbar -->
+			{{#if currentUser}} <!-- show this when user is logged in -->
+			<li class="profile {{active profilePath}}">
+				<a href="{{profilePath}}">
+					<i class="icon-user {{iconColor profilePath}}"></i> Profiel
+				</a>
+			</li>
+			{{/if}}
+	    </ul>
+
+	    <ul class="nav navbar-nav navbar-right">
+	      <li><div id="login" class="span2 pull-right">{{loginButtons}}</div></li>
+	    </ul>
+	  </div><!-- /.navbar-collapse -->
+	</nav>
 </template>

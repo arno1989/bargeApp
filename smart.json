@@ -4,15 +4,11 @@
     "router": {},
     "bootstrap-3": {},
     "bootstrap-3-timepicker": {},
-    "bootstrap-datepicker": {
-      "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
-      "commit": "5b8b05dc778d47986de68ecf193083b26589c5b1"
-    },
     "collection-api": {},
     "d3js-package": {},
     "xml2js": {},
     "leaflet": {},
-    "chartjs": {},
-    "momentjs": {}
+    "momentjs": {},
+    "bootstrap-datepicker2": {}
   }
 }

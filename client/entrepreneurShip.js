@@ -1,6 +1,5 @@
 Meteor.startup( function () {
 
-  
 });
 
 /**

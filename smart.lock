@@ -6,47 +6,38 @@
       "router": {},
       "bootstrap-3": {},
       "bootstrap-3-timepicker": {},
-      "bootstrap-datepicker": {
-        "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
-        "branch": "master"
-      },
       "collection-api": {},
       "d3js-package": {},
       "xml2js": {},
       "leaflet": {},
-      "chartjs": {},
-      "momentjs": {}
+      "momentjs": {},
+      "bootstrap-datepicker2": {}
     },
     "packages": {
       "accounts-linkedin": {
         "git": "https://github.com/yefim/meteor-accounts-linkedin.git",
-        "tag": "v0.0.2",
-        "commit": "983607f93a6416957805903d44e2d3efbcf7da42"
+        "tag": "v0.0.5",
+        "commit": "0ccf12b93f5cd6f487caa68a12a640099e358ffd"
       },
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.5.3",
-        "commit": "7bd3a1bdd1099625bb8b49406d9b8f961d6f4a17"
+        "tag": "v0.5.4.1",
+        "commit": "d00e380dda2184b70e909fc4a0fb5358d602c586"
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.2.8",
-        "commit": "8026f0beaa0274849adfcf8c53d919216b5e06ba"
+        "tag": "v0.3.4",
+        "commit": "680c056e849d079a1b669247f347da2b443aad91"
       },
       "bootstrap-3-timepicker": {
         "git": "https://github.com/ianserlin/meteor-bootstrap-timepicker.git",
         "tag": "v0.2.1",
         "commit": "2dea6a3651fa4621b3281fcaa914564df2026aee"
       },
-      "bootstrap-datepicker": {
-        "git": "https://github.com/ideiudicibus/bootstrap-datepicker.git",
-        "branch": "master",
-        "commit": "5b8b05dc778d47986de68ecf193083b26589c5b1"
-      },
       "collection-api": {
         "git": "https://github.com/crazytoad/meteor-collectionapi.git",
-        "tag": "v0.1.14",
-        "commit": "d42ba1681289cb093afa7c67500862241df15f9e"
+        "tag": "v0.1.15",
+        "commit": "b62c51f387287726cf3b64077f7bc69604ec2f5e"
       },
       "d3js-package": {
         "git": "https://github.com/acidsound/d3js-package.git",
@@ -55,33 +46,43 @@
       },
       "xml2js": {
         "git": "https://github.com/peerlibrary/meteor-xml2js.git",
-        "tag": "v0.2.8.1",
-        "commit": "18be7da2a5893e74cbef225eb38773929235ace3"
+        "tag": "v0.2.8.3",
+        "commit": "398408e93683fded2cdd12923f181200713aee5e"
       },
       "leaflet": {
         "git": "https://github.com/bevanhunt/meteor-leaflet.git",
         "tag": "v0.1.8",
         "commit": "8a3d0f53734e4fe3efc3e6e39aa3da0209e2ec8e"
       },
-      "chartjs": {
-        "git": "https://github.com/donskifarrell/meteor-chartjs.git",
-        "tag": "v0.0.3",
-        "commit": "cd3339ccbc99eb8fe7664a918aef25423bdaca3b"
-      },
       "momentjs": {
         "git": "https://github.com/crapthings/meteor-momentjs.git",
-        "tag": "v2.1.0",
-        "commit": "f421f51c2cb40093374a83adb932937da2f991d3"
+        "tag": "v2.1.0.2",
+        "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
+      },
+      "bootstrap-datepicker2": {
+        "git": "https://github.com/deepwell/meteor-bootstrap-datepicker.git",
+        "tag": "v1.1.3",
+        "commit": "4581eef4760ad2022d0143dcc8cc0a28afc2f7a2"
       },
       "linkedin": {
         "git": "https://github.com/yefim/meteor-linkedin.git",
-        "tag": "v0.0.1",
-        "commit": "d68e9b6cbb5584552960d846b331dc3ed5cf4e5c"
+        "tag": "v0.0.2",
+        "commit": "c3bac682ea0edd19e58b9172e708f91616888ba0"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
         "tag": "v1.3.5",
         "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
+      },
+      "HTML5-History-API": {
+        "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
+        "tag": "v4.0.0",
+        "commit": "dc4965f1424cfca625ec3fbea17eace03f8e32c5"
+      },
+      "blocking": {
+        "git": "https://github.com/peerlibrary/meteor-blocking.git",
+        "tag": "v0.4.0",
+        "commit": "e25a0be72e771b317b26d2bb5758c983bdcef23c"
       }
     }
   }

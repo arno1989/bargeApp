@@ -9,8 +9,8 @@
 
 <template name="fuelInput">
 	<div class="well well-large">
-		<legend>Brandstof verbruik Invoeren</legend>
-		<table id="fuelFormTable" class="table">
+		<legend>Brandstof verbruik invoeren</legend>
+		<table id="fuelFormTable" class="table" width="100%">
 			<thead>
 				<tr>
 					<td>Terminal</td>
@@ -28,25 +28,25 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type="text" id="termName1" placeholder="Terminal"></td>
-					<td><input type="text" id="arriveDate1" placeholder="00-00"></td>
-					<td><input type="text" id="arriveTime1" placeholder="00:00"></td>
-					<td><input type="text" id="startTime1" placeholder="00:00"></td>
-					<td><input type="text" id="departTime1" placeholder="00:00"></td>
-					<td><input type="number" id="20Feet1" placeholder="0"></td>
-					<td><input type="number" id="40Feet1" placeholder="0"></td>
-					<td><input type="number" id="45Feet1" placeholder="0"></td>
-					<td><input type="number" id="teu1" placeholder="00"></td>
-					<td><input type="number" id="omstuw1" placeholder="0"></td>
-					<td><input type="number" id="gasoil1" placeholder="0"></td>
+					<td><input class="form-control input-sm" type="text" id="termName1" placeholder="Terminal"></td>
+					<td><input class="form-control input-sm" type="text" id="arriveDate1" placeholder="00-00"></td>
+					<td><input class="form-control input-sm" type="text" id="arriveTime1" placeholder="00:00"></td>
+					<td><input class="form-control input-sm" type="text" id="startTime1" placeholder="00:00"></td>
+					<td><input class="form-control input-sm" type="text" id="departTime1" placeholder="00:00"></td>
+					<td><input class="form-control input-sm" type="number" id="20Feet1" placeholder="0"></td>
+					<td><input class="form-control input-sm" type="number" id="40Feet1" placeholder="0"></td>
+					<td><input class="form-control input-sm" type="number" id="45Feet1" placeholder="0"></td>
+					<td><input class="form-control input-sm" type="number" id="teu1" placeholder="00"></td>
+					<td><input class="form-control input-sm" type="number" id="omstuw1" placeholder="0"></td>
+					<td><input class="form-control input-sm" type="number" id="gasoil1" placeholder="0"></td>
 				</tr>
 			</tbody>
 		</table>
 		<table width="100%">
 			<tr>
-				<td><button class="addRow btn btn-small"><i class="icon-plus-sign"></i> Regel</button>
-				<button class="remRow btn btn-small"><i class="icon-minus-sign"></i> Regel</button></td>
-				<td style="text-align: right"><button class="addFuelList btn"><i class="icon-ok-circle"></i> Opslaan</button></td>
+				<td><button class="addRow btn btn-default btn-small"><i class="icon-plus-sign"></i> Regel</button>
+				<button class="remRow btn btn-default btn-small"><i class="icon-minus-sign"></i> Regel</button></td>
+				<td style="text-align: right"><button class="addFuelList btn btn-default"><i class="icon-ok-circle"></i> Opslaan</button></td>
 			</tr>
 		</table>
 	</div> <!-- /. well well-large -->

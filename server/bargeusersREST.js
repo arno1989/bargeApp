@@ -51,14 +51,17 @@ if (Meteor.isServer) {
           if(obj.uniqueresourceid) {
             // Check if the call already exists
             if(callCollection.find({callreference: obj.callreference}).count()) {
+              console.log('Call already exists! ' + obj.callreference);
               return false;
             }
 
             // Check how many calls are in the database
             if(callCollection.find({uniqueresourceid: obj.uniqueresourceid}).count() < 20) {
+              console.log('there are less then 20 in DB');
               return true; // Insert right away!
             } else {
               // There are already 20 calls in the database, update the oldest
+              console.log('there are already 20 in DB! updating oldest! ' + obj.callreference);
               var cursor = callCollection.findOne({uniqueresourceid: obj.uniqueresourceid},{sort: {callstartdate: 1}});
               callCollection.remove({uniqueresourceid: obj.uniqueresourceid, callstartdate: cursor.callstartdate});
               return true;
