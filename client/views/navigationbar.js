@@ -11,7 +11,7 @@ function getGeo(){
 }
 
 function posError(error) {
-	console.log('position Error');
+  console.log('position Error');
 }
 
 function getPosition(position) {

@@ -1,0 +1,110 @@
+<template name="log">
+	{{> logActivity}}
+	{{> logHistory}}
+</template>
+
+<template name="logActivity">
+	<div class="well well-large">
+		<legend>Activiteit</legend>
+		<table id="activityFormTable" class="table" width="100%">
+			<thead>
+				<tr>
+					<td>Locatie</td>
+					<td>Via</td>
+					<td>Datum</td>
+					<td>Aankomst</td>
+					<td>Aanvang</td>
+					<td>Vertek</td>
+					<td>Lossen</td>
+					<td>Laden</td>
+					<td>Omstuw</td>
+					<td>Gasoliestand</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<select id="terminal" class="form-control" style="width:100px">
+							{{#each locations}}
+								<option value="{{this.name}}">{{this.name}}</option>
+							{{/each}}
+						</select>
+					</td>
+					<td>
+						<select id="via" class="form-control" style="width:100px">
+							<option value=""></option>
+							{{#each locations}}
+								<option value="{{this.name}}">{{this.name}}</option>
+							{{/each}}
+						</select>
+					</td>
+					<td><input type="date" id="ariveDate" style="height:34px; width:150px"></td>
+					<td>
+						<div class="input-append bootstrap-timepicker">
+			    			<input id="ariveTime" type="text" class="input-small timepicker" style="width:50px; height:34px">
+			  			</div>
+			  		</td>
+					<td>
+						<div class="input-append bootstrap-timepicker">
+			    			<input id="startTime" type="text" class="input-small timepicker" style="width:50px; height:34px">
+			  			</div>
+			  		</td>
+			  		<td>
+						<div class="input-append bootstrap-timepicker">
+			    			<input id="departTime" type="text" class="input-small timepicker" style="width:50px; height:34px">
+			  			</div>
+			  		</td>
+			  		<td><input class="form-control input-sm" style="height:34px" type="number" id="unload" placeholder=""></td>
+			  		<td><input class="form-control input-sm" style="height:34px" type="number" id="load" placeholder=""></td>
+			  		<td><input class="form-control input-sm" style="height:34px" type="number" id="omstuw" placeholder=""></td>
+			  		<td><input class="form-control input-sm" style="height:34px" type="number" id="fuel" placeholder=""></td>
+			  		<td><button id="saveAct" class="btn btn-default" style="height:34px"><i class="icon-ok-circle"></i> Opslaan</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</template>
+
+<template name="logHistory">
+	<div class="well well-large">
+		<legend>Activiteiten historie</legend>
+		<table id="activityFormTable" class="table" width="100%">
+			<thead>
+				<tr>
+					<td>Locatie</td>
+					<td>Via</td>
+					<td>Datum</td>
+					<td>Aankomst</td>
+					<td>Aanvang</td>
+					<td>Vertek</td>
+					<td>Lossen</td>
+					<td>Laden</td>
+					<td>Omstuw</td>
+					<td>Gasoliestand</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each getHistory}}
+				<tr>
+					<td>{{this.locationlabel}}</td>
+					<td>{{this.vialabel}}</td>
+					<td>{{getDate this.callarivetime}}</td>
+					<td>{{getTime this.callarivetime}}</td>
+					<td>{{getTime this.callstarttime}}</td>
+					<td>{{getTime this.callendtime}}</td>
+					<td>{{this.unload}}</td>
+					<td>{{this.load}}</td>
+					<td>{{this.omstuw}}</td>
+					<td>{{this.fuel}}</td>
+					<td>
+						<button class="btn btn-default btn-xs">Wijzig</button>
+						<button class="btn btn-default btn-xs">Opslaan</button>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</template>

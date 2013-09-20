@@ -37,7 +37,8 @@ Template.mainContainer.getUserInfo=function() {
           weatherSubHandler = Meteor.subscribe("currentWeather", userInfo.mmsi);
           Meteor.subscribe("tideInformation", userInfo.mmsi);
           callSubHandler = Meteor.subscribe("callCollection", userInfo.mmsi);
-          Meteor.subscribe("fuelCollection", userInfo.mmsi);
+          Meteor.subscribe("locationsCollection");
+          Meteor.subscribe("activityCollection", userInfo.mmsi);
           convSubHandler = Meteor.subscribe("conversationsCol", Meteor.userId());
           Meteor.subscribe("chatCollection"); 
           Meteor.subscribe("shipMessages");
@@ -55,7 +56,7 @@ Template.mainContainer.getUserInfo=function() {
 Meteor.Router.add({
   '/'           : 'mainWindow',
   '/kaart'      : 'fullMap',
-  '/brandstof'  : 'fuel',
+  '/log'        : 'log',
   '/manifest'   : 'manifest',
   '/hydroMeteo' : 'hydroMeteo',
   '/chat'       : 'chatroom',
