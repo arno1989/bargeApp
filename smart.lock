@@ -11,7 +11,8 @@
       "xml2js": {},
       "leaflet": {},
       "momentjs": {},
-      "bootstrap-datepicker2": {}
+      "bootstrap-datepicker2": {},
+      "bootstrap-datetimepicker": {}
     },
     "packages": {
       "accounts-linkedin": {
@@ -63,6 +64,11 @@
         "git": "https://github.com/deepwell/meteor-bootstrap-datepicker.git",
         "tag": "v1.1.3",
         "commit": "4581eef4760ad2022d0143dcc8cc0a28afc2f7a2"
+      },
+      "bootstrap-datetimepicker": {
+        "git": "https://github.com/Elfoslav/bootstrap-datetimepicker.git",
+        "tag": "v0.0.6",
+        "commit": "728e5d603c377652e6909e180358364c46ce95ff"
       },
       "linkedin": {
         "git": "https://github.com/yefim/meteor-linkedin.git",

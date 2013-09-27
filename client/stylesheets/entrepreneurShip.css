@@ -59,7 +59,12 @@ div#mainRight {
 	width: 25%; 
 }
 
-/* Fuel */
+/* Log */
+td.smalltxt {
+	font-size: 12px;
+	text-align: center;
+}
+
 input.input-sm {
 	height: 28px;
 }

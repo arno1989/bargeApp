@@ -46,13 +46,19 @@ if (Meteor.isServer) {
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting
       before: {  // This methods, if defined, will be called before the POST/GET/PUT/DELETE actions are performed on the collection. If the function returns false the action will be canceled, if you return true the action will take place.
         POST: function(obj) {
-          console.log('INSERTION INTO CALLS!');
-          // Remove all existing calls in the collection
-          callCollection.remove({});
-          console.log('TOTAL CALLS: ' + obj.calls.length);
-          // Insert all individual calls into the collection
-          for(var i=0;i<obj.calls.length;i++) {
-            callCollection.insert(obj.calls[i]);
+          var operator = obj.operator;
+          if(operator) {
+            console.log('Operator: ' + operator + ' is inserting calls');
+            // Remove all existing calls of the operator in the collection
+            callCollection.remove({callowner: operator});
+            // Check for calls
+            if(obj.calls.length) {
+              console.log('TOTAL CALLS: ' + obj.calls.length);
+              // Insert all individual calls into the collection
+              for(var i=0;i<obj.calls.length;i++) {
+                callCollection.insert(obj.calls[i]);
+              }
+            }
           }
           // Dont return true; Otherwise it will insert the the full batch in addition.
           return false;

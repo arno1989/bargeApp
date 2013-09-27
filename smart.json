@@ -9,6 +9,7 @@
     "xml2js": {},
     "leaflet": {},
     "momentjs": {},
-    "bootstrap-datepicker2": {}
+    "bootstrap-datepicker2": {},
+    "bootstrap-datetimepicker": {}
   }
 }
