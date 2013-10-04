@@ -7,10 +7,21 @@ if(Meteor.isServer){
 	});
 
 	Meteor.methods({
-		updateActivity: function(id, location, via, arive, start, end, unload, load, omstuw, fuel) {
-			activityCollection.update({_id: id},{locationlabel: location, vialabel: via, callarivetime: arive,
-										callstarttime: start, callendtime: end, unload: unload, load: load,
-										omstuw: omstuw, fuel: fuel});
+		updateActivity: function(id, location, via, arive, start, end, unload, load, omstuw, fuel, done) {
+			console.log('updating activity: ' + id);
+			activityCollection.update({_id: id},
+			{$set:{
+				locationlabel: location,
+				vialabel: via,
+				callstartdate: arive,
+				callbegindate: start,
+				callenddate: end,
+				unload: unload,
+				load: load,
+				omstuw: omstuw,
+				fuel: fuel,
+				done: done
+			}});;
 		}
 	});
 }

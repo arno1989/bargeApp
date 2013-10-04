@@ -1,3 +1,6 @@
+var savingObject;
+var editingObject;
+var activeRow;
 /*****************************************/
 /****		ACTIVITY TEMPLATE         ****/
 /*****************************************/
@@ -46,16 +49,10 @@ Template.logActivity.rendered=function() {
     $('#departTimepicker').datetimepicker({
       language: 'pt-BR'
     });
-
-
 }
 
 Template.logActivity.locations=function() {
 	return locationsCollection.find();
-}
-
-Template.logActivity.getLastActivity=function() {
-	return callCollection.findOne({callstartdate: {$lt: new Date().getTime()}},{sort: {callstartdate: -1}});
 }
 
 Template.logActivity.getDate=function(timestamp) {
@@ -63,25 +60,27 @@ Template.logActivity.getDate=function(timestamp) {
 }
 
 Template.logActivity.futureCalls=function() {
-	// Return all calls from the callCollection
-	return callCollection.find({callenddate: {$gt: new Date().getTime()}},{sort: {callenddate: -1}}).fetch();
+	// Return all calls from the activityCollection which are not done
+	return activityCollection.find({done: false});
 }
 
-Template.logActivity.pastCalls=function() {
-	if(callSubHandler && callSubHandler.ready) {
-		// Return all calls from the callCollection
-		return callCollection.find({callstartdate: {$lt: new Date().getTime()}},{sort: {callstartdate: -1}}).fetch();
+Template.logActivity.checkActive=function(data) {
+	if(data._id == activeRow) {
+		return "success";
+	} else {
+		return "active";
 	}
 }
 
 Template.logActivity.events({
 	// Save the activity
 	'click #saveAct':function(e) {
-		console.log('saving');
-		saveActivity();
+		saveActivity(savingObject);
 	},
 	'click .moveRow':function(e) {
+		savingObject = this;
 		moveActivity(this);
+		activeRow = this._id;
 		Session.set("currentTerm",  $('#terminal').val());
 		Session.set("currentVia",  $('#via').val());
 		Session.set("currentArive",  tsmsToStr(this.callstartdate));
@@ -91,6 +90,9 @@ Template.logActivity.events({
 		Session.set("currentLoad",  $('#load').val());
 		//Session.set("currentOmstuw",  $('#omstuw').val());
 		//Session.set("currentFuel",  $('#fuel').val());
+
+		// Re-render
+		$('#activeContainer').html(Meteor.render(Template.logActivity));
 	},
 	'change #terminal':function(e) {
 		Session.set("currentTerm",  $('#terminal').val());
@@ -136,40 +138,115 @@ function moveActivity(data) {
 	//$('#fuel').val()
 }
 
-function saveActivity() {
-	console.log('test');
-	var uniqueID = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
+function saveActivity(data) {
+	var done = true;
+	var arive_timestamp = 0;
+	var start_timestamp = 0;
+	var end_timestamp = 0;
+
+	//var uniqueID = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
 	var location = document.getElementById("terminal").value;
 	var via = document.getElementById("via").value;
 	// calc arive timestamp
 	var callarivetime = document.getElementById("ariveTime").value;
-	var arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix();
+	if(callarivetime) {
+		arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}	
 	// calc start timestamp
 	var callstarttime = document.getElementById("startTime").value;
-	var start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix();
-
+	if(callstarttime) {
+		start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}
 	// calc end timestamp
 	var callendtime = document.getElementById("departTime").value;
-	var end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix();
-
+	if(callendtime) {
+		end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}
+	
 	var unload = document.getElementById("unload").value;
 	var load = document.getElementById("load").value;
 	var omstuw = document.getElementById("omstuw").value;
 	var fuel = document.getElementById("fuel").value;
+
+	// Reset input values
+	$('#terminal').val('');
+	$('#via').val('');
+
+	$('#ariveTime').val('');
+	$('#startTime').val('');
+	$('#departTime').val('');
+
+	$('#unload').val('');
+	$('#load').val('');
+	$('#omstuw').val('');
+	$('#fuel').val('');
+
+	// If the user selected an existing call
+	if(data) {
+		Meteor.call('updateActivity', data._id, location, via, arive_timestamp,
+			start_timestamp, end_timestamp, unload, load, omstuw, fuel, done);
+	}
+	// Else it is a custom call
+
+
+	/* --> Could be used for custom calls <--
 	var activityData = "{\"uniqueresourceid\":\"" + uniqueID + "\",\"locationlabel\":\"" + location
 						+ "\",\"vialabel\":\"" + via + "\",\"callarivetime\":" + arive_timestamp
 						+ ",\"callstarttime\":" + start_timestamp + ",\"callendtime\":" + end_timestamp 
 						+ ",\"unload\":" + unload + ",\"load\":" + load + ",\"omstuw\":" + omstuw
-						+ ",\"fuel\":" + fuel + "}";
-	var jsonobject = JSON.parse(activityData);
+						+ ",\"fuel\":" + fuel + ",\"done\":" + done "}";
+	var jsonobject = JSON.parse(activityData);*/
 
-	activityCollection.insert(jsonobject);
+	// Reset the saving object
+	savingObject = null;
+	activeRow = "";
+	// Reset session values
+	Session.set("editTerm",  $('#editTerminal').val());
+	Session.set("editVia",  $('#editVia').val());
+	Session.set("editArive",  $('#editAriveTime').val());
+	Session.set("editStart",  $('#editStartTime').val());
+	Session.set("editDepart",  $('#editDepartTime').val());
+	Session.set("editUnload",  $('#editUnload').val());
+	Session.set("editLoad",  $('#editLoad').val());
+	Session.set("editOmstuw",  $('#editOmstuw').val());
+	Session.set("editFuel",  $('#editFuel').val());
 }
 
 /*****************************************/
 /****		HISTORY  TEMPLATE         ****/
 /*****************************************/
 Template.logHistory.rendered=function() {
+	// Get session vars
+	if(Session.get("editTerm")) {
+		$('#editTerminal').val(Session.get("editTerm"));
+	}
+	if(Session.get("editVia")) {
+		$('#editVia').val(Session.get("editVia"));
+	}
+
+	if(Session.get("editArive")) {
+		$('#editAriveTime').val(Session.get("editArive"));
+	}
+	if(Session.get("editStart")) {
+		$('#editStartTime').val(Session.get("editStart"));
+	}
+	if(Session.get("editDepart")) {
+		$('#editDepartTime').val(Session.get("editDepart"));
+	}
+
+	if(Session.get("editUnload")) {
+		$('#editUnload').val(Session.get("editUnload"));
+	}
+	if(Session.get("editLoad")) {
+		$('#editLoad').val(Session.get("editLoad"));
+	}
+	if(Session.get("editOmstuw")) {
+		$('#editOmstuw').val(Session.get("editOmstuw"));
+	}
+	if(Session.get("editFuel")) {
+		$('#editFuel').val(Session.get("editFuel"));
+	}
+
     $('#editAriveTimepicker').datetimepicker({
       language: 'pt-BR'
     });
@@ -183,11 +260,14 @@ Template.logHistory.rendered=function() {
 
 Template.logHistory.events({
 	'click .editRow':function(e) {
+		editingObject = this;
+		activeRow = this._id;
 		moveHistoryActivity(this);
-		//Meteor.call("updateActivity", );
+		// Re-render
+		$('#historyContainer').html(Meteor.render(Template.logHistory));
 	},
 	'click .saveRow':function(e) {
-
+		editHistoryActivity(editingObject);
 	}
 });
 
@@ -199,31 +279,109 @@ function moveHistoryActivity(data) {
 	var arivePicker = $('#editAriveTimepicker').data('datetimepicker');
 	var startPicker = $('#editStartTimepicker').data('datetimepicker');
 	var departPicker = $('#editDepartTimepicker').data('datetimepicker');
-
+	// Set the input values
 	$('#editTerminal').val(data.locationlabel);
 	$('#editVia').val(data.vialabel);
-
-	$('#editAriveTime').val(tsToStr(data.callarivetime));
-	$('#editStartTime').val(tsToStr(data.callstarttime));
-	$('#editDepartTime').val(tsToStr(data.callendtime));
-
+	$('#editAriveTime').val(tsToStr(data.callstartdate));
+	$('#editStartTime').val(tsToStr(data.callbegindate));
+	$('#editDepartTime').val(tsToStr(data.callenddate));
 	$('#editUnload').val(data.unload);
 	$('#editLoad').val(data.load);
 	$('#editOmstuw').val(data.omstuw);
 	$('#editFuel').val(data.fuel);
+	// Save the session values
+	Session.set("editTerm",  $('#editTerminal').val());
+	Session.set("editVia",  $('#editVia').val());
+	Session.set("editArive",  $('#editAriveTime').val());
+	Session.set("editStart",  $('#editStartTime').val());
+	Session.set("editDepart",  $('#editDepartTime').val());
+	Session.set("editUnload",  $('#editUnload').val());
+	Session.set("editLoad",  $('#editLoad').val());
+	Session.set("editOmstuw",  $('#editOmstuw').val());
+	Session.set("editFuel",  $('#editFuel').val());
+}
+
+function editHistoryActivity(data) {
+	var done = true;
+	var arive_timestamp = 0;
+	var start_timestamp = 0;
+	var end_timestamp = 0;
+
+	//var uniqueID = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
+	var location = $('#editTerminal').val();
+	var via = $('#editVia').val();
+	// calc arive timestamp
+	var callarivetime = $('#editAriveTime').val();
+	if(callarivetime) {
+		arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}	
+	// calc start timestamp
+	var callstarttime = $('#editStartTime').val();
+	if(callstarttime) {
+		start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}
+	// calc end timestamp
+	var callendtime = $('#editDepartTime').val();
+	if(callendtime) {
+		end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix() * 1000;
+	}
+	
+	var unload = $('#editUnload').val();
+	var load = $('#editLoad').val();
+	var omstuw = $('#editOmstuw').val();
+	var fuel = $('#editFuel').val();
+	// Reset input values
+	$('#editTerminal').val('');
+	$('#editVia').val('');
+	$('#editAriveTime').val('');
+	$('#editStartTime').val('');
+	$('#editDepartTime').val('');
+	$('#editUnload').val('');
+	$('#editLoad').val('');
+	$('#editOmstuw').val('');
+	$('#editFuel').val('');
+
+	// If the user selected an existing call
+	if(data) {
+		Meteor.call('updateActivity', data._id, location, via, arive_timestamp,
+			start_timestamp, end_timestamp, unload, load, omstuw, fuel, done);
+	}
+	// Else it is a custom call
+
+	// Reset the editing object
+	editingObject = null;
+	activeRow = "";
+	// Reset session values
+	Session.set("editTerm",  $('#editTerminal').val());
+	Session.set("editVia",  $('#editVia').val());
+	Session.set("editArive",  $('#editAriveTime').val());
+	Session.set("editStart",  $('#editStartTime').val());
+	Session.set("editDepart",  $('#editDepartTime').val());
+	Session.set("editUnload",  $('#editUnload').val());
+	Session.set("editLoad",  $('#editLoad').val());
+	Session.set("editOmstuw",  $('#editOmstuw').val());
+	Session.set("editFuel",  $('#editFuel').val());
 }
 
 
 Template.logHistory.getHistory=function() {
-	return activityCollection.find({},{sort: {callarivetime: -1}});
+	return activityCollection.find({done: true},{sort: {callstartdate: -1}});
+}
+
+Template.logHistory.checkActive=function(data) {
+	if(data._id == activeRow) {
+		return "success";
+	} else {
+		return "active";
+	}	
 }
 
 Template.logHistory.getDate=function(timestamp) {
-	return moment.unix(timestamp).format("DD-MM-YYYY HH:mm");
+	return moment.unix(timestamp/1000).format("DD-MM-YYYY HH:mm");
 }
 
 function tsToStr(timestamp) {
-	return moment.unix(timestamp).format("DD-MM-YYYY HH:mm");
+	return moment.unix(timestamp/1000).format("DD-MM-YYYY HH:mm");
 }
 
 function tsmsToStr(timestamp) {

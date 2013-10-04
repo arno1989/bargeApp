@@ -1,12 +1,12 @@
 <template name="chatroom">
 	<div id="chatroom">
-		<div class="well well-large">
-		{{#unless show}}
+		<div class="well well-small conversationlist">
 			{{> conversations}}
-		{{else}}
+		</div> <!-- /. well well-small -->
+
+		<div class="well well-small conversation">
 			{{> conversation}}
-		{{/unless}}
-		</div> <!-- /. well well-large -->
+		</div> <!-- /. well well-small -->
 	</div> <!-- /. chatroom -->
 </template>
 
@@ -14,7 +14,7 @@
 	<table width="100%" cellpadding="5">
 		<tr>
 			<td width="90%"><legend>Gesprekken</legend></td>
-			<td width="10%" style="vertical-align: top;"><button class="newConv btn"><i class="icon-comment"></i> Nieuw</button></td>
+			<td width="10%" style="vertical-align: top;"><button class="newConv btn btn-default btn-xs"><i class="icon-comment"></i> Nieuw</button></td>
 		</tr>
 	</table>
 	<div class="list-group">
@@ -24,7 +24,7 @@
 	</div>
 
 	<!-- Modal -->
-	<div id="newConvModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div id="newConvModal" class="modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">Nieuw gesprek</h3>
@@ -50,14 +50,14 @@
 	<div class="msgCommands">
 		<table cellpadding="10">
 			<tr>
-				<td width="10%">
-					<button class="ret btn btn-large"><i class="icon-chevron-left"></i> Terug</button>
-				</td>
+				<!-- <td width="10%">
+					<button class="ret btn btn-default"><i class="icon-chevron-left"></i> Terug</button>
+				</td> -->
 				<td width="80%">
         			<textarea rows="2" type="text" class="msg"></textarea>
     			</td>
         		<td width="10%">
-        			<button class="msg-send btn btn-large"><i class="icon-pencil"></i> Verzend</button>
+        			<button class="msg-send btn btn-default"><i class="icon-pencil"></i> Verzend</button>
         		</td>
         	</tr>
         </table>

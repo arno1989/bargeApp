@@ -70,6 +70,24 @@ input.input-sm {
 }
 
 /* Chatroom style */
+.conversationlist {
+	float: left;
+	width: 20%;
+	padding: 5px;
+	margin-right: 10px; 
+}
+
+.conversation {
+	float: left;
+	width: 70%;
+	padding: 5px;
+	margin-left: 10px;
+}
+
+.msg {
+	width: 100%;
+}
+
 #chat {
 	border: 2px;
 	height: 50px;

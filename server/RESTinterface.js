@@ -27,7 +27,7 @@ if (Meteor.isServer) {
     });
 
     // Add the collection onlineBargeUsers to the API path
-    collectionApi.addCollection(onlineBargeUsers, 'online_barge_users', {
+    collectionApi.addCollection(onlineBargeUsers, 'onlinebargeusers', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting
@@ -57,6 +57,22 @@ if (Meteor.isServer) {
               // Insert all individual calls into the collection
               for(var i=0;i<obj.calls.length;i++) {
                 callCollection.insert(obj.calls[i]);
+                // If the call does not exists insert into the activityCollection
+                if(activityCollection.find({callreference: obj.calls[i].callreference}).count() == 0) {
+                  console.log('activity-call does not existst and is not edited, INSERT');
+                  activityCollection.insert(obj.calls[i]);
+                  // add done field
+                  activityCollection.update({callreference: obj.calls[i].callreference},{$set: {"done": false}});
+                } else if(activityCollection.find({callreference: obj.calls[i].callreference, done: false}).count() > 0) {
+                  // If the call does exists and is not edited
+                  console.log('activity-call does existst and is not edited, UPDATE');
+                  // Remove the old object
+                  activityCollection.remove({callreference: obj.calls[i].callreference});
+                  // insert the new object
+                  activityCollection.insert(obj.calls[i]);
+                  // add done field
+                  activityCollection.update({callreference: obj.calls[i].callreference},{$set: {"done": false}});
+                }
               }
             }
           }
@@ -95,7 +111,7 @@ if (Meteor.isServer) {
     });
 
     // Add the collection activity to the API path
-    collectionApi.addCollection(activityCollection, 'activityCollection', {
+    collectionApi.addCollection(activityCollection, 'activitylog', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting
@@ -108,7 +124,7 @@ if (Meteor.isServer) {
     });
 
     // Add the collection ChatCollection to the API path
-    collectionApi.addCollection(chatCollection, 'chatcollection', {
+    collectionApi.addCollection(chatCollection, 'chat', {
       // All values listed below are default
       authToken: undefined,                   // Require this string to be passed in on each request
       methods: ['POST','GET','PUT','DELETE'],  // Allow creating, reading, updating, and deleting

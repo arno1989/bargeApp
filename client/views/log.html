@@ -1,6 +1,10 @@
 <template name="log">
-	{{> logActivity}}
-	{{> logHistory}}
+	<div id="activeContainer">
+		{{> logActivity}}
+	</div>
+	<div id="historyContainer">
+		{{> logHistory}}
+	</div>
 </template>
 
 <template name="logActivity">
@@ -25,7 +29,7 @@
 			</thead>
 			<tbody>
 			{{#each futureCalls}}
-				<tr>
+				<tr class="{{checkActive this}}">
 					<td>{{this.locationlabel}}</td>
 					<td><!-- not known --></td>
 					<td>{{getDate this.callstartdate}}</td>
@@ -179,12 +183,12 @@
 					</td>
 				</tr>
 				{{#each getHistory}}
-				<tr>
+				<tr class="{{checkActive this}}">
 					<td>{{this.locationlabel}}</td>
 					<td>{{this.vialabel}}</td>
-					<td>{{getDate this.callarivetime}}</td>
-					<td>{{getDate this.callstarttime}}</td>
-					<td>{{getDate this.callendtime}}</td>
+					<td>{{getDate this.callstartdate}}</td>
+					<td>{{getDate this.callbegindate}}</td>
+					<td>{{getDate this.callenddate}}</td>
 					<td>{{this.unload}}</td>
 					<td>{{this.load}}</td>
 					<td>{{this.omstuw}}</td>

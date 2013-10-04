@@ -17,14 +17,15 @@ Template.chatroom.show=function() {
  * Return any started conversations
  **/
 Template.conversations.getActiveConv=function() {
-	if(convSubHandler && convSubHandler.ready) {
+	/*if(convSubHandler && convSubHandler.ready) {
 		if(conversationsCol.find({receiver: "Global"}).count() == 0) {
 			// Global channel not initialized
 			//console.log('init global channel!');
 			//conversationsCol.insert({msg: "", date: 0, name: "", owner: Meteor.userId(), receiver: "Global"});
 		}
 		return conversationsCol.find({},{sort: {date: -1}});
-	}
+	}*/
+	return conversationsCol.find({},{sort: {date: -1}});
 }
 
 /**
@@ -56,9 +57,18 @@ Template.conversations.getUsers=function() {
 
 Template.conversations.events({
 	'click .conv': function(event) {
+		console.log(this);
 		showConv = true;			// Show the conversation on rerender
-		chatOwner = this.owner;		// Set chat owner
-		chatRecv = this.receiver;	// Set the chat receiver
+		/*** check the users ***/
+		// If the owner is me
+		if(this.owner == Meteor.userId()) {
+			chatOwner = this.owner;		// Set chat owner
+			chatRecv = this.receiver;	// Set the chat receiver
+		} else if(this.receiver == Meteor.userId()) {
+			chatOwner = this.receiver;
+			chatRecv = this.owner;
+		}
+		/*** ***/
 		console.log('owner: ' + chatOwner + ' Recv: ' + chatRecv);
 		$('#chatroom').html(Meteor.render(Template.chatroom)); // Rerender template
 	},
