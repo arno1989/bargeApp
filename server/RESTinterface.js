@@ -49,26 +49,19 @@ if (Meteor.isServer) {
           var operator = obj.operator;
           if(operator) {
             console.log('Operator: ' + operator + ' is inserting calls');
-            // Remove all existing calls of the operator in the collection
-            callCollection.remove({callowner: operator});
             // Check for calls
             if(obj.calls.length) {
               console.log('TOTAL CALLS: ' + obj.calls.length);
+              // Remove all existing calls of the operator in the collection
+              callCollection.remove({callowner: operator});
+              // Remove all activities which are not done
+              activityCollection.remove({done: false});
               // Insert all individual calls into the collection
               for(var i=0;i<obj.calls.length;i++) {
                 callCollection.insert(obj.calls[i]);
-                // If the call does not exists insert into the activityCollection
+                // If the call does not exists in the activityCollection
                 if(activityCollection.find({callreference: obj.calls[i].callreference}).count() == 0) {
                   console.log('activity-call does not existst and is not edited, INSERT');
-                  activityCollection.insert(obj.calls[i]);
-                  // add done field
-                  activityCollection.update({callreference: obj.calls[i].callreference},{$set: {"done": false}});
-                } else if(activityCollection.find({callreference: obj.calls[i].callreference, done: false}).count() > 0) {
-                  // If the call does exists and is not edited
-                  console.log('activity-call does existst and is not edited, UPDATE');
-                  // Remove the old object
-                  activityCollection.remove({callreference: obj.calls[i].callreference});
-                  // insert the new object
                   activityCollection.insert(obj.calls[i]);
                   // add done field
                   activityCollection.update({callreference: obj.calls[i].callreference},{$set: {"done": false}});

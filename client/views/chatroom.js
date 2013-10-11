@@ -107,35 +107,6 @@ Template.conversation.events({
 	'click .msg-send': function() {
 		sendMsg();
 	},
-	'click .icon-trash': function() {
-		// Remove the selected message
-		chatCollection.remove({_id: this._id});
-
-		// Find the latest message
-		var latestMsg = chatCollection.findOne(
-			{ $or: [
-					{$and: [{owner: chatOwner}, {receiver: chatRecv}]},
-					{$and: [{owner: chatRecv}, {receiver: chatOwner}]}
-					]
-			},{sort: {date: -1}});
-
-		// Find the conversation information 
-		var found = conversationsCol.findOne(
-				{ $or: [
-						{$and: [{owner: Meteor.userId()}, {receiver: chatRecv}]},
-						{$and: [{owner: chatRecv}, {receiver: Meteor.userId()}]}
-						]
-				}
-			);
-		// Update the conversation with the previous message
-		conversationsCol.update({_id: found._id}, {$set: {
-			msg: latestMsg.msg,
-			date: latestMsg.timestamp,
-			name: latestMsg.name,
-			owner: latestMsg.owner,
-			receiver: latestMsg.receiver				
-		}});
-	},
 	'keypress textarea': function(event) {
 		// When shift + enter key is pressed add new line
 		if(event.keyCode == 13 && event.shiftKey) {
@@ -177,7 +148,7 @@ Template.chatMessages.msgs=function() {
 
 Template.chatMessages.passTime=function(timestamp) {
 	// Convert timestamp to readable time: 18:30
-	return moment(timestamp).format('H:mm DD MM YYYY');
+	return moment(timestamp).format('H:mm');
 }
 
 Template.chatMessages.today=function() {

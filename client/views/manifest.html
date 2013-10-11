@@ -22,11 +22,12 @@
 	{{#if getManifest}}
 		<table width="100%">
 			<tr>
-				<td width="20%"><b>Datum</b></td>
-				<td width="20%"><b>Call</b></td>
-				<td width="20%"><b>Lossen</b></td>
-				<td width="20%"><b>Laden</b></td>
-				<td width="20%"><b>Call eigenaar</b></td>
+				<td width="16.6%"><b>Datum</b></td>
+				<td width="16.6%"><b>Call</b></td>
+				<td width="16.6"><b>Via</b></td>
+				<td width="16.6%"><b>Lossen</b></td>
+				<td width="16.6%"><b>Laden</b></td>
+				<td width="16.6"><b>Call eigenaar</b></td>
 			</tr>
 		<table>
 
@@ -41,11 +42,12 @@
     							{{else}}
         						<tr style="">
     							{{/if}}
-        							<td width="20%">{{convertTime this.callstartdate}}</td>
-        							<td width="20%">{{this.locationlabel}}</td>    
-        							<td width="20%">{{this.unload}}</td>
-        							<td width="20%">{{this.load}}</td>
-        							<td width="20%">{{this.callowner}}</td>
+        							<td width="16.6%">{{convertTime this.callstartdate}}</td>
+        							<td width="16.6%">{{this.locationlabel}}</td>    
+        							<td width="16.6%">{{this.vialabel}}</td>
+        							<td width="16.6%">{{this.unload}}</td>
+        							<td width="16.6%">{{this.load}}</td>
+        							<td width="16.6%">{{this.callowner}}</td>
         						</tr>
     						</table>
       					</a>

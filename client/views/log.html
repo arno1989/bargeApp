@@ -31,7 +31,7 @@
 			{{#each futureCalls}}
 				<tr class="{{checkActive this}}">
 					<td>{{this.locationlabel}}</td>
-					<td><!-- not known --></td>
+					<td>{{this.vialabel}}</td>
 					<td>{{getDate this.callstartdate}}</td>
 					<td><!-- not known --></td>
 					<td>{{getDate this.callenddate}}</td>
@@ -39,7 +39,10 @@
 					<td>{{this.load}}</td>
 					<td>{{this.omstuw}}</td>
 					<td><!-- not known --></td>
-					<td><button class="btn btn-default moveRow"><i class="icon-edit"></i></button></td>
+					<td>
+						<button class="btn btn-default splitRow"><i class="icon-resize-full"></i></button>
+						<button class="btn btn-default moveRow"><i class="icon-edit"></i></button>
+					</td>
 				</tr>
 			{{/each}}
 			</tbody>

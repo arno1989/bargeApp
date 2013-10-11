@@ -10,20 +10,19 @@
 	</div> <!-- /. chatroom -->
 </template>
 
+<!-- SHOW ALL ACTIVE CONVERSATION GROUPS -->
 <template name="conversations">
-	<table width="100%" cellpadding="5">
-		<tr>
-			<td width="90%"><legend>Gesprekken</legend></td>
-			<td width="10%" style="vertical-align: top;"><button class="newConv btn btn-default btn-xs"><i class="icon-comment"></i> Nieuw</button></td>
-		</tr>
-	</table>
+	<button class="newConv btn btn-default btn-xs"><i class="icon-comment"></i> Nieuw gesprek</button>
+	<button class="newGrp btn btn-default btn-xs"><i class="icon-plus-sign"></i> Nieuwe groep</button>
+	<legend>Gesprekken</legend>
+
 	<div class="list-group">
 		{{#each getActiveConv}}
 			<a href="" id="{{_id}}" class="list-group-item conv"><H5>{{getConvName}}<br><small>{{msg}} - {{name}}</small></H5></a>
 		{{/each}}
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal to add a new conversation-->
 	<div id="newConvModal" class="modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -38,8 +37,25 @@
 			</div>			
 		</div>
 	</div> <!-- /. Modal -->
+
+	<!-- Modal to add a new group conversation-->
+	<div id="newGrpModal" class="modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Nieuwe groep</h3>
+		</div>
+		<div class="modal-body">
+			<div class="list-group">
+				<!-- zit geen database collectie achter -->
+				{{#each getUsers}}
+					<a href="" id="{{_id}}" class="list-group-item startNewConv"><b>{{name}}</b></a>
+				{{/each}}
+			</div>			
+		</div>
+	</div> <!-- /. Modal -->
 </template>
 
+<!-- SHOW THE SPECIFIC CONVERSATION MESSAGES -->
 <template name="conversation">
 	<div id="messContainer" height="100%" class="containter-fluid">
 		<legend>{{getConvName}}</legend>
@@ -50,9 +66,6 @@
 	<div class="msgCommands">
 		<table cellpadding="10">
 			<tr>
-				<!-- <td width="10%">
-					<button class="ret btn btn-default"><i class="icon-chevron-left"></i> Terug</button>
-				</td> -->
 				<td width="80%">
         			<textarea rows="2" type="text" class="msg"></textarea>
     			</td>
@@ -80,9 +93,6 @@
 			<tr class="info">
 				<td style="vertical-align: top;">
 					<small>{{passTime date}}</small><br>
-					{{#if getDelButton owner}}
-						<a href=""><i id="{{_id}}" class="icon-trash"></i></a>
-					{{/if}}
 				</td>
 				<td width="90%">
 					{{msg}}<br>

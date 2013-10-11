@@ -1,6 +1,8 @@
 var savingObject;
 var editingObject;
 var activeRow;
+var splitCounter = 0;
+var prevSplitObj;
 /*****************************************/
 /****		ACTIVITY TEMPLATE         ****/
 /*****************************************/
@@ -49,6 +51,22 @@ Template.logActivity.rendered=function() {
     $('#departTimepicker').datetimepicker({
       language: 'pt-BR'
     });
+
+    // init split date-time-pickers
+    for(var i=2;i<splitCounter+2;i++) {
+    	var arivepickerid = '#ariveTimepicker'+parseInt(i);
+    	var startpickerid = '#startTimepicker'+parseInt(i);
+    	var departpickerid = '#departTimepicker'+parseInt(i);
+    	$(arivepickerid).datetimepicker({
+    		language: 'pt-BR'
+    	});
+    	$(startpickerid).datetimepicker({
+    		language: 'pt-BR'
+    	});
+    	$(departpickerid).datetimepicker({
+    		language: 'pt-BR'
+    	});
+    }
 }
 
 Template.logActivity.locations=function() {
@@ -61,7 +79,7 @@ Template.logActivity.getDate=function(timestamp) {
 
 Template.logActivity.futureCalls=function() {
 	// Return all calls from the activityCollection which are not done
-	return activityCollection.find({done: false});
+	return activityCollection.find({done: false}, {sort: {callstartdate: -1}});
 }
 
 Template.logActivity.checkActive=function(data) {
@@ -77,8 +95,44 @@ Template.logActivity.events({
 	'click #saveAct':function(e) {
 		saveActivity(savingObject);
 	},
+	// Move the activity to the form
 	'click .moveRow':function(e) {
 		savingObject = this;
+		moveActivity(this);
+		activeRow = this._id;
+		splitCounter = 0;
+		Session.set("currentTerm",  $('#terminal').val());
+		Session.set("currentVia",  $('#via').val());
+		Session.set("currentArive",  tsmsToStr(this.callstartdate));
+		//Session.set("currentStart",  $('#date').val());
+		Session.set("currentDepart",  tsmsToStr(this.callenddate));
+		Session.set("currentUnload",  $('#unload').val());
+		Session.set("currentLoad",  $('#load').val());
+		//Session.set("currentOmstuw",  $('#omstuw').val());
+		//Session.set("currentFuel",  $('#fuel').val());
+
+		// Re-render
+		$('#activeContainer').html(Meteor.render(Template.logActivity));
+	},
+	// Split the selected call
+	'click .splitRow':function(e) {
+		savingObject = this;
+
+		// if we already clicked on a split button
+		if(prevSplitObj) {
+			// and it is the same as the previous
+			if(this == prevSplitObj) {
+				splitCounter++;
+			} else {
+				splitCounter = 0;
+			}
+			prevSplitObj = this;
+		} else {
+			splitCounter++;
+		}
+		
+		// Add 
+		
 		moveActivity(this);
 		activeRow = this._id;
 		Session.set("currentTerm",  $('#terminal').val());
@@ -93,6 +147,13 @@ Template.logActivity.events({
 
 		// Re-render
 		$('#activeContainer').html(Meteor.render(Template.logActivity));
+		// Add new row to the activity form
+		for(var i=0;i<splitCounter;i++) {
+			addRow();
+		}
+	},
+	'click .remRow':function() {
+		remRow();
 	},
 	'change #terminal':function(e) {
 		Session.set("currentTerm",  $('#terminal').val());
@@ -128,7 +189,7 @@ function moveActivity(data) {
 	var departPicker = $('#departTimepicker').data('datetimepicker');
 
 	$('#terminal').val(data.locationlabel);
-	//$('#via').val();
+	$('#via').val(data.vialabel);
 	arivePicker.setDate(new Date(data.callstartdate + (2*1000*60*60)));
 	departPicker.setDate(new Date(data.callenddate + (2*1000*60*60)));
 
@@ -144,7 +205,6 @@ function saveActivity(data) {
 	var start_timestamp = 0;
 	var end_timestamp = 0;
 
-	//var uniqueID = bargeUsers.findOne({accessID: Meteor.userId()}).mmsi;
 	var location = document.getElementById("terminal").value;
 	var via = document.getElementById("via").value;
 	// calc arive timestamp
@@ -168,6 +228,108 @@ function saveActivity(data) {
 	var omstuw = document.getElementById("omstuw").value;
 	var fuel = document.getElementById("fuel").value;
 
+	
+
+	// If the user selected an existing call
+	if(data) {
+		// Update selected call
+		Meteor.call('updateActivity', data._id, location, via, arive_timestamp,
+			start_timestamp, end_timestamp, unload, load, omstuw, fuel, done);
+		// Insert extra calls if the call is splitted
+		if(splitCounter > 0) {
+			console.log('split!');
+			// Call is split create call reference
+			for(var i=2;i<splitCounter+2;i++) {
+				var callref = data.callreference + ':' + parseInt(i-1);
+				var owner = data.callowner;
+				var uniqid = data.uniqueresourceid;
+
+				var termid = '#terminal' + parseInt(i);
+				var viaid = '#via' + parseInt(i);
+				var ariveid = '#ariveTime' + parseInt(i);
+				var startid = '#startTime' + parseInt(i);
+				var endid = '#departTime' + parseInt(i);
+				var unloadid = '#unload' + parseInt(i);
+				var loadid = '#load' + parseInt(i);
+				var omstuwid = '#omstuw' + parseInt(i);
+				var fuelid = '#fuel' +parseInt(i);
+
+				location = $(termid).val();
+				via = $(viaid).val();
+				// calc arive timestamp
+				callarivetime = $(ariveid).val();
+				if(callarivetime) {
+					arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix() * 1000;
+				}	
+				// calc start timestamp
+				callstarttime = $(startid).val();
+				if(callstarttime) {
+					start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix() * 1000;
+				}
+				// calc end timestamp
+				callendtime = $(endid).val();
+				if(callendtime) {
+					end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix() * 1000;
+				}
+				
+				unload = $(unloadid).val();
+				load = $(loadid).val();
+				omstuw = $(omstuwid).val();
+				fuel = $(fuelid).val();
+
+				activityCollection.insert({
+					callowner: owner,
+					callreference: callref,
+					uniqueresourceid: uniqid,
+					locationlabel: location,
+					vialabel: via,
+					callstartdate: arive_timestamp,
+					callbegindate: start_timestamp,
+					callenddate: end_timestamp,
+					unload: unload,
+					load: load,
+					omstuw: omstuw,
+					fuel: fuel,
+					done: done
+				});
+			}
+		}
+	} else {
+	// Else it is a custom call, create call-ref
+		var user = bargeUsers.findOne({accessID: Meteor.userId()});
+		if(user != null) {
+			var owner = user.name;
+			var uniqid = user.mmsi;
+			var callref = user.mmsi + ':' + parseInt(new Date().getTime());
+			// and insert into the activityCollection
+			activityCollection.insert({
+				callowner: owner,
+				callreference: callref,
+				uniqueresourceid: uniqid,
+				locationlabel: location,
+				vialabel: via,
+				callstartdate: arive_timestamp,
+				callbegindate: start_timestamp,
+				callenddate: end_timestamp,
+				unload: unload,
+				load: load,
+				omstuw: omstuw,
+				fuel: fuel,
+				done: done
+			});
+		}
+	}
+
+	// remove any splitted call rows
+	for(var i=0;i<splitCounter;i++) {
+		remRow();
+	}
+
+	// Reset the saving object
+	savingObject = null;
+	activeRow = "";
+	splitCounter = 0;
+	
 	// Reset input values
 	$('#terminal').val('');
 	$('#via').val('');
@@ -180,36 +342,108 @@ function saveActivity(data) {
 	$('#load').val('');
 	$('#omstuw').val('');
 	$('#fuel').val('');
-
-	// If the user selected an existing call
-	if(data) {
-		Meteor.call('updateActivity', data._id, location, via, arive_timestamp,
-			start_timestamp, end_timestamp, unload, load, omstuw, fuel, done);
-	}
-	// Else it is a custom call
-
-
-	/* --> Could be used for custom calls <--
-	var activityData = "{\"uniqueresourceid\":\"" + uniqueID + "\",\"locationlabel\":\"" + location
-						+ "\",\"vialabel\":\"" + via + "\",\"callarivetime\":" + arive_timestamp
-						+ ",\"callstarttime\":" + start_timestamp + ",\"callendtime\":" + end_timestamp 
-						+ ",\"unload\":" + unload + ",\"load\":" + load + ",\"omstuw\":" + omstuw
-						+ ",\"fuel\":" + fuel + ",\"done\":" + done "}";
-	var jsonobject = JSON.parse(activityData);*/
-
-	// Reset the saving object
-	savingObject = null;
-	activeRow = "";
 	// Reset session values
-	Session.set("editTerm",  $('#editTerminal').val());
-	Session.set("editVia",  $('#editVia').val());
-	Session.set("editArive",  $('#editAriveTime').val());
-	Session.set("editStart",  $('#editStartTime').val());
-	Session.set("editDepart",  $('#editDepartTime').val());
-	Session.set("editUnload",  $('#editUnload').val());
-	Session.set("editLoad",  $('#editLoad').val());
-	Session.set("editOmstuw",  $('#editOmstuw').val());
-	Session.set("editFuel",  $('#editFuel').val());
+	Session.set("currentTerm", $('#terminal').val());
+	Session.set("currentVia", $('#via').val());
+	Session.set("currentArive", $('#ariveTime').val());
+	Session.set("currentStart", $('#startTime').val());
+	Session.set("currentDepart", $('#departTime').val());
+	Session.set("currentUnload",  $('#unload').val());
+	Session.set("currentLoad",  $('#load').val());
+	Session.set("currentOmstuw",  $('#omstuw').val());
+	Session.set("currentFuel",  $('#fuel').val());
+}
+
+function addRow() {
+    // Get the table information
+	var table = document.getElementById("activityFormTable");
+	var id = "";
+    // Append a row to the table
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+    // Insert elements inside all new cells
+    var cell1 = row.insertCell(0);
+    var element1 = document.createElement("select");
+    id = "terminal" + rowCount;
+    element1.className = "form-control";
+    element1.id = id;
+    // add options
+    var locations = locationsCollection.find();
+    locations.forEach(function (location) {
+    	var newOpt = document.createElement('option');
+    	newOpt.text = location.name;
+    	newOpt.value = location.name;
+    	element1.add(newOpt);
+    });    
+    cell1.appendChild(element1);
+
+    var cell2 = row.insertCell(1);
+    var element2 = document.createElement("select");
+    id = "via" + rowCount;
+    element2.className = "form-control";
+    element2.id = id;
+    // add options
+    var emptOpt = document.createElement('option');
+	emptOpt.text = "";
+	emptOpt.value = "";
+	element2.add(emptOpt);
+
+    locations = locationsCollection.find();
+    locations.forEach(function (location) {
+    	var newOpt = document.createElement('option');
+    	newOpt.text = location.name;
+    	newOpt.value = location.name;
+    	element2.add(newOpt);
+    });    
+    cell2.appendChild(element2);
+
+    var cell3 = row.insertCell(2);
+    cell3.innerHTML = '<div id="ariveTimepicker' + parseInt(rowCount) + '" class="input-append date"><input id="ariveTime' + rowCount + '" data-format="dd-MM-yyyy hh:mm" type="text" style="font-size:10px;height:34px;width:115px"></input><span class="add-on" style="height:34px"><i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar"></i></span></div>';
+
+    var cell4 = row.insertCell(3);
+    cell4.innerHTML = '<div id="startTimepicker' + parseInt(rowCount) + '" class="input-append date"><input id="startTime' + rowCount + '" data-format="dd-MM-yyyy hh:mm" type="text" style="font-size:10px;height:34px;width:115px"></input><span class="add-on" style="height:34px"><i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar"></i></span></div>';
+
+    var cell5 = row.insertCell(4);
+    cell5.innerHTML = '<div id="departTimepicker' + parseInt(rowCount) + '" class="input-append date"><input id="departTime' + rowCount + '" data-format="dd-MM-yyyy hh:mm" type="text" style="font-size:10px;height:34px;width:115px"></input><span class="add-on" style="height:34px"><i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar"></i></span></div>';
+
+    var cell6 = row.insertCell(5);
+    cell6.innerHTML = '<input class="form-control input-sm" style="height:34px;width:50px" type="number" id="unload' + rowCount + '" placeholder="">';
+
+    var cell7 = row.insertCell(6);
+    cell7.innerHTML = '<input class="form-control input-sm" style="height:34px;width:50px" type="number" id="load' + rowCount + '" placeholder="">';
+
+    var cell8 = row.insertCell(7);
+    cell8.innerHTML = '<input class="form-control input-sm" style="height:34px;width:50px" type="number" id="omstuw' + rowCount + '" placeholder="">';
+
+    var cell9 = row.insertCell(8);
+    cell9.innerHTML = '<input class="form-control input-sm" style="height:34px;width:70px" type="number" id="fuel' + rowCount + '" placeholder="">';
+
+    var cell10 = row.insertCell(9);
+    // if last row add rem-row button
+    if(rowCount == splitCounter+1) {
+    	cell10.innerHTML = '<button class="remRow btn btn-default btn-xs"><i class="icon-minus-sign"></i></button>';
+    }
+}
+
+function remRow() {
+    // Get the table information
+    var table = document.getElementById("activityFormTable");
+    var rowCount = table.rows.length;
+
+    // Delete the last row except the first one
+    if(rowCount > 2) {
+        table.deleteRow(rowCount-1);
+    }
+    // set splitcounter
+    if(splitCounter > 0) {
+    	splitCounter--;
+	}
+	console.log(splitCounter);
+	// add remove row btn to new last row
+	if(rowCount > 3) {
+		var cell10 = table.rows[rowCount-2].cells[9];
+		cell10.innerHTML = '<button class="remRow btn btn-default btn-xs"><i class="icon-minus-sign"></i></button>';
+	}
 }
 
 /*****************************************/
