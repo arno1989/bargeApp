@@ -41,7 +41,7 @@ Template.logActivity.rendered=function() {
 	if(Session.get("currentFuel")) {
 		$('#fuel').val(Session.get("currentFuel"));
 	}
-
+	// Init date-time pickers
     $('#ariveTimepicker').datetimepicker({
       language: 'pt-BR'
     });
@@ -52,7 +52,7 @@ Template.logActivity.rendered=function() {
       language: 'pt-BR'
     });
 
-    // init split date-time-pickers
+    // Init split date-time-pickers
     for(var i=2;i<splitCounter+2;i++) {
     	var arivepickerid = '#ariveTimepicker'+parseInt(i);
     	var startpickerid = '#startTimepicker'+parseInt(i);
@@ -69,19 +69,30 @@ Template.logActivity.rendered=function() {
     }
 }
 
+/**
+** This function returns all available locations
+**/
 Template.logActivity.locations=function() {
 	return locationsCollection.find();
 }
 
+/**
+** This function returns the timestamp in a readable string
+**/
 Template.logActivity.getDate=function(timestamp) {
 	return moment.unix(timestamp/1000).format("DD-MM-YYYY HH:mm");
 }
 
+/**
+** This function returns all calls from the activityCollection which are not done
+**/
 Template.logActivity.futureCalls=function() {
-	// Return all calls from the activityCollection which are not done
 	return activityCollection.find({done: false}, {sort: {callstartdate: -1}});
 }
 
+/**
+** This function checks whether a row is selected
+**/
 Template.logActivity.checkActive=function(data) {
 	if(data._id == activeRow) {
 		return "success";
@@ -90,6 +101,9 @@ Template.logActivity.checkActive=function(data) {
 	}
 }
 
+/**
+** Define all events for this template
+**/
 Template.logActivity.events({
 	// Save the activity
 	'click #saveAct':function(e) {
@@ -121,20 +135,20 @@ Template.logActivity.events({
 		// if we already clicked on a split button
 		if(prevSplitObj) {
 			// and it is the same as the previous
-			if(this == prevSplitObj) {
+			if(this._id == prevSplitObj._id) {
 				splitCounter++;
 			} else {
-				splitCounter = 0;
+				splitCounter = 1;
 			}
-			prevSplitObj = this;
 		} else {
 			splitCounter++;
 		}
+		prevSplitObj = this;
 		
 		// Add 
-		
 		moveActivity(this);
 		activeRow = this._id;
+		var origTerm = document.getElementById('terminal').selectedIndex;
 		Session.set("currentTerm",  $('#terminal').val());
 		Session.set("currentVia",  $('#via').val());
 		Session.set("currentArive",  tsmsToStr(this.callstartdate));
@@ -149,7 +163,7 @@ Template.logActivity.events({
 		$('#activeContainer').html(Meteor.render(Template.logActivity));
 		// Add new row to the activity form
 		for(var i=0;i<splitCounter;i++) {
-			addRow();
+			addRow(origTerm);
 		}
 	},
 	'click .remRow':function() {
@@ -181,9 +195,24 @@ Template.logActivity.events({
 	},
 	'change #fuel':function(e) {
 		Session.set("currentFuel",  $('#fuel').val());
+	},
+	'click #customActivity':function(e) {
+		// Reset saving object
+		savingObject = null;
+		// First delete the extra table rows
+		var table = document.getElementById("activityFormTable");
+    	var rowCount = table.rows.length;
+    	for(var i=0;i<rowCount;i++) {
+    		remRow();
+    	}
+    	// Add custom activity information
+		toggleCustomActivity();
 	}
 });
 
+/**
+** This function moves the data of the selected row to the form
+**/
 function moveActivity(data) {
 	var arivePicker = $('#ariveTimepicker').data('datetimepicker');
 	var departPicker = $('#departTimepicker').data('datetimepicker');
@@ -199,6 +228,9 @@ function moveActivity(data) {
 	//$('#fuel').val()
 }
 
+/**
+** This function saves the data of the input form
+**/
 function saveActivity(data) {
 	var done = true;
 	var arive_timestamp = 0;
@@ -207,28 +239,45 @@ function saveActivity(data) {
 
 	var location = document.getElementById("terminal").value;
 	var via = document.getElementById("via").value;
-	// calc arive timestamp
+	// Calc arive timestamp
 	var callarivetime = document.getElementById("ariveTime").value;
 	if(callarivetime) {
 		arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix() * 1000;
 	}	
-	// calc start timestamp
+	// Calc start timestamp
 	var callstarttime = document.getElementById("startTime").value;
 	if(callstarttime) {
 		start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix() * 1000;
 	}
-	// calc end timestamp
+	// Calc end timestamp
 	var callendtime = document.getElementById("departTime").value;
 	if(callendtime) {
 		end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix() * 1000;
 	}
 	
-	var unload = document.getElementById("unload").value;
-	var load = document.getElementById("load").value;
-	var omstuw = document.getElementById("omstuw").value;
-	var fuel = document.getElementById("fuel").value;
+	var unload = parseInt(document.getElementById("unload").value);
+	var load = parseInt(document.getElementById("load").value);
+	var omstuw = parseInt(document.getElementById("omstuw").value);
+	var fuel = parseInt(document.getElementById("fuel").value);
+	// If one of these values isn't given set them to 0
+	if(!unload) {
+		unload = 0;
+	}
+	if(!load) {
+		load = 0;
+	}
+	if(!omstuw) {
+		omstuw = 0;
+	}
+	if(!fuel) {
+		fuel = 0;
+	}
 
-	
+	// Check if the call is in the future
+	if(arive_timestamp > (moment().unix() * 1000)) {
+		// Set done to false
+		done = false;
+	}
 
 	// If the user selected an existing call
 	if(data) {
@@ -256,27 +305,33 @@ function saveActivity(data) {
 
 				location = $(termid).val();
 				via = $(viaid).val();
-				// calc arive timestamp
+				// Calc arive timestamp
 				callarivetime = $(ariveid).val();
 				if(callarivetime) {
 					arive_timestamp = moment(callarivetime, "DD-MM-YYYY HH:mm").unix() * 1000;
 				}	
-				// calc start timestamp
+				// Calc start timestamp
 				callstarttime = $(startid).val();
 				if(callstarttime) {
 					start_timestamp = moment(callstarttime, "DD-MM-YYYY HH:mm").unix() * 1000;
 				}
-				// calc end timestamp
+				// Calc end timestamp
 				callendtime = $(endid).val();
 				if(callendtime) {
 					end_timestamp = moment(callendtime, "DD-MM-YYYY HH:mm").unix() * 1000;
 				}
-				
+
 				unload = $(unloadid).val();
 				load = $(loadid).val();
 				omstuw = $(omstuwid).val();
 				fuel = $(fuelid).val();
-
+				
+				// Check if the call is in the future
+				if(arive_timestamp > (moment().unix() * 1000)) {
+					// Set done to false
+					done = false;
+				}
+				
 				activityCollection.insert({
 					callowner: owner,
 					callreference: callref,
@@ -301,26 +356,44 @@ function saveActivity(data) {
 			var owner = user.name;
 			var uniqid = user.mmsi;
 			var callref = user.mmsi + ':' + parseInt(new Date().getTime());
-			// and insert into the activityCollection
-			activityCollection.insert({
-				callowner: owner,
-				callreference: callref,
-				uniqueresourceid: uniqid,
-				locationlabel: location,
-				vialabel: via,
-				callstartdate: arive_timestamp,
-				callbegindate: start_timestamp,
-				callenddate: end_timestamp,
-				unload: unload,
-				load: load,
-				omstuw: omstuw,
-				fuel: fuel,
-				done: done
-			});
+			// Check for special call
+			if($('#customActivity').prop('checked')) {
+				var callType = ($("#cusActivity option:selected").val());
+
+				// And insert into the activityCollection
+				activityCollection.insert({
+					callowner: owner,
+					callreference: callref,
+					uniqueresourceid: uniqid,
+					locationlabel: location,
+					callstartdate: arive_timestamp,
+					callenddate: end_timestamp,
+					fuel: fuel,
+					calltype: callType,
+					done: done
+				});
+			} else {
+				// And insert into the activityCollection
+				activityCollection.insert({
+					callowner: owner,
+					callreference: callref,
+					uniqueresourceid: uniqid,
+					locationlabel: location,
+					vialabel: via,
+					callstartdate: arive_timestamp,
+					callbegindate: start_timestamp,
+					callenddate: end_timestamp,
+					unload: unload,
+					load: load,
+					omstuw: omstuw,
+					fuel: fuel,
+					done: done
+				});
+			}
 		}
 	}
 
-	// remove any splitted call rows
+	// Remove any splitted call rows
 	for(var i=0;i<splitCounter;i++) {
 		remRow();
 	}
@@ -354,35 +427,37 @@ function saveActivity(data) {
 	Session.set("currentFuel",  $('#fuel').val());
 }
 
-function addRow() {
+function addRow(defaultTerminal) {
     // Get the table information
-	var table = document.getElementById("activityFormTable");
+	var table = document.getElementById('activityFormTable');
 	var id = "";
     // Append a row to the table
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
     // Insert elements inside all new cells
     var cell1 = row.insertCell(0);
-    var element1 = document.createElement("select");
+    var element1 = document.createElement('select');
     id = "terminal" + rowCount;
     element1.className = "form-control";
     element1.id = id;
-    // add options
+    // Add options
     var locations = locationsCollection.find();
     locations.forEach(function (location) {
     	var newOpt = document.createElement('option');
     	newOpt.text = location.name;
     	newOpt.value = location.name;
     	element1.add(newOpt);
-    });    
+    });
+    // Read original selected value & set to default selected
+    element1.selectedIndex = defaultTerminal;
     cell1.appendChild(element1);
 
     var cell2 = row.insertCell(1);
-    var element2 = document.createElement("select");
+    var element2 = document.createElement('select');
     id = "via" + rowCount;
     element2.className = "form-control";
     element2.id = id;
-    // add options
+    // Add options
     var emptOpt = document.createElement('option');
 	emptOpt.text = "";
 	emptOpt.value = "";
@@ -419,7 +494,7 @@ function addRow() {
     cell9.innerHTML = '<input class="form-control input-sm" style="height:34px;width:70px" type="number" id="fuel' + rowCount + '" placeholder="">';
 
     var cell10 = row.insertCell(9);
-    // if last row add rem-row button
+    // If last row add rem-row button
     if(rowCount == splitCounter+1) {
     	cell10.innerHTML = '<button class="remRow btn btn-default btn-xs"><i class="icon-minus-sign"></i></button>';
     }
@@ -434,15 +509,79 @@ function remRow() {
     if(rowCount > 2) {
         table.deleteRow(rowCount-1);
     }
-    // set splitcounter
+    // Set splitcounter
     if(splitCounter > 0) {
     	splitCounter--;
 	}
-	console.log(splitCounter);
-	// add remove row btn to new last row
+	// Add remove row btn to new last row
 	if(rowCount > 3) {
 		var cell10 = table.rows[rowCount-2].cells[9];
 		cell10.innerHTML = '<button class="remRow btn btn-default btn-xs"><i class="icon-minus-sign"></i></button>';
+	}
+}
+
+function toggleCustomActivity(e) {
+	// Reset input values
+	$('#terminal').val('');
+	$('#via').val('');
+	$('#ariveTime').val('');
+	$('#startTime').val('');
+	$('#departTime').val('');
+	$('#unload').val('');
+	$('#load').val('');
+	$('#omstuw').val('');
+	$('#fuel').val('');
+	// Reset session values
+	Session.set("currentTerm", $('#terminal').val());
+	Session.set("currentVia", $('#via').val());
+	Session.set("currentArive", $('#ariveTime').val());
+	Session.set("currentStart", $('#startTime').val());
+	Session.set("currentDepart", $('#departTime').val());
+	Session.set("currentUnload", $('#unload').val());
+	Session.set("currentLoad", $('#load').val());
+	Session.set("currentOmstuw", $('#omstuw').val());
+	Session.set("currentFuel", $('#fuel').val());
+
+	var activityContainer = document.getElementById("customActivityContainer");
+	// Check if customActivity checkbox is checked
+	if($('#customActivity').prop('checked')) {
+		// Create select box
+		var actSelect = document.createElement('select');
+	    actSelect.className = "form-control";
+	    actSelect.id = 'cusActivity';
+	    // Add bunker option
+    	var bunkerOpt = document.createElement('option');
+    	bunkerOpt.text = "Bunkeren";
+    	bunkerOpt.value = "bunkeren";
+    	actSelect.add(bunkerOpt);
+    	// Add rest option
+    	var restOpt = document.createElement('option');
+    	restOpt.text = "Rusten";
+    	restOpt.value = "rest";
+    	actSelect.add(restOpt);
+    	// Add car option
+    	var carOpt = document.createElement('option');
+    	carOpt.text = "Auto op/af-zetten";
+    	carOpt.value = "car";
+    	actSelect.add(carOpt);
+    	// Add select box to div
+    	activityContainer.appendChild(actSelect);
+    	// Deactivate
+    	$('#via').prop('disabled', true);
+    	$('#startTime').prop('disabled', true);
+    	$('#load').prop('disabled', true);
+    	$('#unload').prop('disabled', true);
+    	$('#omstuw').prop('disabled', true);
+	} else {
+		var selectElement = document.getElementById("cusActivity");
+		if(selectElement) {
+			activityContainer.removeChild(selectElement);
+			$('#via').prop('disabled', false);
+			$('#startTime').prop('disabled', false);
+    		$('#load').prop('disabled', false);
+    		$('#unload').prop('disabled', false);
+    		$('#omstuw').prop('disabled', false);
+		}
 	}
 }
 
@@ -586,15 +725,15 @@ function editHistoryActivity(data) {
 	editingObject = null;
 	activeRow = "";
 	// Reset session values
-	Session.set("editTerm",  $('#editTerminal').val());
-	Session.set("editVia",  $('#editVia').val());
-	Session.set("editArive",  $('#editAriveTime').val());
-	Session.set("editStart",  $('#editStartTime').val());
-	Session.set("editDepart",  $('#editDepartTime').val());
-	Session.set("editUnload",  $('#editUnload').val());
-	Session.set("editLoad",  $('#editLoad').val());
-	Session.set("editOmstuw",  $('#editOmstuw').val());
-	Session.set("editFuel",  $('#editFuel').val());
+	Session.set("editTerm", $('#editTerminal').val());
+	Session.set("editVia", $('#editVia').val());
+	Session.set("editArive", $('#editAriveTime').val());
+	Session.set("editStart", $('#editStartTime').val());
+	Session.set("editDepart", $('#editDepartTime').val());
+	Session.set("editUnload", $('#editUnload').val());
+	Session.set("editLoad", $('#editLoad').val());
+	Session.set("editOmstuw", $('#editOmstuw').val());
+	Session.set("editFuel", $('#editFuel').val());
 }
 
 
@@ -602,16 +741,22 @@ Template.logHistory.getHistory=function() {
 	return activityCollection.find({done: true},{sort: {callstartdate: -1}});
 }
 
-Template.logHistory.checkActive=function(data) {
-	if(data._id == activeRow) {
-		return "success";
-	} else {
-		return "active";
-	}	
+Template.logHistory.checkType=function(data) {
+	console.log(data.calltype);
+	if(data.calltype == 'bunkeren') {
+		return "bunkeren";
+	} else if(data.calltype == 'rest') {
+		return "rest";
+	} else if(data.calltype == 'car') {
+		return "car";
+	}
 }
 
 Template.logHistory.getDate=function(timestamp) {
-	return moment.unix(timestamp/1000).format("DD-MM-YYYY HH:mm");
+	if(timestamp)
+	{
+		return moment.unix(timestamp/1000).format("DD-MM-YYYY HH:mm");
+	}
 }
 
 function tsToStr(timestamp) {

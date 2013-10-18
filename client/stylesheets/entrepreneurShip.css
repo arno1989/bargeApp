@@ -69,6 +69,18 @@ input.input-sm {
 	height: 28px;
 }
 
+tr.bunkeren {
+	background-color: #fff;
+}
+
+tr.rest {
+	background-color: #fff;
+}
+
+tr.car {
+	background-color: #fff;
+}
+
 /* Chatroom style */
 .conversationlist {
 	float: left;

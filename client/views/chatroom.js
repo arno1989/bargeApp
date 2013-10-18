@@ -17,14 +17,6 @@ Template.chatroom.show=function() {
  * Return any started conversations
  **/
 Template.conversations.getActiveConv=function() {
-	/*if(convSubHandler && convSubHandler.ready) {
-		if(conversationsCol.find({receiver: "Global"}).count() == 0) {
-			// Global channel not initialized
-			//console.log('init global channel!');
-			//conversationsCol.insert({msg: "", date: 0, name: "", owner: Meteor.userId(), receiver: "Global"});
-		}
-		return conversationsCol.find({},{sort: {date: -1}});
-	}*/
 	return conversationsCol.find({},{sort: {date: -1}});
 }
 
@@ -166,9 +158,6 @@ Template.chatMessages.dateBarCheck=function(timestamp) {
 	msgTime = new Date(timestamp);
 	currentTime = new Date();
 
-	//console.log('msgTime: ' + msgTime.getDate() + ' - ' + 'day: ' + day);
-	//console.log('msgTime: ' + (msgTime.getMonth()+1) + ' - ' + 'month: ' +  month);
-
 	if(msgTime.getFullYear() < year || msgTime.getFullYear() > year) {
 		return true;
 	} else if(msgTime.getMonth()+1 < month || msgTime.getMonth()+1 > month) {
@@ -182,15 +171,6 @@ Template.chatMessages.dateBarCheck=function(timestamp) {
 
 Template.chatMessages.getDateBar=function(timestamp) {
 	return moment(timestamp).format('DD MMM YYYY');
-}
-
-Template.chatMessages.getDelButton=function(owner) {
-	if(owner == Meteor.userId()) {
-		// It's our message, give it a delete option
-		return true;
-	} else {
-		return false;
-	}
 }
 
 /**
