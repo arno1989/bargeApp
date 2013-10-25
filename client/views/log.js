@@ -118,7 +118,7 @@ Template.logActivity.events({
 		Session.set("currentTerm",  $('#terminal').val());
 		Session.set("currentVia",  $('#via').val());
 		Session.set("currentArive",  tsmsToStr(this.callstartdate));
-		//Session.set("currentStart",  $('#date').val());
+		Session.set("currentStart",  tsmsToStr(this.callstartdate));
 		Session.set("currentDepart",  tsmsToStr(this.callenddate));
 		Session.set("currentUnload",  $('#unload').val());
 		Session.set("currentLoad",  $('#load').val());
@@ -152,7 +152,7 @@ Template.logActivity.events({
 		Session.set("currentTerm",  $('#terminal').val());
 		Session.set("currentVia",  $('#via').val());
 		Session.set("currentArive",  tsmsToStr(this.callstartdate));
-		//Session.set("currentStart",  $('#date').val());
+		Session.set("currentStart",  tsmsToStr(this.callstartdate));
 		Session.set("currentDepart",  tsmsToStr(this.callenddate));
 		Session.set("currentUnload",  $('#unload').val());
 		Session.set("currentLoad",  $('#load').val());
@@ -215,11 +215,13 @@ Template.logActivity.events({
 **/
 function moveActivity(data) {
 	var arivePicker = $('#ariveTimepicker').data('datetimepicker');
+	var startPicker = $('#startTimepicker').data('datetimepicker');
 	var departPicker = $('#departTimepicker').data('datetimepicker');
 
 	$('#terminal').val(data.locationlabel);
 	$('#via').val(data.vialabel);
 	arivePicker.setDate(new Date(data.callstartdate + (2*1000*60*60)));
+	startPicker.setDate(new Date(data.callstartdate + (2*1000*60*60)));
 	departPicker.setDate(new Date(data.callenddate + (2*1000*60*60)));
 
 	$('#unload').val(data.unload);
@@ -641,6 +643,9 @@ Template.logHistory.events({
 	},
 	'click .saveRow':function(e) {
 		editHistoryActivity(editingObject);
+	},
+	'click .removeActivity':function(e) {
+		activityCollection.remove({_id: editingObject._id});
 	}
 });
 

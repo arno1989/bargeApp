@@ -17,8 +17,9 @@
 	<legend>Gesprekken</legend>
 
 	<div class="list-group">
+		<a href="" id="all" class="list-group-item"><H5>Alle gesprekken<br></H5></a>
 		{{#each getActiveConv}}
-			<a href="" id="{{_id}}" class="list-group-item conv"><H5>{{getConvName}}<br><small>{{msg}} - {{name}}</small></H5></a>
+			<a href="" id="{{_id}}" class="list-group-item conv"><H5>{{getConvName}}<br><small>{{sliceText lastmessage}} - {{lastmessageowner}}</small></H5></a>
 		{{/each}}
 	</div>
 
@@ -30,7 +31,6 @@
 		</div>
 		<div class="modal-body">
 			<div class="list-group">
-				<!-- zit geen database collectie achter -->
 				{{#each getUsers}}
 					<a href="" id="{{_id}}" class="list-group-item startNewConv"><b>{{name}}</b></a>
 				{{/each}}
@@ -45,10 +45,30 @@
 			<h3 id="myModalLabel">Nieuwe groep</h3>
 		</div>
 		<div class="modal-body">
+			<table>
+				<tr>
+					<td>
+						<form class="form-horizontal" role="form">
+  							<div class="form-group">
+    							<label for="groupName" class="col-lg-4 control-label">Groepsnaam:</label>
+    							<div class="col-lg-4">
+      							<input type="text" class="form-control input-lg" id="groupName">
+    							</div>
+  							</div>
+						</form>
+					</td>
+					<td>
+						<div id="selUserContainer">
+						<ul id="selectedUsers"></ul>
+						</div>
+					</td>
+				</tr>
+			</table>
+			
+			<button id="createGrpConv" class="btn btn-default">Maak groep aan</button>
 			<div class="list-group">
-				<!-- zit geen database collectie achter -->
 				{{#each getUsers}}
-					<a href="" id="{{_id}}" class="list-group-item startNewConv"><b>{{name}}</b></a>
+					<a href="" id="{{_id}}" class="list-group-item addUser"><b>{{name}}</b></a>
 				{{/each}}
 			</div>			
 		</div>
@@ -80,26 +100,48 @@
 
 <template name="chatMessages">
 	<div class="chat" style="height: 300px; overflow: auto;">
-
-		{{#each msgs}}
-		{{#if dateBarCheck date}}
-			<table class="table" width="100%">
-				<tr class="success">
-					<td style="text-align: center"><small><b>{{getDateBar date}}</b></small></td>
+		{{#if global}}
+			{{#each allMsgs}}
+			{{#if dateBarCheck timestamp}}
+				<table class="table" width="100%">
+					<tr class="success">
+						<td style="text-align: center"><small><b>{{getDateBar timestamp}}</b></small></td>
+					</tr>
+				</table>
+			{{/if}}
+			<table class="table" style="padding: 2px; margin: 2px" width="100%">
+				<tr class="info">
+					<td style="vertical-align: top;padding:2px;">
+						<small>{{passTime timestamp}}</small><br>
+					</td>
+					<td width="90%" style="padding:2px">
+						{{message}}<br>
+						<small><b>Gesprek:</b> {{groupTitle conversation}} <i class="muted"> - {{owner}}</i></small>
+					</td>
 				</tr>
 			</table>
+			{{/each}}
+		{{else}}
+			{{#each msgs}}
+			{{#if dateBarCheck timestamp}}
+				<table class="table" width="100%">
+					<tr class="success">
+						<td style="text-align: center"><small><b>{{getDateBar timestamp}}</b></small></td>
+					</tr>
+				</table>
+			{{/if}}
+			<table class="table" style="padding: 2px; margin: 2px" width="100%">
+				<tr class="info">
+					<td style="vertical-align: top;padding:2px;">
+						<small>{{passTime timestamp}}</small><br>
+					</td>
+					<td width="90%" style="padding:2px">
+						{{message}}<br>
+						<small><i class="muted"> - {{owner}}</i></small>
+					</td>
+				</tr>
+			</table>
+			{{/each}}
 		{{/if}}
-		<table class="table" style="padding: 2px" width="100%">
-			<tr class="info">
-				<td style="vertical-align: top;">
-					<small>{{passTime date}}</small><br>
-				</td>
-				<td width="90%">
-					{{msg}}<br>
-					<small><i class="muted"> - {{name}}</i></small>
-				</td>
-			</tr>
-		</table>
-		{{/each}}
 	</div>
 </template>
