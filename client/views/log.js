@@ -743,11 +743,11 @@ function editHistoryActivity(data) {
 
 
 Template.logHistory.getHistory=function() {
-	return activityCollection.find({done: true},{sort: {callstartdate: -1}});
+	return activityCollection.find({done: true},{sort: {callstartdate: -1}, limit: 10});
 }
 
 Template.logHistory.checkType=function(data) {
-	console.log(data.calltype);
+	//console.log(data.calltype);
 	if(data.calltype == 'bunkeren') {
 		return "bunkeren";
 	} else if(data.calltype == 'rest') {
@@ -755,6 +755,10 @@ Template.logHistory.checkType=function(data) {
 	} else if(data.calltype == 'car') {
 		return "car";
 	}
+}
+
+Template.logHistory.checkOwner=function(data) {
+	//check if its my call and return color style
 }
 
 Template.logHistory.getDate=function(timestamp) {

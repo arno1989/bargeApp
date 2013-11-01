@@ -4,10 +4,10 @@
 var CLIENTID = Meteor.userId();
 var CONVERSATION = "Global";
 var CONVERSATIONTITLE = "Alle gesprekken";
+var GROUPCONVERSATION = false;
 var USERGROUP = new Array();
 msgTime = new Date(0);
 
-$('.msg').attr("disabled", true);
 
 /********************************************
 ** Conversations -
@@ -55,10 +55,12 @@ Template.conversations.events({
 	'click #all': function(e) {
 		CONVERSATION = "Global";
 		CONVERSATIONTITLE = "Alle gesprekken";
+		GROUPCONVERSATION = false;
 		$('#chatroom').html(Meteor.render(Template.chatroom));
 	},
 	'click .conv': function(e) {
 		// this = selected conversation
+		checkGroup(this);
 		CONVERSATION = this.conversationname;
 		CONVERSATIONTITLE = getConversationTitle(this);
 		$('#chatroom').html(Meteor.render(Template.chatroom));
@@ -85,6 +87,7 @@ Template.conversations.events({
 	'click #createGrpConv':function(e) {
 		$('#newGrpModal').modal('hide');
 		createConversationGroup();
+		GROUPCONVERSATION = true;
 		$('#chatroom').html(Meteor.render(Template.chatroom));
 	}
 });
@@ -102,6 +105,7 @@ function createConversation(selectedUser) {
 		if(conversationsCol.find({$or: [{conversationname: convName1},{conversationname: convName2}]}).count() == 0) {
 			conversationsCol.insert({
 				conversationname: convName1,
+				admin: Meteor.userId(),
 				lastmessage: lastMsg,
 				lastmessagets: lastMsgTS,
 				lastmessageowner: lastMsgOwner,
@@ -145,6 +149,7 @@ function createConversationGroup() {
 	// Create json obj
 	var jsonObj = {};
 	jsonObj.conversationname = groupName;
+	jsonObj.admin = Meteor.userId();
 	jsonObj.lastmessage = "";
 	jsonObj.lastmessagets = 0;
 	jsonObj.lastmessageowner = "";
@@ -191,11 +196,65 @@ function getConversationTitle(conversation) {
 ** between the users.
 /********************************************/
 
+function checkGroup(conversation) {
+	var title = conversation.conversationname.split(":");
+	if(title.length == 2) {
+		//set GROUPCONV to false
+		GROUPCONVERSATION = false;
+	} else {
+		GROUPCONVERSATION = true;
+	}
+}
+
+Template.conversation.groupAdmin=function() {
+	var group = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	var admin = false;
+	if(group[0].admin == Meteor.userId()) {
+		admin = true;
+	}
+	return admin;
+}
+
+Template.conversation.showUsers=function() {
+	//console.log('group: ' + GROUPCONVERSATION);
+	return GROUPCONVERSATION;
+}
+
+Template.conversation.getGroupUsers=function() {
+	var users = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	var userList = users[0].users;
+	var index = userList.indexOf(CLIENTID);
+	console.log(index);
+	if(index > -1) {
+		userList.splice(index,1);
+	}	
+	return userList;
+}
+
+Template.conversation.getName=function(user_id) {
+	return bargeUsers.findOne({accessID: user_id}).name;
+}
+
+
+Template.conversation.renderMsgBar=function() {
+	var render = false;
+	if(CONVERSATION != "Global") {
+		render = true;
+	}
+	return render;
+}
 /**
  * This function returns the person's name
  **/
 Template.conversation.getConvName=function() {
 	return CONVERSATIONTITLE;
+}
+
+/**
+ * This function returns the bargeUsers to chat with
+ **/
+Template.conversation.getUsers=function() {
+	return bargeUsers.find({accessID: { $not: CLIENTID}});
 }
 
 Template.conversation.events({
@@ -218,10 +277,68 @@ Template.conversation.events({
         	sendMsg();
         }
     },
-	'click .ret': function() {
-		$('#chatroom').html(Meteor.render(Template.chatroom));
+    'click .delGroup':function() {
+    	deleteGroup();
+    },
+    'click .editGroup':function() {
+    	$('#editGroupModal').modal('show');
+    },
+    'click #saveGrpName':function() {
+    	editGroup();
+    	$('#editGroupModal').modal('hide');
+    },
+	'click .delUser': function() {
+		removeUser(String(this));
+	},
+	'click .addUser':function() {
+		$('#newUserModal').modal('show');
+	},
+	'click .newUser': function() {
+		$('#newUserModal').modal('hide');
+		addUser(this);
 	}
 });
+
+function deleteGroup() {
+	var group = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	conversationsCol.remove({_id: group[0]._id});
+
+	var msgs = chatCollection.find({conversation: CONVERSATION});
+	msgs.forEach(function (msg) {
+		chatCollection.remove({_id: msg._id});
+	});
+	CONVERSATION = "Global";
+	CONVERSATIONTITLE = "Alle gesprekken";
+	GROUPCONVERSATION = false;
+	USERGROUP = new Array();
+}
+
+function editGroup() {
+	var group = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	var newName = $('#newGroupName').val();
+	if(newName.length > 0) {
+		conversationsCol.update({_id: group[0]._id},{$set: {conversationname: newName}});
+		/* UPDATE ALL CHAT MESSAGES TO NEW NAME*/
+	}
+}
+
+function removeUser(id) {
+	var group = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	var userList = group[0].users;
+	var index = userList.indexOf(id);
+	userList.splice(index,1);
+	conversationsCol.update({_id: group[0]._id},{$set: {users: userList}});
+}
+
+function addUser(user) {
+	var group = conversationsCol.find({conversationname: CONVERSATION}).fetch();
+	var userList = group[0].users;
+	// If the user is not found
+	if(userList.indexOf(user.accessID) == -1 ) {
+		userList[userList.length] = user.accessID;
+		conversationsCol.update({_id: group[0]._id},{$set: {users: userList}});
+	}	
+}
 
 /**
  * This function returns the chat messages for the current selected user

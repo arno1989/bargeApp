@@ -55,7 +55,7 @@ if (Meteor.isServer) {
               // Remove all existing calls of the operator in the collection
               callCollection.remove({callowner: operator});
               // Remove all activities which are not done
-              activityCollection.remove({done: false});
+              activityCollection.remove({callowner: operator, done: false});
               // Insert all individual calls into the collection
               for(var i=0;i<obj.calls.length;i++) {
                 callCollection.insert(obj.calls[i]);

@@ -78,10 +78,27 @@
 <!-- SHOW THE SPECIFIC CONVERSATION MESSAGES -->
 <template name="conversation">
 	<div id="messContainer" height="100%" class="containter-fluid">
-		<legend>{{getConvName}}</legend>
+		<legend>{{getConvName}} {{#if showUsers}}{{#if groupAdmin}} <!-- <a href="" class="editGroup"><i class="icon-pencil"></i> edit...</a> --> <a href="" class="delGroup"><i class="icon-large icon-remove-circle"></i></a>{{/if}}{{/if}}</legend>
 		{{> chatMessages}}
 	</div>
 
+	{{#if showUsers}}
+	<div id="groupusersContainer">
+		<i class="icon-user"></i>
+		{{#if groupAdmin}}
+			{{#each getGroupUsers}}
+				<i>{{getName .}} <a href="" class="delUser"><i class="icon-remove-circle"></i></a> | </i>
+			{{/each}}
+			<a href="" class="addUser"><i class="icon-plus-sign"></i> Voeg toe...</a>
+		{{else}}
+			{{#each getGroupUsers}}
+				<i>{{getName .}} | </i>
+			{{/each}}
+		{{/if}}		
+	</div>
+	{{/if}}
+
+	{{#if renderMsgBar}}
 	{{#constant}}
 	<div class="msgCommands">
 		<table cellpadding="10">
@@ -96,10 +113,37 @@
         </table>
     </div> <!-- /. msgCommands -->
     {{/constant}}
+    {{/if}}
+
+    <!-- Modal to edit group name-->
+	<div id="editGroupModal" class="modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Hernoem groepsnaam</h3>
+		</div>
+		<div class="modal-body">
+			<input type="text" class="form-control" id="newGroupName"></input> <button id="saveGrpName" class="btn btn-default">Opslaan</button>			
+		</div>
+	</div> <!-- /. Modal -->
+
+    <!-- Modal to add a new user-->
+	<div id="newUserModal" class="modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Voeg persoon toe aan groepsgesprek</h3>
+		</div>
+		<div class="modal-body">
+			<div class="list-group">
+				{{#each getUsers}}
+					<a href="" id="{{_id}}" class="list-group-item newUser"><b>{{name}}</b></a>
+				{{/each}}
+			</div>			
+		</div>
+	</div> <!-- /. Modal -->
 </template>
 
 <template name="chatMessages">
-	<div class="chat" style="height: 300px; overflow: auto;">
+	<div class="chat" style="height: 300px; overflow-y: auto; overflow-x: hidden">
 		{{#if global}}
 			{{#each allMsgs}}
 			{{#if dateBarCheck timestamp}}

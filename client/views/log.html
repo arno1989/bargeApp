@@ -195,7 +195,7 @@
 					</td>
 				</tr>
 				{{#each getHistory}}
-				<tr class="{{checkType this}}">
+				<tr style="{{checkOwner .}}">
 					<td>{{this.locationlabel}}</td>
 					<td>{{this.vialabel}}</td>
 					<td>{{getDate this.callstartdate}}</td>
